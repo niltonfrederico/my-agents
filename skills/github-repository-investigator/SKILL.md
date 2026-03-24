@@ -7,7 +7,11 @@ applyTo:
   - "**/*repository*/**"
   - "**/*architecture*/**"
 invokes:
-  - "github.com"
+  - "mcp_io_github_git_get_file_contents"
+  - "mcp_io_github_git_list_branches"
+  - "mcp_io_github_git_list_commits"
+  - "mcp_com_monday_mo_get_board_info"
+  - "vscode_askQuestions"
   - "memory"
 ---
 
@@ -24,22 +28,43 @@ invokes:
 ```python
 def investigate_repository_structure(repository_name: str) -> RepositoryAnalysis:
     """
-    Master function for discovering real repository architecture.
+    Master function for discovering real repository architecture using MCP tools.
     
     Args:
         repository_name: Explicitly confirmed repository (e.g., 'juntossomosmais/delfos')
         
     Returns:
         RepositoryAnalysis: Comprehensive structure with verified paths only
+        
+    CRITICAL REQUIREMENTS (March 2026 Fixes):
+    - MUST use MCP tools (mcp_io_github_git_*) for all GitHub operations
+    - MUST STOP if repository cannot be accessed
+    - MUST ask user when repository structure is unclear
+    - NEVER make assumptions about file paths
     """
     
-    # Step 1: Verify repository exists
+    # Step 1: Verify repository exists using MCP
     try:
-        repo_info = github_get_repository_info(repository_name)
-    except RepositoryNotFound:
-        return RepositoryAnalysis(
-            status="ERROR", 
-            message=f"Repositório {repository_name} não encontrado ou inacessível"
+        owner, repo = repository_name.split('/')
+        # Use actual MCP tool to get file contents from root
+        repo_info = mcp_io_github_git_get_file_contents(
+            owner=owner,
+            repo=repo,
+            path="/"
+        )
+        if not repo_info:
+            # STOP CONDITION: Cannot access repository
+            raise SkillExecutionStop(
+                reason="REPOSITORY_INACCESSIBLE",
+                message=f"🚫 STOP: Repositório {repository_name} não pode ser acessado via GitHub API.\n\n❓ PRECISO DE SUA CONFIRMAÇÃO: O repositório existe e você tem acesso?",
+                user_action_required=True
+            )
+    except Exception as e:
+        # STOP CONDITION: MCP call failed
+        raise SkillExecutionStop(
+            reason="MCP_ACCESS_FAILED", 
+            message=f"🚫 STOP: Falha ao acessar {repository_name} via MCP GitHub API.\n\nErro: {str(e)}\n\n❓ AÇÃO NECESSÁRIA: Verificar conectividade MCP ou confirmar nome do repositório.",
+            user_action_required=True
         )
     
     # Step 2: Investigate root structure 
@@ -155,20 +180,46 @@ def investigate_django_architecture(
         'settings': f"{app_name}/settings/"
     }
     
-    # Investigate each path via GitHub API
+    # Investigate each path via MCP GitHub API (ENFORCED)
     architecture_components = {}
     for component, path in investigation_paths.items():
         try:
             if path.endswith('.py'):
-                # Single file
-                content = github_get_file_content(repository_name, path)
-                architecture_components[component] = FileInfo(path, exists=True, content_preview=content[:500])
+                # Single file - USE MCP
+                content = mcp_io_github_git_get_file_contents(
+                    owner=repository_name.split('/')[0],
+                    repo=repository_name.split('/')[1], 
+                    path=path
+                )
+                if content:
+                    architecture_components[component] = FileInfo(path, exists=True, content_preview=content['content'][:500])
+                else:
+                    architecture_components[component] = ComponentInfo(path, exists=False)
             else:
-                # Directory
-                content = github_get_directory_contents(repository_name, path)
-                architecture_components[component] = DirectoryInfo(path, exists=True, file_count=len(content))
-        except (FileNotFound, DirectoryNotFound):
-            architecture_components[component] = ComponentInfo(path, exists=False)
+                # Directory - USE MCP
+                try:
+                    content = mcp_io_github_git_get_file_contents(
+                        owner=repository_name.split('/')[0],
+                        repo=repository_name.split('/')[1],
+                        path=path
+                    )
+                    if content:
+                        architecture_components[component] = DirectoryInfo(path, exists=True, file_count=len(content))
+                    else:
+                        architecture_components[component] = ComponentInfo(path, exists=False)
+                except Exception:
+                    # Path doesn't exist - record as non-existent 
+                    architecture_components[component] = ComponentInfo(path, exists=False)
+        except Exception as e:
+            # CRITICAL: If MCP fails, STOP and ask user
+            if "rate limit" in str(e).lower():
+                raise SkillExecutionStop(
+                    reason="GITHUB_RATE_LIMIT",
+                    message=f"🚫 STOP: GitHub API rate limit atingido durante investigação de {path}.\n\n❓ AGUARDAR ou continuar com informações limitadas?",
+                    user_action_required=True
+                )
+            # Record as unknown instead of assumptions
+            architecture_components[component] = ComponentInfo(path, exists=False, investigation_failed=True)
     
     return DjangoArchitecture(
         app_name=app_name,

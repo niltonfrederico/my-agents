@@ -12,8 +12,11 @@ applyTo:
 invokes:
   - "create_file"
   - "replace_string_in_file" 
+  - "vscode_askQuestions"
+  - "mcp_io_github_git_get_file_contents"
   - "django-explorer"
   - "django-analyzer"
+  - "github-repository-investigator"
   - "mermaid-flowchart"
   - "mermaid-sequence"
   - "mermaid-mindmap"

@@ -9,7 +9,11 @@ applyTo:
   - "**/*refinement*/**"
   - "**/*analysis*/**"
 invokes:
-  - "monday.com"
+  - "mcp_com_monday_mo_get_board_info"
+  - "mcp_com_monday_mo_get_updates" 
+  - "mcp_com_monday_mo_board_insights"
+  - "mcp_io_github_git_get_file_contents"
+  - "vscode_askQuestions"
   - "github-repository-investigator"
   - "brazilian-agile-framework"
   - "memory"
@@ -28,26 +32,59 @@ invokes:
 ```python
 def validate_monday_url_and_access(monday_url: str) -> MondayValidationResult:
     """
-    Validates Monday.com URL format, accessibility, and extracts task data.
+    Validates Monday.com URL format, accessibility, and extracts task data using MCP.
     
     Args:
         monday_url: Monday.com task URL provided by user
         
     Returns:
         MondayValidationResult: Task data and access validation status
+        
+    CRITICAL REQUIREMENTS (March 2026 Fixes):
+    - MUST use MCP tools (mcp_com_monday_mo_*) for all Monday.com operations
+    - MUST STOP if Monday.com data cannot be accessed
+    - MUST ask user when board/item information is unclear
     """
     
     # Extract board_id and item_id from URL
     url_components = parse_monday_url(monday_url)
     if not url_components.is_valid:
-        return MondayValidationResult(
-            status="BLOCKED",
-            message="URL do Monday.com inválido. Formato esperado: https://mycompany.monday.com/boards/BOARD_ID/pulses/ITEM_ID",
-            blocking_issue="url_format"
+        # STOP CONDITION: Invalid URL format
+        raise SkillExecutionStop(
+            reason="INVALID_MONDAY_URL",
+            message="🚫 STOP: URL do Monday.com inválido.\n\n✅ Formato esperado: https://mycompany.monday.com/boards/BOARD_ID/pulses/ITEM_ID\n\n❓ Por favor, forneça a URL correta do Monday.com.",
+            user_action_required=True
         )
     
-    # Access Monday.com API to fetch task data
+    # Access Monday.com via MCP to fetch task data
     try:
+        # Use MCP tool to get board information
+        board_info = mcp_com_monday_mo_get_board_info(
+            boardId=url_components.board_id
+        )
+        
+        if not board_info:
+            # STOP CONDITION: Board not accessible
+            raise SkillExecutionStop(
+                reason="BOARD_NOT_ACCESSIBLE",
+                message=f"🚫 STOP: Board {url_components.board_id} não pode ser acessado via Monday.com MCP.\n\n❓ Você tem acesso a este board? Verifique as permissões.",
+                user_action_required=True
+            )
+        
+        # Get item updates to validate item exists
+        try:
+            item_updates = mcp_com_monday_mo_get_updates(
+                objectId=str(url_components.item_id),
+                objectType="Item",
+                limit=1
+            )
+        except Exception as e:
+            # STOP CONDITION: Item not accessible
+            raise SkillExecutionStop(
+                reason="ITEM_NOT_ACCESSIBLE", 
+                message=f"🚫 STOP: Item {url_components.item_id} não pode ser acessado.\n\nErro: {str(e)}\n\n❓ O item existe neste board? Verifique o ID do item.",
+                user_action_required=True
+            )
         task_data = fetch_monday_task_data(
             board_id=url_components.board_id,
             item_id=url_components.item_id
@@ -142,12 +179,16 @@ def confirm_repository_explicitly(task_data: MondayTaskData) -> RepositoryConfir
             "allowFreeformInput": True
         }
     
-    user_response = ask_questions([repository_question])
+    user_response = vscode_askQuestions([repository_question])
     repository_name = user_response["repository_confirmation"]
     
     if not repository_name or repository_name == "manual_specify":
-        raise RepositoryNotConfirmed(
-            "Repositório deve ser confirmado explicitamente antes de prosseguir com análise técnica"
+        # STOP CONDITION: Repository not confirmed
+        raise SkillExecutionStop(
+            reason="REPOSITORY_NOT_CONFIRMED",
+            message="🚫 STOP: Repositório deve ser confirmado explicitamente antes de prosseguir com análise técnica.\n\n📚 LIÇÃO APRENDIDA (Mar 2026): Assumir repositório gera análise inválida.\n\n❓ Por favor, confirme qual repositório será afetado.",
+            user_action_required=True
+        )
         )
     
     # Validate repository exists via GitHub API

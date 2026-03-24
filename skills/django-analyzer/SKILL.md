@@ -16,7 +16,10 @@ invokes:
   - "read_file"
   - "get_errors"
   - "vscode_listCodeUsages"
+  - "vscode_askQuestions"
+  - "mcp_io_github_git_get_file_contents"
   - "django-explorer"
+  - "github-repository-investigator"
 ---
 
 # Django Deep Analyzer Skill
@@ -26,6 +29,48 @@ invokes:
 ## Purpose
 
 This skill provides in-depth analysis of Django/Python applications, going beyond surface exploration to understand complex patterns, relationships, and architectural decisions. Designed to work alongside `django-explorer` when detailed investigation is needed.
+
+## CRITICAL REQUIREMENTS (March 2026 Anti-Hallucination)
+
+### STOP Conditions (MANDATORY)
+```python
+# When repository context is unclear, STOP and use github-repository-investigator
+if not clear_repository_context():
+    raise SkillExecutionStop(
+        reason="REPOSITORY_CONTEXT_UNCLEAR",
+        message="🚫 STOP: Análise requer contexto claro do repositório.\n\n❓ Favor informar qual repositório Django analisar (ex: juntossomosmais/delfos).",
+        user_action_required=True
+    )
+
+# When required files/apps are missing, STOP and ask user  
+if not required_django_files_found():
+    raise SkillExecutionStop(
+        reason="DJANGO_STRUCTURE_INCOMPLETE",
+        message="🚫 STOP: Estrutura Django incompleta ou inacessível.\n\n❓ Este é um projeto Django válido? Verificar manage.py e apps/.",
+        user_action_required=True
+    )
+
+# When analysis scope is ambiguous, ask user for clarification
+if analysis_scope_unclear():
+    questions = [{
+        "header": "analysis_focus",
+        "question": "🔍 Foco da análise Django não está claro. Qual área investigar?",
+        "options": [
+            {"label": "Padrões de autenticação e permissões", "value": "auth_patterns"},
+            {"label": "Fluxos de mensageria (STOMP/Outbox)", "value": "messaging_flows"},
+            {"label": "Performance e queries do banco", "value": "performance_analysis"},
+            {"label": "Análise arquitetural completa", "value": "full_architecture"}
+        ],
+        "allowFreeformInput": True
+    }]
+    user_response = vscode_askQuestions(questions)
+    analysis_focus = user_response["analysis_focus"]
+```
+
+### MCP-First Pattern (MANDATORY)
+- **ALWAYS use mcp_io_github_git_get_file_contents** for repository file access
+- **DELEGATE to github-repository-investigator** for repository structure verification
+- **NO assumptions** about Django app structure without MCP verification
 
 ## Core Capabilities
 

@@ -18,7 +18,10 @@ invokes:
   - "read_file"
   - "get_errors"
   - "vscode_listCodeUsages"
+  - "vscode_askQuestions"
+  - "mcp_io_github_git_get_file_contents"
   - "dotnet-explorer"
+  - "github-repository-investigator"
 ---
 
 # .NET Deep Analyzer Skill

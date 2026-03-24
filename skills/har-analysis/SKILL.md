@@ -10,6 +10,8 @@ applyTo:
   - "**/debug/**/*"
 invokes:
   - "file_operations"
+  - "read_file"
+  - "vscode_askQuestions"
   - "mermaid-diagram-validator"
   - "mermaid-diagram-preview"
   - "mermaid-flowchart"
@@ -24,6 +26,42 @@ invokes:
 ## Purpose
 
 This skill specializes in analyzing HTTP Archive (HAR) files exported from browser developer tools to provide deep insights into web application performance, identify bottlenecks, debug API issues, and generate visual representations of network behavior through Mermaid diagrams.
+
+## CRITICAL REQUIREMENTS (March 2026 Anti-Hallucination)
+
+### STOP Conditions (MANDATORY)
+```python
+# When HAR file is invalid or corrupted, STOP and ask user
+if not valid_har_file(har_file_path):
+    raise SkillExecutionStop(
+        reason="INVALID_HAR_FILE",
+        message="🚫 STOP: Arquivo HAR inválido ou corrompido.\n\n❓ Favor fornecer arquivo HAR válido exportado do DevTools (F12 > Network > Export HAR).",
+        user_action_required=True
+    )
+
+# When analysis scope is unclear, ask user for focus
+if analysis_scope_unclear():
+    questions = [{
+        "header": "analysis_focus",
+        "question": "🔍 Foco da análise HAR não está claro. Qual área investigar?", 
+        "options": [
+            {"label": "Performance e bottlenecks", "value": "performance"},
+            {"label": "Erros de API e debugging", "value": "debugging"},
+            {"label": "Audit de segurança", "value": "security"},
+            {"label": "Análise completa", "value": "comprehensive"}
+        ]
+    }]
+    user_response = vscode_askQuestions(questions)
+    analysis_focus = user_response["analysis_focus"]
+
+# When HAR file is too large for processing, STOP and ask user
+if har_file_too_large():
+    raise SkillExecutionStop(
+        reason="HAR_FILE_TOO_LARGE",
+        message="🚫 STOP: Arquivo HAR muito grande para processamento.\n\n❓ Filtrar período específico ou continuar com análise limitada?",
+        user_action_required=True
+    )
+```
 
 ## Core Capabilities
 

@@ -1,5 +1,44 @@
 # Troubleshooting GitHub Copilot Agents
 
+## Critical Session Issues (March 2026 Fixes)
+
+### Bizarre Output / Malformed Responses
+
+**Symptoms:** Garbled text, incomplete responses, strange formatting
+**Root Causes:**
+
+- Large context windows causing token limits
+- Complex nested tool calls without proper error handling  
+- MCP tool failures cascading into response corruption
+- Memory file conflicts during parallel operations
+
+**Fixes Applied:**
+
+- ✅ MCP-first patterns with proper error handling
+- ✅ STOP conditions to prevent cascade failures
+- ✅ Explicit user questions instead of complex assumptions
+- ✅ Reduced context complexity in skill operations
+
+### MCP Tool Usage Problems
+
+**Symptom:** Generic tool references instead of MCP tools
+**Fix:** Updated all skills to use explicit MCP tool names:
+
+- `mcp_io_github_git_get_file_contents` (not `github_get_file`)
+- `mcp_com_monday_mo_get_board_info` (not generic `monday.com`)
+
+### Assumption-Making Behavior
+
+**Symptom:** Continuing with guesses when information unavailable
+**Fix:** Added `SkillExecutionStop` pattern with user action required
+**Implementation:** All skills now STOP and ask user when in doubt
+
+### Repository Investigation Failures
+
+**Symptom:** Imaginary file paths and invalid architecture assumptions  
+**Fix:** Enforced real GitHub API verification for all file paths
+**Pattern:** Use MCP tools to verify before processing
+
 ## Common Issues
 
 ### YAML Frontmatter Problems
@@ -42,3 +81,10 @@
 - Large skill files may slow invocation
 - Complex applyTo patterns can cause delays  
 - Consider splitting large skills into focused ones
+
+### MCP Connectivity Issues
+
+1. Verify MCP server status in VS Code settings
+2. Check authentication tokens for external services
+3. Test MCP tools individually before skill usage
+4. Implement graceful fallbacks for MCP failures

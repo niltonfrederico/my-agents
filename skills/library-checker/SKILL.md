@@ -14,8 +14,10 @@ invokes:
   - "read_file"
   - "grep_search"
   - "semantic_search"
-  - "github_repo"
+  - "mcp_io_github_git_get_file_contents"
+  - "mcp_io_github_git_search_issues"
   - "fetch_webpage"
+  - "vscode_askQuestions"
 ---
 
 # juntossomosmais Library Validator Skill

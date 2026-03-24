@@ -8,6 +8,9 @@ applyTo:
   - "**/*implementation*/**"
   - "**/*analysis*/**"
 invokes:
+  - "mcp_com_monday_mo_get_board_info"
+  - "mcp_io_github_git_get_file_contents"
+  - "vscode_askQuestions"
   - "brazilian-agile-framework"
   - "github-repository-investigator"
   - "memory"
@@ -46,6 +49,12 @@ function verify_refinement_prerequisites(prerequisites: RefinementPrerequisites)
 def load_validated_analysis_context() -> RefinementContext:
     """
     Loads complete validated context from monday-task-analyzer skill.
+    
+    CRITICAL REQUIREMENTS (March 2026 Fixes):
+    - MUST verify analysis was completed successfully 
+    - MUST STOP if required context is missing
+    - MUST use MCP tools for any additional data requests
+    - MUST ask user when planning details are unclear
     
     Returns:
         RefinementContext: All validated inputs ready for refinement generation

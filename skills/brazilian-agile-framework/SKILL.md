@@ -8,6 +8,7 @@ applyTo:
   - "**/*agile*/**" 
   - "**/*refinement*/**"
 invokes:
+  - "vscode_askQuestions"
   - "memory"
 ---
 

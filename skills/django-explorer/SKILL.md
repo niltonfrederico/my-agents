@@ -17,6 +17,9 @@ invokes:
   - "file_search" 
   - "grep_search"
   - "read_file"
+  - "vscode_askQuestions"
+  - "mcp_io_github_git_get_file_contents"
+  - "github-repository-investigator"
 ---
 
 # Django Explorer Skill

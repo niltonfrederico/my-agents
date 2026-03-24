@@ -8,7 +8,9 @@ applyTo:
   - "**/*standards*/**"
   - "**/*validation*/**"
 invokes:
-  - "github.com"
+  - "mcp_io_github_git_get_file_contents"
+  - "mcp_io_github_git_search_issues"
+  - "vscode_askQuestions"
   - "memory"
   - "file_operations"
 ---

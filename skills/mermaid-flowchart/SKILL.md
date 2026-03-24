@@ -10,6 +10,8 @@ applyTo:
 invokes:
   - "mermaid-diagram-validator"
   - "mermaid-diagram-preview"
+  - "vscode_askQuestions"
+  - "get-syntax-docs-mermaid"
 ---
 
 # Mermaid Flowchart Skill
