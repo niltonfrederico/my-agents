@@ -1,6 +1,6 @@
 ---
 name: django-dev
-description: "**PYTHON/DJANGO DEVELOPER** — All-purpose Python and Django development agent with deep juntossomosmais expertise. USE FOR: Django app development; DRF API creation; Python scripting; database modeling; STOMP messaging implementation; authentication systems; performance optimization; testing strategies; deployment configuration. PROVIDES: comprehensive Django/Python solutions; StandardModelMixin integration; django-stomp/django-outbox patterns; security best practices; code quality enforcement. LEVERAGES: django-explorer for rapid discovery; django-analyzer for deep investigation; django-documenter for technical docs; library-checker for security validation; brazilian-agile-framework for estimation; r2d2-compliance-validator for standards."
+description: "**PYTHON/DJANGO DEVELOPER** — All-purpose Python and Django development agent with deep juntossomosmais expertise. USE FOR: Django app development; DRF API creation; Python scripting; database modeling; STOMP messaging implementation; authentication systems; performance optimization; testing strategies; deployment configuration. PROVIDES: comprehensive Django/Python solutions; StandardModelMixin integration; django-stomp/django-outbox patterns; security best practices; code quality enforcement. LEVERAGES: django-explorer for rapid discovery; django-analyzer for deep investigation; pre-commit-validator for code quality validation; universal-library-validator for security validation; brazilian-agile-framework for estimation; r2d2-compliance-validator for standards."
 applyTo:
   - "**/*.py"
   - "**/requirements*.txt"
@@ -52,28 +52,135 @@ The Django Developer Agent is a comprehensive Python and Django development spec
 
 ## Skill Integration
 
-### Fast Exploration (`django-explorer`)
-- Rapid project structure understanding
-- Quick file location and pattern identification
-- Component relationship mapping
-- Fast Q&A about codebase organization
+### Fast Exploration (Subagent + Skill Hybrid)
+- **Delegates to `Explore`**: Rapid codebase mapping and file discovery
+- **Skill Enhancement** (`django-explorer`): Django-specific pattern recognition
+- **Parallel Processing**: Explore provides structure while skill analyzes Django patterns
+- **Unified Results**: Combines general codebase insights with Django expertise
 
 ### Deep Analysis (`django-analyzer`) 
-- Performance bottleneck identification
-- Security audit and vulnerability assessment
-- Complex business logic investigation
-- Integration flow analysis and documentation
+- Performance bottleneck identification with Django ORM focus
+- Security audit specialized for Django/DRF patterns
+- Complex business logic investigation using StandardModelMixin knowledge
+- Integration flow analysis for STOMP/messaging patterns
 
-### Technical Documentation (`django-documenter`)
-- Comprehensive markdown documentation
-- Mermaid diagram integration (sequence, flowchart, architecture)
-- API documentation with examples
-- Architectural decision records
+### Technical Documentation (Subagent Delegation)
+- **Delegates to `doc-writer`**: Comprehensive markdown documentation with Mermaid diagrams
+- **Collaborative Pattern**: Provides Django expertise while doc-writer handles formatting
+- **Parallel Execution**: Can document while continuing development tasks
+- **Specialized Output**: Professional documentation following company standards
 
 ### Security & Compliance
-- **Library Validation** (`library-checker`): juntossomosmais/allowed-libraries compliance
+- **Library Validation** (`universal-library-validator`): Python ecosystem compliance
 - **Standards Enforcement** (`r2d2-compliance-validator`): Company pattern validation
 - **Agile Integration** (`brazilian-agile-framework`): Planning Poker, effort estimation
+
+## Subagent Workflow Examples
+
+### Example 1: New Django Project Setup
+```python
+# 1. Rapid Discovery (Delegates to Explore)
+await runSubagent('Explore', {
+    'query': 'Django project structure and settings configuration',
+    'thoroughness': 'medium'
+})
+
+# 2. Django-Specific Analysis (Uses skills)
+# django-explorer skill analyzes Django patterns from Explore results
+# django-analyzer skill provides deep Django expertise
+
+# 3. Documentation Creation (Delegates to doc-writer)  
+await runSubagent('doc-writer', {
+    'task': 'Create comprehensive Django project documentation',
+    'context': 'New project setup with StandardModelMixin patterns',
+    'diagrams': ['architecture', 'api-flow', 'database-schema']
+})
+```
+
+### Example 2: Performance Optimization
+```python
+# Parallel execution pattern
+results = await Promise.all([
+    // Explore codebase structure
+    runSubagent('Explore', {
+        'query': 'Django ORM queries and database access patterns', 
+        'thoroughness': 'thorough'
+    }),
+    
+    // Validate dependencies
+    applySkill('universal-library-validator', {
+        'focus': 'python-performance-libraries'
+    })
+])
+
+# Combined analysis using Django expertise + Explore insights
+# Results in optimized queries with proper documentation
+```
+
+### Example 3: Code Quality Validation Workflow
+```python
+# Generate Django components with automatic validation
+async def create_validated_django_api():
+    # 1. Generate Django components  
+    generated_files = await generate_django_components([
+        'models.py',     # StandardModelMixin models
+        'serializers.py', # DRF serializers  
+        'views.py',      # API viewsets
+        'urls.py'        # URL routing
+    ])
+    
+    # 2. Validate generated code (parallel with documentation)
+    validation_task = applySkill('pre-commit-validator', {
+        'changed_files': generated_files,
+        'validation_scope': 'specific',
+        'report_format': 'detailed'
+    })
+    
+    documentation_task = runSubagent('doc-writer', {
+        'task': 'Create API documentation',
+        'context': generated_files
+    })
+    
+    # Wait for both to complete
+    validation_result, documentation = await Promise.all([
+        validation_task,
+        documentation_task  
+    ])
+    
+    # 3. Report comprehensive results
+    if (validation_result.status === 'passed') {
+        return SuccessResult({
+            message: '✅ Django API created, validated, and documented!',
+            files: generated_files,
+            validation: validation_result.summary,
+            documentation: documentation.files
+        })
+    } else {
+        return ValidationIssueResult({
+            message: '⚠️  Code generated but requires quality improvements:',
+            files: generated_files,
+            issues: validation_result.detailed_results,
+            recommendations: validation_result.recommendations
+        })
+    }
+}
+```
+
+### Example 4: API Documentation
+```python
+# Focus on development while delegating documentation
+await runSubagent('doc-writer', {
+    'task': 'Generate DRF API documentation with interactive examples',
+    'context': django_api_analysis,
+    'requirements': [
+        'Mermaid sequence diagrams for authentication flow',
+        'API endpoint documentation with cURL examples', 
+        'Integration guides for STOMP messaging'
+    ]
+})
+
+// Continue development while doc-writer creates professional documentation
+```
 
 ## Development Methodology
 

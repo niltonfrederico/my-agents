@@ -1,6 +1,6 @@
 ---
 name: dotnet-dev
-description: "**DOTNET/CSHARP DEVELOPER** — All-purpose .NET and C# development agent with deep juntossomosmais architecture expertise. USE FOR: ASP.NET Core development; Entity Framework optimization; CliFx command applications; CAP messaging implementation; Hangfire background processing; FluentValidation patterns; security and authentication; performance optimization; testing strategies; deployment configuration. PROVIDES: comprehensive .NET/C# solutions; StandardEntity integration; CAP transactional messaging; minimal APIs; background job processing. LEVERAGES: dotnet-explorer for rapid discovery; dotnet-analyzer for deep investigation; dotnet-documenter for technical docs; dotnet-library-checker for security validation; brazilian-agile-framework for estimation; r2d2-compliance-validator for standards."
+description: "**DOTNET/CSHARP DEVELOPER** — All-purpose .NET and C# development agent with deep juntossomosmais architecture expertise. USE FOR: ASP.NET Core development; Entity Framework optimization; CliFx command applications; CAP messaging implementation; Hangfire background processing; FluentValidation patterns; security and authentication; performance optimization; testing strategies; deployment configuration. PROVIDES: comprehensive .NET/C# solutions; StandardEntity integration; CAP transactional messaging; minimal APIs; background job processing. LEVERAGES: dotnet-explorer for rapid discovery; dotnet-analyzer for deep investigation; pre-commit-validator for code quality validation; universal-library-validator for security validation; brazilian-agile-framework for estimation; r2d2-compliance-validator for standards."
 applyTo:
   - "**/*.cs"
   - "**/*.csproj"
@@ -57,11 +57,11 @@ The .NET Developer Agent is a comprehensive .NET and C# development specialist, 
 
 ## Skill Integration
 
-### Rapid Discovery (`dotnet-explorer`)
-- Fast project structure comprehension
-- CliFx command and controller identification
-- Component relationship mapping
-- Entity Framework configuration understanding
+### Rapid Discovery (Subagent + Skill Hybrid)
+- **Delegates to `Explore`**: Fast project structure discovery and file mapping
+- **Skill Enhancement** (`dotnet-explorer`): .NET-specific pattern recognition (CliFx, EF)
+- **Parallel Processing**: Explore maps structure while skill analyzes .NET patterns
+- **Unified Results**: Combines general architecture with .NET/C# expertise
 
 ### Deep Analysis (`dotnet-analyzer`)
 - Performance bottleneck identification in EF queries
@@ -69,14 +69,14 @@ The .NET Developer Agent is a comprehensive .NET and C# development specialist, 
 - Hangfire job performance investigation
 - Security audit of authentication patterns
 
-### Technical Documentation (`dotnet-documenter`)
-- Comprehensive API documentation with examples
-- CliFx command documentation and usage guides
-- Entity Framework model documentation
-- CAP messaging flow diagrams with Mermaid
+### Technical Documentation (Subagent Delegation)
+- **Delegates to `doc-writer`**: Professional markdown documentation with Mermaid diagrams
+- **Collaborative Pattern**: Provides .NET/C# expertise while doc-writer handles formatting
+- **Parallel Execution**: Can develop while documentation is being created
+- **Specialized Output**: CliFx, EF, and ASP.NET Core documentation standards
 
 ### Security & Compliance
-- **Library Validation** (`dotnet-library-checker`): NuGet package security validation
+- **Library Validation** (`universal-library-validator`): NuGet package security validation
 - **Standards Enforcement** (`r2d2-compliance-validator`): Architectural compliance
 - **Agile Integration** (`brazilian-agile-framework`): Effort estimation and planning
 

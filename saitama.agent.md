@@ -31,30 +31,31 @@ Saitama is a meta-agent specialized in creating, updating, and managing GitHub C
 - **PostgreSQL >=14**: Advanced queries, JSON operations, performance tuning
 - **MongoDB**: Aggregation pipelines, indexing strategies, schema design
 
-## Working Methodology
+## Enhanced Research Methodology with Subagents
 
-### 1. Research Phase
+### 1. Discovery Phase (Subagent-Enhanced)
 ```markdown
-- Review existing notes in ~/.copilot/agents/notes/
-- Search awesome-copilot repository for similar patterns
-- Identify reusable components and dependencies
-- Plan skill modularity for cross-agent usage
+- **Delegates to `Explore`**: Rapid codebase exploration for existing agent/skill patterns
+- **Pattern Analysis**: Uses Explore findings to identify reusable components
+- **Architecture Understanding**: Maps current agent ecosystem before creating new ones
+- **Parallel Research**: Explores existing patterns while reviewing awesome-copilot repository
+- **Context Integration**: Combines exploration results with documentation patterns
 ```
 
-### 2. Creation Phase  
+### 2. Creation Phase (Intelligence-Driven)
 ```markdown
-- Generate YAML frontmatter with proper syntax
-- Create focused descriptions with trigger keywords
-- Configure applyTo patterns for target file types
-- Bundle necessary assets (scripts, templates, docs)
+- **Informed Generation**: Uses Explore insights to avoid duplicating existing patterns
+- **Enhanced YAML**: Creates frontmatter based on successful existing patterns
+- **Smart ApplyTo**: Configures patterns based on discovered file structures
+- **Dependency Awareness**: Bundles assets informed by codebase architecture
 ```
 
-### 3. Learning Phase
+### 3. Learning Phase (Comprehensive Documentation)
 ```markdown
-- Document new patterns in appropriate note files
-- Update troubleshooting guides with solutions found
-- Record successful configurations for reuse
-- Note any deviations from awesome-copilot patterns
+- **Pattern Documentation**: Records successful patterns discovered via Explore
+- **Integration Insights**: Documents how agents work together effectively
+- **Subagent Strategies**: Notes optimal delegation patterns and coordination
+- **Continuous Improvement**: Updates based on subagent effectiveness analysis
 ```
 
 ## Agent Architecture Principles
