@@ -113,17 +113,17 @@ copy_agents() {
     print_status "Copying agents..."
 
     # Count agent files
-    agent_count=$(find . -maxdepth 1 -name "*.agent.md" | wc -l)
+    agent_count=$(find agents -maxdepth 1 -name "*.agent.md" | wc -l)
 
     if [ "$agent_count" -eq 0 ]; then
-        print_warning "No agent files (*.agent.md) found in current directory"
+        print_warning "No agent files (*.agent.md) found in agents directory"
     else
         # Copy agent files
-        find . -maxdepth 1 -name "*.agent.md" -exec cp {} "$COPILOT_DIR/agents/" \;
+        find agents -maxdepth 1 -name "*.agent.md" -exec cp {} "$COPILOT_DIR/agents/" \;
         print_success "Copied $agent_count agent(s) to $COPILOT_DIR/agents/"
 
         # List copied agents
-        find . -maxdepth 1 -name "*.agent.md" -exec basename {} \; | while read -r agent; do
+        find agents -maxdepth 1 -name "*.agent.md" -exec basename {} \; | while read -r agent; do
             print_status "  → $agent"
         done
     fi
@@ -152,6 +152,26 @@ copy_skills() {
         done
 
         print_success "Copied $skill_count skill(s) to $COPILOT_DIR/skills/"
+    fi
+}
+
+copy_instructions() {
+    print_status "Copying instructions..."
+
+    # Count instruction files
+    instruction_count=$(find instructions -maxdepth 1 -name "*.md" | wc -l)
+
+    if [ "$instruction_count" -eq 0 ]; then
+        print_warning "No instruction files (*.md) found in instructions directory"
+    else
+        # Copy instruction files
+        find instructions -maxdepth 1 -name "*.md" -exec cp {} "$COPILOT_DIR/instructions/" \;
+        print_success "Copied $instruction_count instruction(s) to $COPILOT_DIR/instructions/"
+
+        # List copied instructions
+        find instructions -maxdepth 1 -name "*.md" -exec basename {} \; | while read -r instruction; do
+            print_status "  → $instruction"
+        done
     fi
 }
 
@@ -186,6 +206,12 @@ verify_installation() {
         print_status "  Skills: $skill_count directories in $COPILOT_DIR/skills/"
     fi
 
+    # Count instructions
+    if [ -d "$COPILOT_DIR/instructions" ]; then
+        instruction_count=$(find "$COPILOT_DIR/instructions" -name "*.md" | wc -l)
+        print_status "  Instructions: $instruction_count files in $COPILOT_DIR/instructions/"
+    fi
+
     # Check notes
     if [ -d "$COPILOT_DIR/notes" ]; then
         note_count=$(find "$COPILOT_DIR/notes" -name "*.md" | wc -l)
@@ -210,7 +236,9 @@ main() {
     update_repository
     copy_agents
     copy_skills
+    copy_instructions
     copy_notes
+    
 
     if [ "$QUICK_MODE" = true ]; then
         print_always "✅ Copilot agents and skills updated!"
