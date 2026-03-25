@@ -238,7 +238,7 @@ main() {
     copy_skills
     copy_instructions
     copy_notes
-    
+
 
     if [ "$QUICK_MODE" = true ]; then
         print_always "✅ Copilot agents and skills updated!"
