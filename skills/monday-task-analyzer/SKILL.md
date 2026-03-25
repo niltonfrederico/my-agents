@@ -10,7 +10,7 @@ applyTo:
   - "**/*analysis*/**"
 invokes:
   - "mcp_com_monday_mo_get_board_info"
-  - "mcp_com_monday_mo_get_updates" 
+  - "mcp_com_monday_mo_get_updates"
   - "mcp_com_monday_mo_board_insights"
   - "mcp_io_github_git_get_file_contents"
   - "vscode_askQuestions"
@@ -33,19 +33,19 @@ invokes:
 def validate_monday_url_and_access(monday_url: str) -> MondayValidationResult:
     """
     Validates Monday.com URL format, accessibility, and extracts task data using MCP.
-    
+
     Args:
         monday_url: Monday.com task URL provided by user
-        
+
     Returns:
         MondayValidationResult: Task data and access validation status
-        
+
     CRITICAL REQUIREMENTS (March 2026 Fixes):
     - MUST use MCP tools (mcp_com_monday_mo_*) for all Monday.com operations
     - MUST STOP if Monday.com data cannot be accessed
     - MUST ask user when board/item information is unclear
     """
-    
+
     # Extract board_id and item_id from URL
     url_components = parse_monday_url(monday_url)
     if not url_components.is_valid:
@@ -55,14 +55,14 @@ def validate_monday_url_and_access(monday_url: str) -> MondayValidationResult:
             message="🚫 STOP: URL do Monday.com inválido.\n\n✅ Formato esperado: https://mycompany.monday.com/boards/BOARD_ID/pulses/ITEM_ID\n\n❓ Por favor, forneça a URL correta do Monday.com.",
             user_action_required=True
         )
-    
+
     # Access Monday.com via MCP to fetch task data
     try:
         # Use MCP tool to get board information
         board_info = mcp_com_monday_mo_get_board_info(
             boardId=url_components.board_id
         )
-        
+
         if not board_info:
             # STOP CONDITION: Board not accessible
             raise SkillExecutionStop(
@@ -70,7 +70,7 @@ def validate_monday_url_and_access(monday_url: str) -> MondayValidationResult:
                 message=f"🚫 STOP: Board {url_components.board_id} não pode ser acessado via Monday.com MCP.\n\n❓ Você tem acesso a este board? Verifique as permissões.",
                 user_action_required=True
             )
-        
+
         # Get item updates to validate item exists
         try:
             item_updates = mcp_com_monday_mo_get_updates(
@@ -81,7 +81,7 @@ def validate_monday_url_and_access(monday_url: str) -> MondayValidationResult:
         except Exception as e:
             # STOP CONDITION: Item not accessible
             raise SkillExecutionStop(
-                reason="ITEM_NOT_ACCESSIBLE", 
+                reason="ITEM_NOT_ACCESSIBLE",
                 message=f"🚫 STOP: Item {url_components.item_id} não pode ser acessado.\n\nErro: {str(e)}\n\n❓ O item existe neste board? Verifique o ID do item.",
                 user_action_required=True
             )
@@ -91,11 +91,11 @@ def validate_monday_url_and_access(monday_url: str) -> MondayValidationResult:
         )
     except MondayAccessError as e:
         return MondayValidationResult(
-            status="BLOCKED", 
+            status="BLOCKED",
             message=f"Erro de acesso ao Monday.com: {str(e)}",
             blocking_issue="access_denied"
         )
-    
+
     return MondayValidationResult(
         status="VALIDATED",
         task_data=task_data,
@@ -104,7 +104,7 @@ def validate_monday_url_and_access(monday_url: str) -> MondayValidationResult:
 
 def fetch_monday_task_data(board_id: str, item_id: str) -> MondayTaskData:
     """Fetches complete task data from Monday.com API."""
-    
+
     # Use Monday.com MCP integration
     task_response = mcp_com_monday_mo_get_board_items_page(
         board_id=board_id,
@@ -113,18 +113,18 @@ def fetch_monday_task_data(board_id: str, item_id: str) -> MondayTaskData:
         includeColumns=True,
         includeUpdates=True
     )
-    
+
     if not task_response.items:
         raise MondayAccessError(f"Task {item_id} não encontrado no board {board_id}")
-    
+
     task_item = task_response.items[0]
-    
+
     return MondayTaskData(
         id=task_item.id,
         name=task_item.name,
         description=task_item.description,
         tema_epico=extract_column_value(task_item.columns, "tema_epico"),
-        contexto=extract_column_value(task_item.columns, "contexto"), 
+        contexto=extract_column_value(task_item.columns, "contexto"),
         valor=extract_column_value(task_item.columns, "valor"),
         criterios_aceite=extract_column_value(task_item.columns, "criterios_aceite"),
         status=extract_column_value(task_item.columns, "status"),
@@ -140,13 +140,13 @@ def fetch_monday_task_data(board_id: str, item_id: str) -> MondayTaskData:
 def confirm_repository_explicitly(task_data: MondayTaskData) -> RepositoryConfirmation:
     """
     Enforces explicit repository confirmation to prevent March 2026 error patterns.
-    
+
     CRITICAL: Never assumes repository from task name or context.
     """
-    
+
     # Check if repository can be inferred from task data
     potential_repositories = extract_potential_repositories(task_data)
-    
+
     if len(potential_repositories) == 1 and is_high_confidence_match(potential_repositories[0], task_data):
         # Single high-confidence match - still require explicit confirmation
         repository_question = {
@@ -168,7 +168,7 @@ def confirm_repository_explicitly(task_data: MondayTaskData) -> RepositoryConfir
     else:
         # Multiple possibilities or no clear match - manual specification required
         repository_question = {
-            "header": "repository_confirmation", 
+            "header": "repository_confirmation",
             "question": "🚫 REPOSITÓRIO DEVE SER CONFIRMADO EXPLICITAMENTE\\n\\n📚 LIÇÃO APRENDIDA (Mar 2026): Assumir repositório gera análise técnica inválida.\\n\\nQual repositório será afetado?",
             "options": [
                 {"label": "juntossomosmais/delfos", "value": "juntossomosmais/delfos"},
@@ -178,10 +178,10 @@ def confirm_repository_explicitly(task_data: MondayTaskData) -> RepositoryConfir
             ],
             "allowFreeformInput": True
         }
-    
+
     user_response = vscode_askQuestions([repository_question])
     repository_name = user_response["repository_confirmation"]
-    
+
     if not repository_name or repository_name == "manual_specify":
         # STOP CONDITION: Repository not confirmed
         raise SkillExecutionStop(
@@ -190,14 +190,14 @@ def confirm_repository_explicitly(task_data: MondayTaskData) -> RepositoryConfir
             user_action_required=True
         )
         )
-    
+
     # Validate repository exists via GitHub API
     repository_validation = validate_repository_exists(repository_name)
     if not repository_validation.exists:
         raise RepositoryNotFound(
             f"Repositório {repository_name} não encontrado ou inacessível via GitHub API"
         )
-    
+
     return RepositoryConfirmation(
         repository_name=repository_name,
         confirmation_method="explicit_user_confirmation",
@@ -212,17 +212,17 @@ def confirm_repository_explicitly(task_data: MondayTaskData) -> RepositoryConfir
 def validate_brazilian_methodology_compliance(task_data: MondayTaskData) -> PlaybookCompliance:
     """
     Validates task against Brazilian Agile methodology requirements.
-    
+
     Uses brazilian-agile-framework skill for standardized validation.
     """
-    
+
     # Delegate to specialized Brazilian Agile Framework skill
     playbook_validation = invoke_skill(
         "brazilian-agile-framework",
         "validate_brazilian_playbook_compliance",
         task_data=task_data
     )
-    
+
     # Check for blocking issues
     blocking_issues = []
     for field_name, validation in playbook_validation.mandatory_results.items():
@@ -232,14 +232,14 @@ def validate_brazilian_methodology_compliance(task_data: MondayTaskData) -> Play
                 "issue": validation.message,
                 "suggestion": validation.suggestion
             })
-    
+
     if blocking_issues:
         return PlaybookCompliance(
             status="BLOCKED",
             blocking_issues=blocking_issues,
             message=generate_playbook_blocking_message(blocking_issues)
         )
-    
+
     return PlaybookCompliance(
         status="COMPLIANT",
         validation_results=playbook_validation,
@@ -248,17 +248,17 @@ def validate_brazilian_methodology_compliance(task_data: MondayTaskData) -> Play
 
 def generate_playbook_blocking_message(blocking_issues: list[dict]) -> str:
     """Generates user-friendly blocking message for playbook failures."""
-    
+
     message = "🚫 VALIDAÇÃO BRASILEIRA FALHOU - Correções Obrigatórias\\n\\n"
     message += "❌ Problemas CRÍTICOS encontrados:\\n"
-    
+
     for issue in blocking_issues:
         message += f"• **{issue['field'].upper()}**: {issue['issue']}\\n"
         if issue.get('suggestion'):
             message += f"  💡 {issue['suggestion']}\\n"
-    
+
     message += "\\n⚠️ Corrija os problemas obrigatórios antes de prosseguir com análise técnica."
-    
+
     return message
 ```
 
@@ -266,42 +266,42 @@ def generate_playbook_blocking_message(blocking_issues: list[dict]) -> str:
 
 ```python
 def discover_repository_architecture(
-    repository_name: str, 
+    repository_name: str,
     task_context: MondayTaskData
-) -> ArchitectureDiscovery: 
+) -> ArchitectureDiscovery:
     """
     Discovers real application architecture using GitHub API investigation.
-    
+
     Delegates to github-repository-investigator for standardized patterns.
     """
-    
+
     # Use GitHub Repository Investigator skill
     investigation_result = invoke_skill(
-        "github-repository-investigator", 
+        "github-repository-investigator",
         "investigate_repository_structure",
         repository_name=repository_name
     )
-    
+
     if investigation_result.status == "ERROR":
         return ArchitectureDiscovery(
             status="BLOCKED",
             message=f"Erro na investigação do repositório: {investigation_result.message}",
             blocking_issue="repository_investigation_failed"
         )
-    
+
     # Validate single-stack constraint
     stack_validation = validate_single_stack_constraint(
         task_context=task_context,
         architecture=investigation_result.architecture
     )
-    
+
     if stack_validation.status == "MIXED_STACK":
         return ArchitectureDiscovery(
-            status="BLOCKED", 
+            status="BLOCKED",
             message="🚫 TASKS MISTAS NÃO PERMITIDAS\\n\\nDivida em tasks separadas por stack tecnológica.",
             blocking_issue="mixed_stack_detected"
         )
-    
+
     return ArchitectureDiscovery(
         status="DISCOVERED",
         repository=repository_name,
@@ -316,28 +316,28 @@ def validate_single_stack_constraint(
     architecture: RepositoryArchitecture
 ) -> StackValidation:
     """Validates that task focuses on single technology stack."""
-    
+
     # Extract stack indicators from task description and context
     task_stack_indicators = extract_stack_indicators_from_task(task_context)
-    
+
     # Determine primary stack from architecture
     architecture_stack = determine_primary_stack(architecture)
-    
+
     # Check for mixed-stack patterns in task description
     mixed_stack_keywords = [
         "frontend e backend", "full-stack", "múltiplas stacks",
         "mobile e web", "api e ui", "mixed technologies"
     ]
-    
+
     task_text = f"{task_context.description} {task_context.contexto}".lower()
-    
+
     if any(keyword in task_text for keyword in mixed_stack_keywords):
         return StackValidation(
             status="MIXED_STACK",
             message="Task indica trabalho em múltiplas stacks",
             mixed_indicators=extract_mixed_indicators(task_text)
         )
-    
+
     return StackValidation(
         status="SINGLE_STACK",
         primary_stack=architecture_stack,
@@ -350,17 +350,17 @@ def validate_single_stack_constraint(
 ```python
 def save_analysis_memory(
     monday_validation: MondayValidationResult,
-    repository_confirmation: RepositoryConfirmation, 
+    repository_confirmation: RepositoryConfirmation,
     playbook_compliance: PlaybookCompliance,
     architecture_discovery: ArchitectureDiscovery
 ) -> MemoryPaths:
     """
     Saves complete analysis results to session and repository memory.
-    
+
     Returns:
         MemoryPaths: Paths to saved memory files for downstream skills
     """
-    
+
     # Session memory: Analysis results for refinement generation
     session_memory = {
         'analysis_timestamp': datetime.now().isoformat(),
@@ -373,21 +373,21 @@ def save_analysis_memory(
         'playbook_compliant': playbook_compliance.status == "COMPLIANT",
         'ready_for_refinement': all_phases_successful(monday_validation, repository_confirmation, playbook_compliance, architecture_discovery)
     }
-    
+
     session_path = "/memories/session/monday_task_analysis_results.md"
     save_memory(session_path, session_memory)
-    
+
     # Repository memory: Architecture investigation for reuse
     if architecture_discovery.status == "DISCOVERED":
         repo_memory_path = invoke_skill(
             "github-repository-investigator",
-            "save_investigation_memory", 
+            "save_investigation_memory",
             repository_name=repository_confirmation.repository_name,
             analysis=architecture_discovery
         )
     else:
         repo_memory_path = None
-    
+
     return MemoryPaths(
         session_analysis=session_path,
         repository_investigation=repo_memory_path
@@ -407,11 +407,11 @@ def save_analysis_memory(
 • Playbook Brasileiro: ✅ Conforme
 
 🏗️ Arquitetura Descoberta:
-• Framework: {framework} 
+• Framework: {framework}
 • Stack: {stack} (single-stack ✅)
 • Confiança: {investigation_confidence}%
 
-📝 Próximo Passo: 
+📝 Próximo Passo:
 Refinement generation com contexto validado
 
 💾 Memória Salva:
@@ -419,7 +419,7 @@ Refinement generation com contexto validado
 • Repository: {repo_memory_path}
 ```
 
-### Blocked Template 
+### Blocked Template
 
 ```yaml
 🚫 ANÁLISE BLOQUEADA - {blocking_reason}:
@@ -446,7 +446,7 @@ Refinement generation com contexto validado
 ## Quality Gates Summary
 
 1. **URL Validation** → Ensures Monday.com accessibility
-2. **Repository Confirmation** → Prevents March 2026 assumption errors 
+2. **Repository Confirmation** → Prevents March 2026 assumption errors
 3. **Brazilian Playbook** → Validates methodology compliance
 4. **Architecture Discovery** → Maps real repository structure
 5. **Single-Stack Validation** → Prevents scope creep

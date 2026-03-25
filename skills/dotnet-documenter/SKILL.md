@@ -35,6 +35,7 @@ This skill creates comprehensive, professional documentation for .NET/C# applica
 ## Core Capabilities
 
 ### Documentation Types
+
 - **Architectural Documentation**: CliFx command structure, Entity Framework design, CAP messaging architecture
 - **API Documentation**: Controller specifications, authentication flows, request/response examples
 - **Business Logic Documentation**: Complex workflows, validation rules, background job processing
@@ -43,6 +44,7 @@ This skill creates comprehensive, professional documentation for .NET/C# applica
 - **Troubleshooting Guides**: Common issues, debugging procedures, error resolution
 
 ### Visual Integration
+
 - **Architecture Diagrams**: CliFx commands, Entity Framework relationships, service interactions
 - **Sequence Diagrams**: API request flows, CAP messaging sequences, background job processing
 - **Flowcharts**: Business logic, validation chains, error handling flows
@@ -50,6 +52,7 @@ This skill creates comprehensive, professional documentation for .NET/C# applica
 - **Technical Diagrams**: Database schemas, message flows, deployment architecture
 
 ### Content Generation
+
 - **Code Examples**: Controller patterns, Entity Framework usage, CAP consumer implementation
 - **Configuration Guides**: appsettings.json setup, connection strings, environment configuration
 - **API Specifications**: Complete endpoint documentation with examples and validation rules
@@ -61,6 +64,7 @@ This skill creates comprehensive, professional documentation for .NET/C# applica
 ### CliFx Command Architecture Documentation
 
 #### ApiCommand Documentation
+
 ````markdown
 # API Command Architecture
 
@@ -81,11 +85,11 @@ public class ApiCommand : ICommand
         {
             // Shared services registration
             services.ConfigureSharedServices(_configuration);
-            
+
             // Hangfire for background jobs
             services.AddHangfire(config => config.UseSqlServerStorage(connectionString));
             services.AddHangfireServer();
-            
+
             // FluentValidation for request validation
             services.AddScoped<IValidator<CreatePersonDto>, CreatePersonValidation>();
         }
@@ -109,17 +113,17 @@ flowchart TD
     C --> D[ApiCommand.Startup]
     D --> E[ConfigureServices]
     D --> F[Configure Pipeline]
-    
+
     E --> G[ConfigureSharedServices]
     E --> H[Add Hangfire]
     E --> I[Add Controllers]
     E --> J[Add FluentValidation]
-    
+
     F --> K[Health Checks]
     F --> L[CORS Policy]
     F --> M[Swagger/OpenAPI]
     F --> N[Controller Routing]
-    
+
     style A fill:#e1f5fe
     style D fill:#e8f5e8
     style G fill:#fff3e0
@@ -127,6 +131,7 @@ flowchart TD
 ````
 
 #### WorkerCommand Documentation
+
 ````markdown
 # Worker Command Architecture
 
@@ -143,10 +148,10 @@ public class WorkerCommand : ICommand
         public void ConfigureServices(IServiceCollection services)
         {
             services.ConfigureSharedServices(_configuration);
-            
+
             // FluentValidation for message DTOs
             services.AddScoped<IValidator<OrderCreatedMessage>, OrderCreatedMessageValidation>();
-            
+
             // Auto-discovered consumer registration
             CurrentEntry?.Register(services);
         }
@@ -162,7 +167,7 @@ sequenceDiagram
     participant AD as Auto-Discovery
     participant ZM as Ziggurat Middleware
     participant CH as Consumer Handler
-    
+
     CLI->>WC: Start with --topic-name
     WC->>AD: Scan assembly for consumers
     AD->>AD: Find IConsumerService<T> implementations
@@ -177,6 +182,7 @@ sequenceDiagram
 ### CAP Messaging Documentation
 
 #### Transactional Outbox Pattern Documentation
+
 ````markdown
 # CAP Messaging - Transactional Outbox Pattern
 
@@ -193,11 +199,11 @@ public class OrderService
     public async Task CreateOrderAsync(CreateOrderDto dto)
     {
         using var transaction = await _context.Database.BeginTransactionAsync();
-        
+
         // Create order in database
         var order = new Order { /* properties */ };
         _context.Orders.Add(order);
-        
+
         // Publish message within same transaction
         await _capBus.PublishAsync("order.created", new OrderCreatedMessage
         {
@@ -206,7 +212,7 @@ public class OrderService
             MessageId = Guid.NewGuid().ToString(),
             MessageGroup = "order-processing"
         });
-        
+
         await _context.SaveChangesAsync();
         await transaction.CommitAsync();
     }
@@ -221,22 +227,23 @@ sequenceDiagram
     participant CAP as CAP Outbox Table
     participant RMQ as RabbitMQ
     participant Consumer as Message Consumer
-    
+
     API->>DB: BEGIN TRANSACTION
     API->>DB: INSERT Order
     API->>CAP: INSERT Message (same transaction)
     API->>DB: COMMIT TRANSACTION
-    
+
     Note over CAP: Background Publisher Process
     CAP->>RMQ: Publish Message
     CAP->>CAP: Mark as Published
-    
+
     RMQ->>Consumer: Deliver Message
     Consumer->>Consumer: Process via Ziggurat Pipeline
 ```
 ````
 
 #### Consumer Pattern Documentation
+
 ````markdown
 # CAP Consumer Implementation Pattern
 
@@ -260,7 +267,7 @@ public class OrderCreatedConsumer : ICapSubscribe
     {
         private readonly AppDbContext _context;
         private readonly ICapPublisher _capBus;
-        
+
         public Handler(AppDbContext context, ICapPublisher capBus)
         {
             _context = context;
@@ -272,13 +279,13 @@ public class OrderCreatedConsumer : ICapSubscribe
             // Idempotency handled by Ziggurat middleware
             var order = await _context.Orders
                 .FirstOrDefaultAsync(o => o.Id == message.OrderId);
-                
+
             if (order == null) return; // Already processed
-            
+
             // Complex business logic
             await ProcessOrderValidation(order);
             await PublishSubsequentEvents(order);
-            
+
             await _context.SaveChangesAsync();
         }
     }
@@ -297,7 +304,7 @@ flowchart TD
     F -->|No| H[Consumer.Handler.ProcessMessageAsync]
     H --> I[Business Logic Execution]
     I --> J[Mark as Processed]
-    
+
     style A fill:#e1f5fe
     style B fill:#fff3e0
     style E fill:#e8f5e8
@@ -308,6 +315,7 @@ flowchart TD
 ### Entity Framework Documentation
 
 #### StandardEntity Pattern Documentation
+
 ````markdown
 # Entity Framework - StandardEntity Pattern
 
@@ -328,7 +336,7 @@ public class Order : StandardEntity
     public string CustomerName { get; set; }
     public decimal Amount { get; set; }
     public OrderStatus Status { get; set; }
-    
+
     // Navigation properties
     public ICollection<OrderItem> Items { get; set; }
 }
@@ -347,12 +355,12 @@ public class AppDbContext : DbContext
             entity.Property(e => e.CustomerName)
                 .IsRequired()
                 .HasMaxLength(100);
-                
+
             entity.HasMany(e => e.Items)
                 .WithOne(e => e.Order)
                 .HasForeignKey(e => e.OrderId);
         });
-        
+
         // CAP message tracking
         modelBuilder.MapMessageTracker();
     }
@@ -371,14 +379,14 @@ flowchart LR
     A[Entity Created] --> B[Set CreatedAt]
     B --> C[Set UpdatedAt]
     C --> D[Save to Database]
-    
+
     E[Entity Modified] --> F[Update UpdatedAt]
     F --> G[Save Changes]
-    
+
     H[Entity Queried] --> I{Include .AsNoTracking()?}
     I -->|Yes| J[No Change Tracking]
     I -->|No| K[Track for Updates]
-    
+
     style A fill:#e8f5e8
     style E fill:#fff3e0
     style H fill:#e1f5fe
@@ -388,6 +396,7 @@ flowchart LR
 ### Hangfire Job Documentation
 
 #### Background Job Pattern Documentation
+
 ````markdown
 # Hangfire Background Jobs
 
@@ -429,7 +438,7 @@ public class OrderProcessingJob
             }
 
             await ProcessOrderLogic(order, options);
-            
+
             // Publish completion event
             await _capBus.PublishAsync("order.processed", new OrderProcessedMessage
             {
@@ -479,11 +488,11 @@ sequenceDiagram
     participant Job as OrderProcessingJob
     participant DB as Database
     participant CAP as CAP Publisher
-    
+
     Client->>Controller: POST /v1/orders/123/process
     Controller->>Hangfire: Enqueue OrderProcessingJob
     Controller-->>Client: 202 Accepted {jobId}
-    
+
     Note over Hangfire: Background Processing
     Hangfire->>Job: Execute job with DI resolution
     Job->>DB: Load order and items
@@ -497,6 +506,7 @@ sequenceDiagram
 ## Advanced Documentation Features
 
 ### CliFx Command Deployment Documentation
+
 ````markdown
 # Deployment Architecture
 
@@ -522,40 +532,40 @@ flowchart TD
     subgraph "Load Balancer"
         LB[NGINX/ALB]
     end
-    
+
     subgraph "API Tier"
         API1[API Instance 1<br/>dotnet app.dll api]
         API2[API Instance 2<br/>dotnet app.dll api]
     end
-    
+
     subgraph "Worker Tier"
         W1[Worker 1<br/>topic: order.created]
         W2[Worker 2<br/>topic: payment.completed]
         W3[Worker 3<br/>topic: notification.send]
     end
-    
+
     subgraph "Infrastructure"
         DB[(SQL Server Database)]
         RMQ[RabbitMQ Message Broker]
         REDIS[(Redis Cache)]
     end
-    
+
     LB --> API1
     LB --> API2
-    
+
     API1 --> DB
     API2 --> DB
     API1 --> RMQ
     API2 --> RMQ
-    
+
     RMQ --> W1
     RMQ --> W2
     RMQ --> W3
-    
+
     W1 --> DB
     W2 --> DB
     W3 --> DB
-    
+
     style API1 fill:#e1f5fe
     style API2 fill:#e1f5fe
     style W1 fill:#e8f5e8
@@ -565,6 +575,7 @@ flowchart TD
 ````
 
 ### Health Check System Documentation
+
 ````markdown
 # Health Check System
 
@@ -617,7 +628,7 @@ public class RabbitMQHealthCheck : IHealthCheck
         catch (Exception ex)
         {
             return new HealthCheckResult(
-                context.Registration.FailureStatus, 
+                context.Registration.FailureStatus,
                 exception: ex,
                 description: "RabbitMQ connection failed");
         }
@@ -629,26 +640,26 @@ public class RabbitMQHealthCheck : IHealthCheck
 ```mermaid
 flowchart TD
     A[Health Check Request] --> B{Check Type}
-    
+
     B -->|liveness| C[Basic Application Status]
     B -->|readiness| D[Critical Dependencies]
     B -->|integrations| E[All Dependencies]
-    
+
     D --> F[SQL Server Check]
     E --> F
     E --> G[RabbitMQ Check]
     E --> H[External API Check]
-    
+
     F --> I{All Critical Healthy?}
     G --> J{All Integration Healthy?}
     H --> J
-    
+
     C --> K[200 OK - Healthy]
     I -->|Yes| K
     I -->|No| L[503 Service Unavailable]
     J -->|Yes| K
     J -->|No| L
-    
+
     style A fill:#e1f5fe
     style K fill:#e8f5e8
     style L fill:#ffebee
@@ -658,6 +669,7 @@ flowchart TD
 ## Documentation Templates
 
 ### API Controller Template
+
 ````markdown
 # [Controller Name] API Documentation
 
@@ -704,7 +716,7 @@ sequenceDiagram
     participant Validator as FluentValidation
     participant DbContext as AppDbContext
     participant CAP as CAP Publisher
-    
+
     Client->>Controller: POST /v1/[controller]
     Controller->>Validator: Validate Create[Resource]Dto
     Validator-->>Controller: Validation Result
@@ -730,6 +742,7 @@ sequenceDiagram
 ````
 
 ### CAP Consumer Template
+
 ````markdown
 # [Event] Consumer Documentation
 
@@ -748,7 +761,7 @@ public class [Event]Message : IMessage
     public string EntityId { get; set; }
     public DateTime EventTime { get; set; }
     public [EventData] Data { get; set; }
-    
+
     // Required by IMessage
     public string MessageId { get; set; }
     public string MessageGroup { get; set; }
@@ -763,30 +776,30 @@ public class Handler : IConsumerService<[Event]Message>
 {
     private readonly AppDbContext _context;
     private readonly ICapPublisher _capBus;
-    
+
     public async Task ProcessMessageAsync([Event]Message message)
     {
         // Idempotency automatically handled by Ziggurat
-        
+
         // Load related entities
         var entity = await _context.[Entities]
             .FirstOrDefaultAsync(e => e.Id == message.EntityId);
-            
+
         if (entity == null)
         {
             _logger.LogWarning("Entity {EntityId} not found", message.EntityId);
             return;
         }
-        
+
         // Process business logic
         await ProcessBusinessRule(entity, message.Data);
-        
+
         // Publish subsequent events if needed
         await _capBus.PublishAsync("subsequent.event", new SubsequentEventMessage
         {
             // Event data
         });
-        
+
         await _context.SaveChangesAsync();
     }
 }
@@ -807,7 +820,7 @@ flowchart TD
     J --> K[Publish Events]
     K --> L[Save Changes]
     L --> M[Mark Processed]
-    
+
     style A fill:#e1f5fe
     style H fill:#e8f5e8
     style M fill:#e8f5e8
@@ -817,6 +830,7 @@ flowchart TD
 ## Integration with juntossomosmais Infrastructure
 
 ### Documentation Standards
+
 - **Consistent Structure**: Hierarchical organization with standardized section headers
 - **Code Examples**: Real implementation patterns from dotnet-template
 - **Visual Diagrams**: Mermaid integration for complex flow documentation
@@ -824,6 +838,7 @@ flowchart TD
 - **Deployment Guidance**: CliFx command deployment and scaling strategies
 
 ### Quality Assurance
+
 - **Technical Accuracy**: Code examples validated against working implementations
 - **Visual Clarity**: Mermaid diagrams for complex architectural concepts
 - **Practical Examples**: Real-world scenarios and usage patterns

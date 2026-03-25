@@ -28,6 +28,7 @@ This skill provides complete Mermaid diagramming expertise, combining flowchart,
 ## CRITICAL REQUIREMENTS (March 2026 Anti-Hallucination)
 
 ### STOP Conditions (MANDATORY)
+
 ```python
 # When diagram requirements are unclear, STOP and ask user
 if diagram_requirements_unclear():
@@ -56,13 +57,14 @@ if technical_context_missing():
 # When Mermaid syntax validation fails, STOP and fix
 if mermaid_syntax_invalid():
     raise SkillExecutionStop(
-        reason="MERMAID_SYNTAX_ERROR", 
+        reason="MERMAID_SYNTAX_ERROR",
         message="🚫 STOP: Sintaxe Mermaid inválida detectada.\n\n❓ Revisar sintaxe ou simplificar complexidade do diagrama?",
         user_action_required=True
     )
 ```
 
 ### Ask-User Pattern (MANDATORY)
+
 - **ALWAYS clarify diagram type** when multiple options possible
 - **ALWAYS ask for technical context** when system details unclear
 - **ALWAYS validate syntax** before finalizing diagrams via mermaid-diagram-validator
@@ -70,6 +72,7 @@ if mermaid_syntax_invalid():
 ## Core Diagram Types
 
 ### Flowchart Excellence
+
 - **System Architecture**: Service interactions, component relationships
 - **Process Flows**: Algorithm logic, deployment pipelines, CI/CD workflows
 - **Decision Trees**: Conditional logic, branching scenarios, error handling
@@ -77,6 +80,7 @@ if mermaid_syntax_invalid():
 - **Database Operations**: CRUD flows, transaction sequences, optimization paths
 
 ### Sequence Diagram Mastery
+
 - **API Communications**: REST/GraphQL interactions, microservice communications
 - **Authentication Flows**: OAuth, JWT, multi-factor authentication sequences
 - **Database Transactions**: Complex query sequences, transaction management
@@ -84,6 +88,7 @@ if mermaid_syntax_invalid():
 - **Error Scenarios**: Exception handling, retry mechanisms, fallback procedures
 
 ### Mindmap Organization
+
 - **Technology Stacks**: Framework selection, tool evaluation hierarchies
 - **System Architecture**: Component hierarchies, dependency relationships
 - **Feature Planning**: Epic → Story → Task decomposition structures
@@ -91,6 +96,7 @@ if mermaid_syntax_invalid():
 - **Troubleshooting**: Problem → Diagnosis → Solution hierarchies
 
 ### Advanced Diagram Types
+
 - **Git Graphs**: Branch strategies, merge patterns, release workflows
 - **Gantt Charts**: Project timelines, milestone tracking, resource planning
 - **Entity Relationship**: Database schema, relationship modeling
@@ -114,16 +120,16 @@ flowchart TD
     H --> I{Success?}
     I -->|Yes| J[Return 200]
     I -->|No| K[Return 500]
-    
+
     %% Styling and theming
     classDef success fill:#d4edda,stroke:#28a745
     classDef error fill:#f8d7da,stroke:#dc3545
     classDef process fill:#cce5ff,stroke:#007bff
-    
+
     class J success
     class D,G,K error
     class C,F,H process
-    
+
     %% Clickable elements
     click A "https://api-docs.example.com/auth" "Authentication Documentation"
     click F "https://business-logic.example.com" "Business Logic Guide"
@@ -138,21 +144,21 @@ sequenceDiagram
     participant S as Service
     participant D as Database
     participant Q as Message Queue
-    
+
     Note over C,Q: Authentication & Processing Flow
-    
+
     C->>+A: POST /api/auth
     A->>+S: Validate Credentials
     S->>+D: Query User
     D-->>-S: User Data
     S-->>-A: JWT Token
     A-->>-C: 200 OK + Token
-    
+
     rect rgb(240, 248, 255)
         Note over C,Q: Authenticated Request Processing
         C->>+A: GET /api/data (Bearer Token)
         A->>A: Validate JWT
-        
+
         alt Token Valid
             A->>+S: Process Request
             S->>+D: Query Data
@@ -164,7 +170,7 @@ sequenceDiagram
             A-->>C: 401 Unauthorized
         end
     end
-    
+
     Note over Q: Async processing continues
     Q->>Q: Process Audit Event
 ```
@@ -231,51 +237,51 @@ flowchart LR
         MOB[Mobile App]  
         API_CLI[API Client]
     end
-    
+
     subgraph "API Gateway"
         GW[Gateway/LB]
         AUTH[Auth Service]
         RATE[Rate Limiting]
     end
-    
+
     subgraph "Microservices"
         USER[User Service]
-        PROD[Product Service] 
+        PROD[Product Service]
         ORDER[Order Service]
         PAY[Payment Service]
     end
-    
+
     subgraph "Data Layer"
         SQL[(SQL Database)]
         NOSQL[(NoSQL Store)]
         CACHE[(Redis Cache)]
         QUEUE[Message Queue]
     end
-    
+
     WEB --> GW
     MOB --> GW
     API_CLI --> GW
-    
+
     GW --> AUTH
     GW --> RATE
     GW --> USER
     GW --> PROD
     GW --> ORDER
-    
+
     USER --> SQL
     PROD --> NOSQL
     ORDER --> SQL
     PAY --> QUEUE
-    
+
     USER -.-> CACHE
     PROD -.-> CACHE
-    
+
     %% Styling
     classDef client fill:#e1f5fe,stroke:#0277bd
     classDef gateway fill:#f3e5f5,stroke:#6a1b9a  
     classDef service fill:#e8f5e8,stroke:#2e7d32
     classDef data fill:#fff3e0,stroke:#ef6c00
-    
+
     class WEB,MOB,API_CLI client
     class GW,AUTH,RATE gateway
     class USER,PROD,ORDER,PAY service
@@ -291,40 +297,40 @@ sequenceDiagram
     participant DB as Database
     participant APP as Application
     participant MON as Monitoring
-    
+
     Note over Dev,MON: Database Migration Process
-    
+
     Dev->>CLI: Create Migration
     CLI->>DB: Analyze Current Schema
     DB-->>CLI: Schema Information
     CLI->>CLI: Generate Migration Script
     CLI-->>Dev: Migration File Created
-    
+
     Dev->>Dev: Review Migration
     Dev->>CLI: Run Migration (Dry Run)
     CLI->>DB: Simulate Changes
     DB-->>CLI: Validation Results
     CLI-->>Dev: Preview Output
-    
+
     rect rgb(255, 248, 220)
         Note over Dev,MON: Production Deployment
         Dev->>CLI: Deploy Migration
         CLI->>APP: Stop Application
         CLI->>DB: Create Backup
         DB-->>CLI: Backup Complete
-        
+
         CLI->>DB: Execute Migration
         DB-->>CLI: Migration Success
         CLI->>DB: Verify Schema
         DB-->>CLI: Verification OK
-        
+
         CLI->>APP: Start Application
         APP->>DB: Test Connections
         DB-->>APP: Connections OK
-        
+
         CLI->>MON: Send Success Event
     end
-    
+
     Note over MON: Post-deployment monitoring
 ```
 
@@ -396,7 +402,7 @@ mindmap
 class APIEndpointView(APIView):
     """
     API endpoint with comprehensive Mermaid documentation.
-    
+
     Flow Diagram:
     ```mermaid
     flowchart TD
@@ -409,7 +415,7 @@ class APIEndpointView(APIView):
         G --> H[Return Response]
     ```
     """
-    
+
     def post(self, request):
         # Implementation with documented flow
         pass
@@ -420,7 +426,7 @@ class APIEndpointView(APIView):
 ```csharp
 /// <summary>
 /// Order processing command with sequence diagram documentation.
-/// 
+///
 /// Sequence Diagram:
 /// ```mermaid
 /// sequenceDiagram
@@ -428,7 +434,7 @@ class APIEndpointView(APIView):
 ///     participant A as API
 ///     participant S as OrderService  
 ///     participant D as Database
-///     
+///  
 ///     C->>A: CreateOrder Request
 ///     A->>S: ProcessOrder Command
 ///     S->>D: Save Order
@@ -501,6 +507,7 @@ mindmap
 ## Best Practices
 
 ### Diagram Organization
+
 - **Single Responsibility**: Each diagram focuses on one concept or flow
 - **Clear Naming**: Participants and nodes have descriptive names
 - **Consistent Styling**: Use consistent colors and themes across projects
@@ -508,12 +515,14 @@ mindmap
 - **Comments**: Use notes and comments to clarify complex interactions
 
 ### Technical Integration
+
 - **Code Documentation**: Embed diagrams in code comments and docstrings
 - **README Integration**: Use diagrams to explain project structure and flows
 - **API Documentation**: Include sequence diagrams for API interaction patterns
 - **Architecture Documentation**: Maintain up-to-date system architecture diagrams
 
 ### Advanced Features
+
 - **Subgraphs**: Group related components for complex systems
 - **Styling**: Apply consistent visual themes across diagram types
 - **Linking**: Connect diagrams to external documentation and resources
@@ -548,6 +557,7 @@ mindmap
 ## Validation & Testing
 
 All diagrams created by this skill are automatically validated using:
+
 - **Syntax Validation**: `mermaid-diagram-validator` for syntax correctness
 - **Visual Preview**: `mermaid-diagram-preview` for rendering verification
 - **Integration Testing**: Verification in target documentation systems
@@ -565,36 +575,36 @@ graph TB
         EXT2[Email Service]
         EXT3[Analytics Platform]
     end
-    
+
     subgraph "Load Balancer Layer"
         LB[Load Balancer]
     end
-    
+
     subgraph "API Gateway Layer"
         GW1[API Gateway 1]
         GW2[API Gateway 2]
     end
-    
+
     subgraph "Application Layer"
         APP1[App Server 1]
         APP2[App Server 2]
         APP3[App Server 3]
     end
-    
+
     subgraph "Service Layer"
         SVC1[User Service]
         SVC2[Order Service]
         SVC3[Payment Service]
         SVC4[Notification Service]
     end
-    
+
     subgraph "Data Layer"
         DB1[(Primary DB)]
         DB2[(Read Replica)]
         CACHE[(Redis Cache)]
         QUEUE[Message Queue]
     end
-    
+
     Users --> LB
     LB --> GW1
     LB --> GW2
@@ -602,30 +612,30 @@ graph TB
     GW1 --> APP2
     GW2 --> APP2
     GW2 --> APP3
-    
+
     APP1 --> SVC1
     APP2 --> SVC2
     APP3 --> SVC3
     APP1 --> SVC4
-    
+
     SVC1 --> DB1
     SVC2 --> DB1
     SVC1 --> DB2
     SVC2 --> DB2
     SVC1 --> CACHE
     SVC2 --> CACHE
-    
+
     SVC3 --> EXT1
     SVC4 --> EXT2
     SVC4 --> QUEUE
-    
+
     QUEUE --> EXT3
-    
+
     classDef external fill:#ffebee,stroke:#c62828
     classDef infrastructure fill:#e8f5e8,stroke:#2e7d32
     classDef application fill:#e3f2fd,stroke:#1565c0
     classDef data fill:#fff8e1,stroke:#ef6c00
-    
+
     class EXT1,EXT2,EXT3 external
     class LB,GW1,GW2 infrastructure
     class APP1,APP2,APP3,SVC1,SVC2,SVC3,SVC4 application

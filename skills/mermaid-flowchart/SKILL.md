@@ -4,7 +4,7 @@ name: "mermaid-flowchart"
 description: "**MERMAID FLOWCHART EXPERT** — Specialized skill for creating tech-focused Mermaid flowcharts and process diagrams. USE FOR: system architecture diagrams; code flow visualization; decision trees; deployment workflows; CI/CD pipelines; user journey mapping; algorithm visualization; microservices interactions; error handling flows; database relationships. CREATES: syntactically correct Mermaid flowchart code with proper validation; interactive diagrams with clickable elements; styled diagrams with colors and themes; complex multi-directional flows; subgraphs for modular design. TECH FOCUS: Always considers technical contexts like APIs, databases, services, error states, authentication flows, and system dependencies."
 applyTo:
   - "**/*.md"
-  - "**/*.mmd" 
+  - "**/*.mmd"
   - "**/README.md"
   - "**/docs/**/*"
 invokes:
@@ -25,6 +25,7 @@ This skill specializes in creating Mermaid flowcharts specifically for technical
 ## Core Capabilities
 
 ### Flowchart Types Supported
+
 - **System Architecture**: Service interactions, component relationships
 - **Code Flow**: Algorithm logic, function call sequences  
 - **Decision Trees**: Conditional logic, branching scenarios
@@ -36,6 +37,7 @@ This skill specializes in creating Mermaid flowcharts specifically for technical
 ### Mermaid Syntax Mastery
 
 #### Basic Structure
+
 ```mermaid
 flowchart TD
     A[Start] --> B{Decision?}
@@ -46,12 +48,14 @@ flowchart TD
 ```
 
 #### Direction Options
+
 - `TD` / `TB` - Top to Bottom
 - `BT` - Bottom to Top  
 - `LR` - Left to Right
 - `RL` - Right to Left
 
 #### Node Shapes & Meanings
+
 ```mermaid
 flowchart LR
     A[Rectangle - Process/Action]
@@ -65,6 +69,7 @@ flowchart LR
 ```
 
 #### Advanced Features
+
 - **Subgraphs**: Group related components
 - **Styling**: Colors, themes, custom CSS
 - **Links**: Clickable elements with URLs
@@ -74,6 +79,7 @@ flowchart LR
 ### Tech-Specific Patterns
 
 #### API Request Flow
+
 ```mermaid
 flowchart TD
     Client[Client App] --> API[API Gateway]
@@ -87,18 +93,19 @@ flowchart TD
 ```
 
 #### CI/CD Pipeline
+
 ```mermaid
 flowchart LR
     subgraph "Development"
         Code[Code Commit] --> PR[Pull Request]
     end
-    
+
     subgraph "CI Pipeline"
         PR --> Tests[Run Tests]
         Tests --> Build[Build Artifact]
         Build --> Security[Security Scan]
     end
-    
+
     subgraph "Deployment"
         Security --> Staging[Deploy Staging]
         Staging --> Approve{Manual Approval}
@@ -108,6 +115,7 @@ flowchart LR
 ```
 
 #### Error Handling Flow
+
 ```mermaid
 flowchart TD
     Request[API Request] --> Validate{Valid Input?}
@@ -124,6 +132,7 @@ flowchart TD
 ## Best Practices
 
 ### Technical Accuracy
+
 - Use standard HTTP status codes in error flows
 - Include proper authentication/authorization steps
 - Show database transactions and rollback scenarios
@@ -131,6 +140,7 @@ flowchart TD
 - Include monitoring and logging touchpoints
 
 ### Visual Design
+
 - Group related processes in subgraphs
 - Use consistent color schemes for similar components
 - Add meaningful labels to decision points
@@ -138,6 +148,7 @@ flowchart TD
 - Show both happy path and error scenarios
 
 ### Documentation Integration
+
 - Always validate syntax before sharing
 - Include diagram descriptions in surrounding text
 - Link to related technical documentation
@@ -147,30 +158,31 @@ flowchart TD
 ## Common Use Cases
 
 ### 1. Microservices Architecture
+
 ```mermaid
 flowchart TB
     subgraph "Client Layer"
         Web[Web App]
         Mobile[Mobile App]
     end
-    
+
     subgraph "API Gateway"
         Gateway[Kong/Nginx]
     end
-    
+
     subgraph "Services"
         Auth[Auth Service]
-        User[User Service] 
+        User[User Service]
         Order[Order Service]
         Payment[Payment Service]
     end
-    
+
     subgraph "Data Layer"
         UserDB[(User DB)]
         OrderDB[(Order DB)]
         Cache[(Redis Cache)]
     end
-    
+
     Web --> Gateway
     Mobile --> Gateway
     Gateway --> Auth
@@ -183,6 +195,7 @@ flowchart TB
 ```
 
 ### 2. Authentication Flow
+
 ```mermaid
 flowchart TD
     User[User Login] --> Credentials{Valid Credentials?}
@@ -199,6 +212,7 @@ flowchart TD
 ```
 
 ### 3. Database Migration Process
+
 ```mermaid
 flowchart LR
     Start[Migration Start] --> Backup[Create Backup]
@@ -218,6 +232,7 @@ flowchart LR
 ## Validation & Preview
 
 Always use the built-in Mermaid tools:
+
 1. **Validate syntax**: Ensure error-free diagrams
 2. **Preview rendering**: Check visual appearance  
 3. **Test interactivity**: Verify clickable elements

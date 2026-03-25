@@ -35,6 +35,7 @@ This skill provides fast exploration capabilities for .NET/C# applications, quic
 ## Core Capabilities
 
 ### Project Structure Analysis
+
 - **CliFx Command Discovery**: Identify ApiCommand, WorkerCommand, and SeedCommand patterns
 - **Controller Organization**: ASP.NET Core API controllers with versioning (V1, V2)
 - **Entity Framework Models**: StandardEntity inheritance patterns and database contexts
@@ -43,6 +44,7 @@ This skill provides fast exploration capabilities for .NET/C# applications, quic
 - **Validation Structure**: FluentValidation validator organization
 
 ### Component Identification
+
 - **API Endpoints**: Controller actions, routing patterns, and versioning
 - **Database Models**: Entity relationships, migrations, and database contexts
 - **Message Consumers**: CAP/RabbitMQ consumer patterns and message DTOs
@@ -51,6 +53,7 @@ This skill provides fast exploration capabilities for .NET/C# applications, quic
 - **Configuration**: appsettings.json structure and environment-specific configs
 
 ### Quick Analysis
+
 - **Dependencies**: Project references, NuGet packages, and framework versions
 - **Architecture Patterns**: Command pattern usage, messaging flows, job processing
 - **Database Strategy**: SQL Server vs MongoDB usage, connection string patterns
@@ -62,6 +65,7 @@ This skill provides fast exploration capabilities for .NET/C# applications, quic
 ### CliFx Command Structure Discovery
 
 #### ApiCommand Pattern (API Host)
+
 ```csharp
 [Command("api")]
 public class ApiCommand : ICommand
@@ -87,6 +91,7 @@ public class ApiCommand : ICommand
 ```
 
 #### WorkerCommand Pattern (Consumer Host)
+
 ```csharp
 [Command("worker")]
 public class WorkerCommand : ICommand
@@ -104,6 +109,7 @@ public class WorkerCommand : ICommand
 ```
 
 ### StandardEntity Pattern Discovery
+
 ```csharp
 public abstract class StandardEntity
 {
@@ -124,6 +130,7 @@ public class TodoItem : StandardEntity
 ### CAP Messaging Pattern Discovery
 
 #### Consumer Pattern
+
 ```csharp
 public class OrderCreatedConsumer : ICapSubscribe
 {
@@ -139,13 +146,14 @@ public class OrderCreatedConsumer : ICapSubscribe
     public class Handler : IConsumerService<OrderCreatedMessage>
     {
         private readonly AppDbContext _context;
-        
+
         // Business logic implementation
     }
 }
 ```
 
 #### Message DTO Pattern
+
 ```csharp
 public class OrderCreatedMessage : IMessage
 {
@@ -159,6 +167,7 @@ public class OrderCreatedMessage : IMessage
 ### Entity Framework Context Discovery
 
 #### AppDbContext Pattern
+
 ```csharp
 public class AppDbContext : DbContext
 {
@@ -173,7 +182,7 @@ public class AppDbContext : DbContext
             entity.Property(p => p.Name).IsRequired().HasMaxLength(100);
             entity.HasIndex(p => p.Name).IsUnique();
         });
-        
+
         // CAP message tracking
         modelBuilder.MapMessageTracker();
     }
@@ -187,6 +196,7 @@ public class AppDbContext : DbContext
 ```
 
 ### Hangfire Job Pattern Discovery
+
 ```csharp
 namespace DotNetTemplate.Jobs;
 
@@ -206,6 +216,7 @@ public class TodoItemCompletionJob
 ```
 
 ### FluentValidation Pattern Discovery
+
 ```csharp
 public class CreatePersonValidation : AbstractValidator<CreatePersonDto>
 {
@@ -219,6 +230,7 @@ public class CreatePersonValidation : AbstractValidator<CreatePersonDto>
 ```
 
 ### Health Check Pattern Discovery
+
 ```csharp
 public class RabbitMQHealthCheck : IHealthCheck
 {
@@ -251,6 +263,7 @@ public class RabbitMQHealthCheck : IHealthCheck
 ## Fast Discovery Workflows
 
 ### Project Structure Exploration
+
 ```
 1. Identify CliFx commands in src/Commands/
 2. Locate API controllers in src/Controllers/V{n}/
@@ -261,6 +274,7 @@ public class RabbitMQHealthCheck : IHealthCheck
 ```
 
 ### Component Relationship Mapping
+
 ```
 1. Map StandardEntity inheritance hierarchy
 2. Identify Entity Framework relationships and foreign keys
@@ -270,6 +284,7 @@ public class RabbitMQHealthCheck : IHealthCheck
 ```
 
 ### Configuration Discovery
+
 ```
 1. Analyze appsettings.json for connection strings and configuration
 2. Identify environment-specific settings and Docker configurations
@@ -281,24 +296,28 @@ public class RabbitMQHealthCheck : IHealthCheck
 ## Quick Analysis Patterns
 
 ### Database Strategy Identification
+
 - **SQL Server Pattern**: Entity Framework Core with SqlServer provider
 - **MongoDB Pattern**: MongoDB.Driver with document-based models
 - **Connection String Analysis**: Database provider detection and configuration
 - **Migration Strategy**: EF Core migrations vs MongoDB schema-less approach
 
 ### Messaging Architecture Discovery
+
 - **CAP + RabbitMQ**: Transactional outbox with SQL Server storage
 - **Topic/Group Naming**: `[source].[domain].[event]` / `[app].[domain].[event]`
 - **Consumer Auto-Discovery**: Ziggurat middleware and registration patterns
 - **Message Validation**: FluentValidation integration with CAP pipeline
 
 ### Background Processing Analysis
+
 - **Hangfire Integration**: SQL Server storage with dashboard configuration
 - **Job Patterns**: Single-responsibility ExecuteAsync methods
 - **Enqueueing Strategy**: Typed Enqueue<T> patterns in controllers
 - **Job Parameters**: Serializable primitive types and DTOs only
 
 ### API Architecture Overview
+
 - **Versioning Strategy**: V1, V2 namespaces and route patterns
 - **Validation Pipeline**: FluentValidation with ModelValidationActionFilter
 - **Response Patterns**: IActionResult with explicit status codes
@@ -307,18 +326,21 @@ public class RabbitMQHealthCheck : IHealthCheck
 ## Integration with Deeper Analysis
 
 ### Handoff to dotnet-analyzer
+
 - **Complex Patterns**: Multi-step transaction flows, advanced Entity Framework queries
 - **Performance Issues**: N+1 queries, bulk operations, memory usage
 - **Security Analysis**: Authentication flows, authorization boundaries
 - **Integration Patterns**: External API integrations, complex messaging flows
 
 ### Context for Documentation
+
 - **Architecture Overview**: High-level system component relationships
 - **API Documentation**: Controller action patterns and endpoint organization
 - **Message Flow Documentation**: CAP consumer relationships and data flows
 - **Deployment Architecture**: CliFx command deployment and scaling patterns
 
 ### Support for Library Validation
+
 - **Package Discovery**: NuGet package usage and version analysis
 - **Framework Identification**: .NET version, AspNetCore version detection
 - **Dependency Analysis**: Project reference chains and package conflicts

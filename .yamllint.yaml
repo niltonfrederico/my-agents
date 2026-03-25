@@ -1,0 +1,87 @@
+# YAML linting configuration for GitHub Copilot Agents & Skills repository
+# Handles YAML frontmatter in .agent.md files and standalone YAML files
+
+extends: default
+
+# Rule customizations
+rules:
+  # Braces - object formatting
+  braces:
+    min-spaces-inside: 0
+    max-spaces-inside: 1
+    min-spaces-inside-empty: 0
+    max-spaces-inside-empty: 0
+
+  # Brackets - array formatting
+  brackets:
+    min-spaces-inside: 0
+    max-spaces-inside: 1
+    min-spaces-inside-empty: 0
+    max-spaces-inside-empty: 0
+
+  # Colons - key-value separator
+  colons:
+    max-spaces-before: 0
+    max-spaces-after: 1
+
+  # Commas - list separator
+  commas:
+    max-spaces-before: 0
+    min-spaces-after: 1
+    max-spaces-after: 1
+
+  # Comments
+  comments:
+    min-spaces-from-content: 2
+    require-starting-space: true
+
+  # Empty lines
+  empty-lines:
+    max: 2
+    max-start: 0
+    max-end: 1
+
+  # Hyphens - list items
+  hyphens:
+    max-spaces-after: 1
+
+  # Indentation
+  indentation:
+    spaces: 2
+    indent-sequences: true
+    check-multi-line-strings: false
+
+  # Key duplicates
+  key-duplicates: enable
+
+  # Key ordering (disabled for flexibility)
+  key-ordering: disable
+
+  # Line length
+  line-length:
+    max: 120
+    allow-non-breakable-words: true
+    allow-non-breakable-inline-mappings: true
+
+  # New line at end of file
+  new-line-at-end-of-file: enable
+
+  # Octal values
+  octal-values: enable
+
+  # Quoted strings (relaxed for agent descriptions)
+  quoted-strings:
+    quote-type: any
+    required: false
+
+  # Trailing spaces
+  trailing-spaces: enable
+
+  # Truthy values (relaxed for common usage)
+  truthy:
+    allowed-values: ["true", "false", "yes", "no", "on", "off"]
+    check-keys: false
+
+# Ignore patterns for markdown files with frontmatter
+ignore: |
+  *.md

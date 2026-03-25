@@ -5,6 +5,7 @@ This template demonstrates how to use the HAR analysis skill for comprehensive n
 ## Quick Analysis Commands
 
 ### Performance Analysis
+
 ```
 "Analyze this HAR file for performance bottlenecks"
 "What's causing slow load times in this HAR?"
@@ -13,6 +14,7 @@ This template demonstrates how to use the HAR analysis skill for comprehensive n
 ```
 
 ### API Debugging  
+
 ```
 "Find all failed API requests in this HAR"
 "Show me the authentication flow sequence"
@@ -21,14 +23,16 @@ This template demonstrates how to use the HAR analysis skill for comprehensive n
 ```
 
 ### Security Audit
+
 ```
-"Check this HAR file for security issues" 
+"Check this HAR file for security issues"
 "Are there any insecure cookies or headers?"
 "Find mixed content violations"
 "Generate a security findings mindmap"
 ```
 
 ### Mermaid Generation
+
 ```
 "Create a sequence diagram from the main API calls"
 "Generate a flowchart showing the error handling patterns"
@@ -38,6 +42,7 @@ This template demonstrates how to use the HAR analysis skill for comprehensive n
 ## Example Analysis Output
 
 ### Performance Summary
+
 - **Total Requests**: 127 requests
 - **Total Size**: 8.9 MB  
 - **Load Time**: 3.2 seconds
@@ -45,6 +50,7 @@ This template demonstrates how to use the HAR analysis skill for comprehensive n
 - **Critical Path Length**: 4 resources
 
 ### Top Issues Found
+
 1. **Render-blocking CSS**: 850ms delay (3 files)
 2. **Oversized Images**: 12 images >1MB without compression  
 3. **Third-party Scripts**: Google Analytics adding 800ms
@@ -52,6 +58,7 @@ This template demonstrates how to use the HAR analysis skill for comprehensive n
 5. **Mixed Content**: 5 HTTP resources on HTTPS page
 
 ### Generated Mermaid Diagrams
+
 - Sequence diagram of authentication flow
 - Performance bottleneck mindmap
 - Error handling flowchart
@@ -82,7 +89,7 @@ This template demonstrates how to use the HAR analysis skill for comprehensive n
           "method": "GET",
           "url": "https://api.example.com/user",
           "headers": [...],
-          "cookies": [...] 
+          "cookies": [...]
         },
         "response": {
           "status": 200,
@@ -107,6 +114,7 @@ This template demonstrates how to use the HAR analysis skill for comprehensive n
 ## Common Analysis Workflows
 
 ### 1. Initial Performance Triage
+
 1. Load HAR file and validate structure
 2. Calculate basic metrics (total time, requests, size)
 3. Identify top 5 slowest requests
@@ -114,6 +122,7 @@ This template demonstrates how to use the HAR analysis skill for comprehensive n
 5. Create recommendations list
 
 ### 2. API Error Investigation  
+
 1. Filter for 4xx/5xx status codes
 2. Group errors by endpoint and type
 3. Analyze error timing patterns
@@ -121,6 +130,7 @@ This template demonstrates how to use the HAR analysis skill for comprehensive n
 5. Create error handling flowchart
 
 ### 3. Security Review
+
 1. Check HTTPS usage and mixed content
 2. Analyze security headers (HSTS, CSP, etc.)
 3. Review cookie security attributes
@@ -128,6 +138,7 @@ This template demonstrates how to use the HAR analysis skill for comprehensive n
 5. Generate security findings mindmap
 
 ### 4. Third-Party Service Audit
+
 1. Identify all external domains
 2. Calculate performance impact per service
 3. Check for privacy/tracking concerns
@@ -137,6 +148,7 @@ This template demonstrates how to use the HAR analysis skill for comprehensive n
 ## Best Practices
 
 ### HAR File Collection
+
 - Clear cache before recording
 - Record from incognito/private mode
 - Include full page load cycle
@@ -144,6 +156,7 @@ This template demonstrates how to use the HAR analysis skill for comprehensive n
 - Record during peak and off-peak times
 
 ### Analysis Approach
+
 - Start with high-level metrics first
 - Focus on user-impacting issues
 - Consider mobile vs desktop differences  
@@ -151,11 +164,13 @@ This template demonstrates how to use the HAR analysis skill for comprehensive n
 - Validate findings with server logs
 
 ### Mermaid Diagram Selection
+
 - **Sequence**: For request/response flows, authentication
 - **Flowchart**: For error handling, decision trees
 - **Mindmap**: For organizing findings, performance metrics
 
 ### Reporting Guidelines
+
 - Include both technical details and business impact
 - Prioritize issues by user experience impact
 - Provide specific, actionable recommendations

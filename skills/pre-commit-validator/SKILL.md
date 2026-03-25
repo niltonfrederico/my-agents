@@ -16,7 +16,7 @@ applyTo:
   - "**/package.json"
 invokes:
   - "run_in_terminal"
-  - "get_changed_files" 
+  - "get_changed_files"
   - "read_file"
   - "grep_search"
   - "vscode_askQuestions"
@@ -34,6 +34,7 @@ This skill provides comprehensive code quality validation using pre-commit hooks
 ## CRITICAL REQUIREMENTS (March 2026 Anti-Hallucination)
 
 ### STOP Conditions (MANDATORY)
+
 ```python
 # When pre-commit configuration is missing, STOP and ask user
 if not pre_commit_config_exists():
@@ -67,12 +68,14 @@ if critical_validation_failures():
 ```
 
 ### MCP-First Pattern (MANDATORY)
+
 - **USE mcp_io_github_git_get_file_contents** for repository file access when needed
 - **NO assumptions** about project structure without verification
 
 ## Core Capabilities
 
 ### Validation Workflow
+
 - **Changed Files Detection**: Automatically identifies modified files requiring validation
 - **Selective Validation**: Runs pre-commit hooks only on changed/generated files for efficiency
 - **Comprehensive Reporting**: Detailed analysis of validation results with actionable feedback
@@ -80,6 +83,7 @@ if critical_validation_failures():
 - **Integration Ready**: Designed to work within agent workflows without disrupting development
 
 ### Pre-Commit Integration
+
 - **Hook Execution**: Runs existing pre-commit configurations without modification
 - **Custom Hook Support**: Handles project-specific hooks and custom validation rules
 - **Tool Chain Integration**: Supports black, mypy, flake8, eslint, prettier, and security scanners
@@ -87,6 +91,7 @@ if critical_validation_failures():
 - **Environment Handling**: Works with virtual environments and project-specific setups
 
 ### Validation Reporting
+
 - **Issue Categorization**: Groups validation issues by type (formatting, linting, security, etc.)
 - **Severity Assessment**: Prioritizes issues by impact and urgency
 - **Fix Guidance**: Provides specific guidance for resolving validation failures
@@ -105,44 +110,44 @@ async def validate_generated_code(
 ) -> PreCommitValidationResult:
     """
     Master validation function for agent-generated code.
-    
+
     Args:
         changed_files: Specific files to validate (auto-detected if None)
         validation_scope: "changed" | "staged" | "all" | "specific"  
         report_format: "summary" | "detailed" | "json" | "integration"
-        
+
     Returns:
         PreCommitValidationResult: Comprehensive validation analysis
     """
-    
+
     # Step 1: Detect files requiring validation
     files_to_validate = await detect_validation_targets(changed_files, validation_scope)
-    
+
     if not files_to_validate:
         return PreCommitValidationResult(
             status="no_changes",
             message="No files require validation",
             files_validated=[]
         )
-    
+
     # Step 2: Discover and validate pre-commit configuration
     precommit_config = await discover_precommit_configuration()
-    
+
     if not precommit_config.exists:
         return handle_missing_precommit_config(files_to_validate)
-    
+
     # Step 3: Execute pre-commit validation
     validation_results = await execute_precommit_validation(
         files=files_to_validate,
         config=precommit_config
     )
-    
+
     # Step 4: Analyze and categorize results
     analysis = await analyze_validation_results(validation_results)
-    
+
     # Step 5: Generate comprehensive report
     report = await generate_validation_report(analysis, report_format)
-    
+
     return PreCommitValidationResult(
         status=analysis.overall_status,
         files_validated=files_to_validate,
@@ -158,33 +163,33 @@ async def detect_validation_targets(
 ) -> list[str]:
     """
     Intelligently detect which files need validation.
-    
+
     Args:
         specified_files: Explicitly provided file paths
         scope: Validation scope strategy
-        
+
     Returns:
         list[str]: Files requiring validation
     """
-    
+
     if specified_files:
         return filter_valid_files(specified_files)
-    
+
     if scope == "changed":
         # Get files modified but not committed
         changed_files = await get_git_changed_files(include_untracked=True)
         return filter_supported_files(changed_files)
-    
+
     elif scope == "staged":
         # Get files staged for commit
         staged_files = await get_git_staged_files()
         return filter_supported_files(staged_files)
-    
+
     elif scope == "all":
         # Validate entire project (careful - can be slow)
         all_files = await discover_project_files()
         return filter_supported_files(all_files)
-    
+
     else:
         raise ValueError(f"Unsupported validation scope: {scope}")
 
@@ -194,18 +199,18 @@ async def execute_precommit_validation(
 ) -> PreCommitRawResults:
     """
     Execute pre-commit hooks on specified files.
-    
+
     Args:
         files: List of file paths to validate
         config: Pre-commit configuration details
-        
+
     Returns:
         PreCommitRawResults: Raw output from pre-commit execution
     """
-    
+
     # Prepare file list for pre-commit
     files_arg = " ".join(shlex.quote(f) for f in files)
-    
+
     # Execute pre-commit with proper error handling
     try:
         # Run pre-commit on specific files
@@ -214,7 +219,7 @@ async def execute_precommit_validation(
             timeout=300,  # 5 minute timeout
             capture_output=True
         )
-        
+
         return PreCommitRawResults(
             exit_code=result.exit_code,
             stdout=result.stdout,
@@ -222,7 +227,7 @@ async def execute_precommit_validation(
             execution_time=result.duration,
             files_processed=files
         )
-        
+
     except CommandTimeoutError:
         return PreCommitRawResults(
             exit_code=124,  # Timeout exit code
@@ -231,7 +236,7 @@ async def execute_precommit_validation(
             execution_time=300.0,
             files_processed=files
         )
-    
+
     except Exception as e:
         return PreCommitRawResults(
             exit_code=1,
@@ -250,14 +255,14 @@ async def analyze_validation_results(
 ) -> ValidationAnalysis:
     """
     Parse and categorize pre-commit validation results.
-    
+
     Args:
         raw_results: Raw pre-commit execution output
-        
+
     Returns:
         ValidationAnalysis: Structured analysis of validation results
     """
-    
+
     if raw_results.exit_code == 0:
         return ValidationAnalysis(
             overall_status="passed",
@@ -271,16 +276,16 @@ async def analyze_validation_results(
             by_hook=[],
             recommendations=["All validation checks passed successfully!"]
         )
-    
+
     # Parse pre-commit output to extract hook results
     hook_results = parse_precommit_output(raw_results.stdout, raw_results.stderr)
-    
+
     # Categorize issues by type and severity
     categorized_issues = categorize_validation_issues(hook_results)
-    
+
     # Generate recommendations based on issue patterns
     recommendations = generate_fix_recommendations(categorized_issues)
-    
+
     # Calculate summary statistics
     summary = ValidationSummary(
         total_files=len(raw_results.files_processed),
@@ -289,9 +294,9 @@ async def analyze_validation_results(
         skipped_hooks=len([h for h in hook_results if h.status == "skipped"]),
         total_issues=sum(len(h.issues) for h in hook_results)
     )
-    
+
     overall_status = "failed" if summary.failed_hooks > 0 else "passed"
-    
+
     return ValidationAnalysis(
         overall_status=overall_status,
         summary=summary,
@@ -302,43 +307,43 @@ async def analyze_validation_results(
 def parse_precommit_output(stdout: str, stderr: str) -> list[HookResult]:
     """
     Parse pre-commit command output into structured results.
-    
+
     Args:
         stdout: Standard output from pre-commit command
         stderr: Standard error from pre-commit command  
-        
+
     Returns:
         list[HookResult]: Parsed results for each hook
     """
-    
+
     hook_results = []
     current_hook = None
-    
+
     # Pre-commit output patterns
     hook_start_pattern = re.compile(r"^([^.]+)\.+(\w+)$")
     file_issue_pattern = re.compile(r"^(.+?):(\d+):(\d+):\s*(.+)$")
-    
+
     lines = (stdout + stderr).split('\n')
-    
+
     for line in lines:
         line = line.strip()
-        
+
         # Match hook execution line (e.g., "black....Passed" or "mypy....Failed")
         hook_match = hook_start_pattern.match(line)
         if hook_match:
             if current_hook:
                 hook_results.append(current_hook)
-            
+
             hook_name = hook_match.group(1).strip()
             status = hook_match.group(2).lower()
-            
+
             current_hook = HookResult(
                 name=hook_name,
                 status=status,
                 issues=[]
             )
             continue
-        
+
         # Match file-specific issues
         if current_hook and current_hook.status == "failed":
             issue_match = file_issue_pattern.match(line)
@@ -351,26 +356,26 @@ def parse_precommit_output(stdout: str, stderr: str) -> list[HookResult]:
                     hook_name=current_hook.name
                 )
                 current_hook.issues.append(issue)
-    
+
     # Add final hook if exists
     if current_hook:
         hook_results.append(current_hook)
-    
+
     return hook_results
 
 def categorize_validation_issues(hook_results: list[HookResult]) -> list[HookCategory]:
     """
     Categorize validation issues by type and severity for better reporting.
-    
+
     Args:
         hook_results: Raw hook execution results
-        
+
     Returns:
         list[HookCategory]: Issues organized by category
     """
-    
+
     categories = []
-    
+
     for hook in hook_results:
         if hook.status == "passed":
             categories.append(HookCategory(
@@ -383,7 +388,7 @@ def categorize_validation_issues(hook_results: list[HookResult]) -> list[HookCat
             ))
         else:
             severity = assess_hook_severity(hook.name, hook.issues)
-            
+
             categories.append(HookCategory(
                 name=hook.name,
                 status=hook.status,
@@ -392,28 +397,28 @@ def categorize_validation_issues(hook_results: list[HookResult]) -> list[HookCat
                 issues=hook.issues,
                 severity=severity
             ))
-    
+
     return categories
 
 def categorize_hook_type(hook_name: str) -> str:
     """
     Determine the category of a pre-commit hook.
-    
+
     Args:
         hook_name: Name of the pre-commit hook
-        
+
     Returns:
         str: Category classification
     """
-    
+
     formatting_hooks = ["black", "prettier", "autopep8", "isort", "whitespace"]
     linting_hooks = ["flake8", "pylint", "eslint", "mypy", "pyright"]  
     security_hooks = ["bandit", "safety", "semgrep", "security"]
     testing_hooks = ["pytest", "jest", "test"]
     documentation_hooks = ["markdown", "docs", "spelling"]
-    
+
     hook_lower = hook_name.lower()
-    
+
     if any(fmt in hook_lower for fmt in formatting_hooks):
         return "formatting"
     elif any(lint in hook_lower for lint in linting_hooks):
@@ -430,26 +435,26 @@ def categorize_hook_type(hook_name: str) -> str:
 def generate_fix_recommendations(categorized_issues: list[HookCategory]) -> list[str]:
     """
     Generate actionable recommendations for fixing validation issues.
-    
+
     Args:
         categorized_issues: Categorized validation results
-        
+
     Returns:
         list[str]: Specific recommendations for resolution
     """
-    
+
     recommendations = []
     failed_categories = [cat for cat in categorized_issues if cat.status == "failed"]
-    
+
     if not failed_categories:
         recommendations.append("✅ All pre-commit hooks passed! Code is ready for commit.")
         return recommendations
-    
+
     # Group recommendations by category
     formatting_issues = [cat for cat in failed_categories if cat.category == "formatting"]
     linting_issues = [cat for cat in failed_categories if cat.category == "linting"]
     security_issues = [cat for cat in failed_categories if cat.category == "security"]
-    
+
     # Formatting recommendations
     if formatting_issues:
         recommendations.append("🎨 **Formatting Issues Detected:**")
@@ -460,7 +465,7 @@ def generate_fix_recommendations(categorized_issues: list[HookCategory]) -> list
                 recommendations.append(f"   • Run `isort {' '.join(get_affected_files(issue_cat))}` to fix imports")
             else:
                 recommendations.append(f"   • Fix {issue_cat.name} formatting issues in {issue_cat.issue_count} location(s)")
-    
+
     # Linting recommendations  
     if linting_issues:
         recommendations.append("🔍 **Linting Issues Detected:**")
@@ -470,20 +475,20 @@ def generate_fix_recommendations(categorized_issues: list[HookCategory]) -> list
             critical_issues = [issue for issue in issue_cat.issues if is_critical_linting_issue(issue)]
             for issue in critical_issues[:3]:  # Show first 3 critical issues
                 recommendations.append(f"     - {issue.file_path}:{issue.line_number}: {issue.message}")
-    
+
     # Security recommendations (highest priority)
     if security_issues:
         recommendations.insert(0, "🚨 **Security Issues Detected (Priority: HIGH):**")
         for issue_cat in security_issues:
             recommendations.insert(1, f"   • URGENT: Address {issue_cat.issue_count} security issue(s) in {issue_cat.name}")
-    
+
     # General recommendations
     recommendations.append("")
     recommendations.append("💡 **General Recommendations:**")
     recommendations.append("   • Run `pre-commit run --all-files` to validate entire codebase")
     recommendations.append("   • Consider running `pre-commit install` to enable automatic validation")
     recommendations.append("   • Review pre-commit configuration in `.pre-commit-config.yaml`")
-    
+
     return recommendations
 ```
 
@@ -497,36 +502,36 @@ class DjangoCodeValidator:
     """
     Django-specific integration with pre-commit validation.
     """
-    
+
     async def validate_django_code_generation(
-        self, 
+        self,
         generated_files: list[str],
         validation_context: str = "django_development"
     ) -> DjangoValidationResult:
         """
         Validate Django code using pre-commit with Django-specific checks.
-        
+
         Args:
             generated_files: List of files generated by django-dev agent
             validation_context: Context for specialized validation
-            
+
         Returns:
             DjangoValidationResult: Django-focused validation results
         """
-        
+
         # Execute pre-commit validation  
         validation_result = await validate_generated_code(
             changed_files=generated_files,
             validation_scope="specific",
             report_format="detailed"
         )
-        
+
         # Add Django-specific analysis
         django_analysis = await analyze_django_specific_issues(
-            validation_result, 
+            validation_result,
             generated_files
         )
-        
+
         return DjangoValidationResult(
             precommit_results=validation_result,
             django_specific=django_analysis,
@@ -535,7 +540,7 @@ class DjangoCodeValidator:
                 django_analysis.recommendations
             )
         )
-    
+
     async def analyze_django_specific_issues(
         self,
         validation_result: PreCommitValidationResult,
@@ -544,21 +549,21 @@ class DjangoCodeValidator:
         """
         Analyze validation results for Django-specific patterns.
         """
-        
+
         django_issues = []
-        
+
         # Check for StandardModelMixin compliance
         model_files = [f for f in django_files if "models.py" in f]
         for model_file in model_files:
             model_issues = await validate_standard_model_mixin_usage(model_file)
             django_issues.extend(model_issues)
-        
+
         # Check DRF serializer patterns
         serializer_files = [f for f in django_files if "serializers.py" in f]
         for serializer_file in serializer_files:
             serializer_issues = await validate_drf_serializer_patterns(serializer_file)
             django_issues.extend(serializer_issues)
-        
+
         return DjangoSpecificAnalysis(
             django_issues=django_issues,
             compliance_status="compliant" if not django_issues else "issues_found",
@@ -570,16 +575,16 @@ async def django_dev_code_generation_with_validation():
     """
     Example of integrating validation into django-dev workflow.
     """
-    
+
     # 1. Generate Django code (models, views, serializers, etc.)
     generated_files = await generate_django_components()
-    
+
     # 2. Validate generated code
     validation_result = await DjangoCodeValidator().validate_django_code_generation(
         generated_files=generated_files,
         validation_context="model_and_api_generation"  
     )
-    
+
     # 3. Report validation status
     if validation_result.precommit_results.status == "passed":
         return SuccessResult(
@@ -604,36 +609,36 @@ class DotNetCodeValidator:
     """
     .NET-specific integration with pre-commit validation.
     """
-    
+
     async def validate_dotnet_code_generation(
         self,
-        generated_files: list[str], 
+        generated_files: list[str],
         validation_context: str = "dotnet_development"
     ) -> DotNetValidationResult:
         """
         Validate .NET code using pre-commit with .NET-specific checks.
-        
+
         Args:
             generated_files: List of files generated by dotnet-dev agent
             validation_context: Context for specialized validation
-            
+
         Returns:
             DotNetValidationResult: .NET-focused validation results
         """
-        
+
         # Execute pre-commit validation
         validation_result = await validate_generated_code(
             changed_files=generated_files,
             validation_scope="specific",
             report_format="detailed"
         )
-        
+
         # Add .NET-specific analysis
         dotnet_analysis = await analyze_dotnet_specific_issues(
             validation_result,
             generated_files
         )
-        
+
         return DotNetValidationResult(
             precommit_results=validation_result,
             dotnet_specific=dotnet_analysis,
@@ -642,7 +647,7 @@ class DotNetCodeValidator:
                 dotnet_analysis.recommendations
             )
         )
-    
+
     async def analyze_dotnet_specific_issues(
         self,
         validation_result: PreCommitValidationResult,
@@ -651,21 +656,21 @@ class DotNetCodeValidator:
         """
         Analyze validation results for .NET-specific patterns.
         """
-        
+
         dotnet_issues = []
-        
+
         # Check for StandardEntity compliance
         entity_files = [f for f in dotnet_files if f.endswith(".cs") and "Entities" in f]
         for entity_file in entity_files:
             entity_issues = await validate_standard_entity_usage(entity_file)
             dotnet_issues.extend(entity_issues)
-        
+
         # Check CliFx command patterns
         command_files = [f for f in dotnet_files if "Command" in f and f.endswith(".cs")]
         for command_file in command_files:
             command_issues = await validate_clifx_command_patterns(command_file)
             dotnet_issues.extend(command_issues)
-        
+
         return DotNetSpecificAnalysis(
             dotnet_issues=dotnet_issues,
             compliance_status="compliant" if not dotnet_issues else "issues_found",
@@ -681,59 +686,59 @@ class DotNetCodeValidator:
 async def get_git_changed_files(include_untracked: bool = True) -> list[str]:
     """
     Get list of files that have been modified in the current Git repository.
-    
+
     Args:
         include_untracked: Whether to include untracked files
-        
+
     Returns:
         list[str]: List of modified file paths
     """
-    
+
     # Get modified files (tracked)
     modified_result = await run_command_with_capture("git diff --name-only")
     modified_files = modified_result.stdout.strip().split('\n') if modified_result.stdout.strip() else []
-    
+
     # Get staged files
     staged_result = await run_command_with_capture("git diff --cached --name-only")
     staged_files = staged_result.stdout.strip().split('\n') if staged_result.stdout.strip() else []
-    
+
     # Combine and deduplicate
     changed_files = list(set(modified_files + staged_files))
-    
+
     # Add untracked files if requested
     if include_untracked:
         untracked_result = await run_command_with_capture("git ls-files --others --exclude-standard")
         untracked_files = untracked_result.stdout.strip().split('\n') if untracked_result.stdout.strip() else []
         changed_files.extend(untracked_files)
-    
+
     # Filter out empty strings and ensure files exist
     valid_files = []
     for file_path in changed_files:
         if file_path and os.path.exists(file_path):
             valid_files.append(file_path)
-    
+
     return valid_files
 
 async def discover_precommit_configuration() -> PreCommitConfig:
     """
     Discover and analyze pre-commit configuration in the current project.
-    
+
     Returns:
         PreCommitConfig: Configuration details and hook information
     """
-    
+
     config_paths = [
         ".pre-commit-config.yaml",
-        ".pre-commit-config.yml", 
+        ".pre-commit-config.yml",
         ".github/.pre-commit-config.yaml"
     ]
-    
+
     config_file = None
     for path in config_paths:
         if os.path.exists(path):
             config_file = path
             break
-    
+
     if not config_file:
         return PreCommitConfig(
             exists=False,
@@ -741,11 +746,11 @@ async def discover_precommit_configuration() -> PreCommitConfig:
             hooks=[],
             python_version=None
         )
-    
+
     # Parse YAML configuration
     with open(config_file, 'r') as f:
         config_data = yaml.safe_load(f)
-    
+
     # Extract hook information
     hooks = []
     for repo in config_data.get('repos', []):
@@ -757,7 +762,7 @@ async def discover_precommit_configuration() -> PreCommitConfig:
                 files=hook.get('files', '.*'),
                 types=hook.get('types', [])
             ))
-    
+
     return PreCommitConfig(
         exists=True,
         config_file=config_file,
@@ -788,7 +793,7 @@ else:
 # Validate specific files generated by an agent
 generated_files = [
     "src/models.py",
-    "src/serializers.py", 
+    "src/serializers.py",
     "src/views.py"
 ]
 
@@ -811,28 +816,28 @@ async def create_django_api_with_validation():
     """
     Create Django API components with automatic validation.
     """
-    
+
     # 1. Generate Django components
     generated_files = []
-    
+
     # Create model
     model_file = await create_django_model("User", fields=user_fields)
     generated_files.append(model_file)
-    
+
     # Create serializer
     serializer_file = await create_drf_serializer("UserSerializer", model="User")
     generated_files.append(serializer_file)
-    
+
     # Create viewset
     viewset_file = await create_drf_viewset("UserViewSet", serializer="UserSerializer")
     generated_files.append(viewset_file)
-    
+
     # 2. Validate generated code
     validation_result = await validate_generated_code(
         changed_files=generated_files,
         validation_scope="specific"
     )
-    
+
     # 3. Report results
     if validation_result.status == "passed":
         return {
@@ -867,7 +872,7 @@ class ValidationIssue:
     hook_name: str
     severity: str = "warning"
 
-@dataclass 
+@dataclass
 class HookResult:
     name: str
     status: str  # "passed", "failed", "skipped"
@@ -879,7 +884,7 @@ class HookCategory:
     status: str
     category: str  # "formatting", "linting", "security", etc.
     issue_count: int
-    issues: List[ValidationIssue] 
+    issues: List[ValidationIssue]
     severity: str
 
 @dataclass
@@ -904,7 +909,7 @@ class PreCommitValidationResult:
     validation_summary: ValidationSummary
     detailed_results: List[HookCategory]
     recommendations: List[str]
-    
+
 @dataclass
 class PreCommitConfig:
     exists: bool

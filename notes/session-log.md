@@ -112,7 +112,7 @@ if requirements_unclear():
 ```python
 # Monday.com Workflow (All MCP + STOP enabled)
 monday_url → monday-task-analyzer (STOP if invalid)
-→ github-repository-investigator (STOP if repo inaccessible) 
+→ github-repository-investigator (STOP if repo inaccessible)
 → monday-refinement-generator (STOP if context incomplete)
 → r2d2-compliance-validator (STOP if standards not met)
 
@@ -214,7 +214,7 @@ Added `SkillExecutionStop` pattern to all critical skills:
 ```python
 raise SkillExecutionStop(
     reason="DATA_INACCESSIBLE",
-    message="🚫 STOP: [specific issue]\n\n❓ [clear user question]", 
+    message="🚫 STOP: [specific issue]\n\n❓ [clear user question]",
     user_action_required=True
 )
 ```
@@ -388,7 +388,7 @@ invokes: ["relevant tools"]
 skill: true
 name: "domain-analysis"
 description: "**DOMAIN EXPERT** — Multi-capability description with specific use cases and outputs"
-applyTo: ["domain-specific file patterns", "**/*related-dirs/**/*"] 
+applyTo: ["domain-specific file patterns", "**/*related-dirs/**/*"]
 invokes: ["specialized-skills", "validation-tools", "rendering-tools"]
 ```
 

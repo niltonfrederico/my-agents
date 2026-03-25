@@ -17,12 +17,12 @@ def compose_skills_safely():
         analysis = apply_skill('django-analyzer', params)
         if analysis.status == "STOPPED":
             return f"🚫 COMPOSITION HALTED: {analysis.message}"
-        
+
         # Only proceed if first skill succeeded
         documentation = apply_skill('django-documenter', analysis.data)
         if documentation.status == "STOPPED":
             return f"🚫 DOCUMENTATION HALTED: {documentation.message}"
-            
+
     except SkillExecutionStop as stop:
         return f"🚫 SKILL CHAIN STOPPED: {stop.message}"
 
@@ -46,7 +46,7 @@ workflow_mcp_tools = {
 
 # All skills in Monday.com workflow use consistent MCP tools
 monday_workflow = [
-    'monday-task-analyzer',      # Uses mcp_com_monday_mo_* 
+    'monday-task-analyzer',      # Uses mcp_com_monday_mo_*
     'github-repository-investigator',  # Uses mcp_io_github_git_*
     'monday-refinement-generator',     # Uses both MCP sets
     'r2d2-compliance-validator'        # Uses mcp_io_github_git_*
@@ -77,7 +77,7 @@ function skill_chain_with_context() {
         user_confirmation: true,
         data: django_analysis_results
     };
-    
+
     // Next skill can verify context validity
     const doc_result = apply_skill('django-documenter', analysis_context);
 }
@@ -96,7 +96,7 @@ def full_development_workflow():
     planning = run_subagent('task-planner', monday_url_context)
     if 'STOP' in planning or 'BLOCKED' in planning:
         return f"🚫 PLANNING PHASE: {planning}"
-    
+
     # Phase 2: Development (django-dev or dotnet-dev based on planning)
     if planning.stack == 'django':
         development = run_subagent('django-dev', planning.technical_context)
@@ -105,16 +105,16 @@ def full_development_workflow():
     else:
         # Cross-stack development
         development = run_subagent('full-stack', planning.technical_context)
-    
+
     if 'STOP' in development:
         return f"🚫 DEVELOPMENT PHASE: {development}"
-    
+
     # Phase 3: Documentation (doc-writer agent)
     documentation = run_subagent('doc-writer', development.output_context)
-    
+
     return {
         'planning': planning,
-        'development': development, 
+        'development': development,
         'documentation': documentation,
         'workflow_complete': True
     }
@@ -212,14 +212,14 @@ def comprehensive_validation():
         apply_skill('dotnet-library-checker', nuget_deps) if dotnet_project else None,
         apply_skill('r2d2-compliance-validator', refinement_docs)
     ]
-    
+
     # Wait for all validations, respect any STOP conditions
     results = []
     for task in filter(None, validation_tasks):
         if task.status == "STOPPED":
             return f"🚫 VALIDATION STOPPED: {task.message}"
         results.append(task)
-    
+
     return aggregate_validation_results(results)
 ```
 
@@ -271,7 +271,7 @@ def context_recovery_pattern():
             ('github-repository-investigator', repo_params),
             ('django-explorer', basic_params),
         ]
-        
+
         for skill_name, params in recovery_attempts:
             try:
                 recovery_context = apply_skill(skill_name, params)
@@ -279,7 +279,7 @@ def context_recovery_pattern():
                     return recovery_context.data
             except SkillExecutionStop:
                 continue
-        
+
         # If recovery fails, ask user for clarification
         return ask_user_for_context_clarification()
 ```
@@ -300,15 +300,15 @@ async def parallel_skill_execution():
         apply_skill_async('mermaid-sequence', api_flow_data),
         apply_skill_async('har-analysis', performance_data)
     ]
-    
+
     # Wait for all parallel tasks
     results = await asyncio.gather(*parallel_tasks, return_exceptions=True)
-    
+
     # Check for any STOP conditions
     for result in results:
         if isinstance(result, SkillExecutionStop):
             return f"🚫 PARALLEL EXECUTION STOPPED: {result.message}"
-    
+
     return aggregate_results(results)
 ```
 
@@ -321,20 +321,20 @@ class MCPCache:
     def __init__(self):
         self.github_cache = {}
         self.monday_cache = {}
-    
+
     def cached_mcp_call(self, tool_name, params):
         cache_key = f"{tool_name}:{hash(str(params))}"
-        
+
         if cache_key in self.github_cache:
             return self.github_cache[cache_key]
-        
+
         # Make actual MCP call
         result = execute_mcp_tool(tool_name, params)
-        
+
         # Cache successful results only
         if result and not hasattr(result, 'error'):
             self.github_cache[cache_key] = result
-        
+
         return result
 
 # Use across skills in the same session
@@ -362,7 +362,7 @@ def test_skill_integration():
             'expected_stop_propagation': True
         }
     ]
-    
+
     for case in test_cases:
         result = test_skill_chain_stops(case['skills'])
         assert result.stop_propagation == case['expected_stop_propagation']
@@ -377,7 +377,7 @@ def test_agent_coordination():
     # Test proper delegation
     planning_result = run_subagent('task-planner', test_monday_url)
     assert 'github-repository-investigator' in planning_result.skills_used
-    
+
     # Test cross-agent workflow
     dev_result = run_subagent('django-dev', planning_result.context)
     assert dev_result.respects_planning_constraints == True

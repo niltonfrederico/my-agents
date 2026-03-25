@@ -1,0 +1,83 @@
+# Pre-commit configuration for GitHub Copilot Agents & Skills repository
+# Ensures consistent markdown formatting and file quality
+
+repos:
+  # General file hygiene
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+        description: Trim trailing whitespace
+        args: [--markdown-linebreak-ext=md]
+      - id: end-of-file-fixer
+        description: Ensure files end with a newline
+      - id: check-merge-conflict
+        description: Check for merge conflict markers
+      - id: check-case-conflict
+        description: Check for case conflicts in filenames
+      - id: check-yaml
+        description: Validate YAML syntax
+        files: \.(ya?ml)$
+      - id: check-json
+        description: Validate JSON syntax
+        files: \.json$
+      - id: mixed-line-ending
+        description: Ensure consistent line endings
+        args: [--fix=lf]
+
+  # Markdown linting and formatting
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.48.0
+    hooks:
+      - id: markdownlint
+        description: Lint markdown files
+        args: [--fix, --config=.markdownlint.yaml]
+        files: \.md$
+
+  # YAML frontmatter validation for agent files
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.38.0
+    hooks:
+      - id: yamllint
+        description: Lint YAML frontmatter in agent files
+        args: [-c=.yamllint.yaml]
+        files: \.(agent\.md|ya?ml)$
+
+  # Shell script linting (for update scripts)
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.11.0.1
+    hooks:
+      - id: shellcheck
+        description: Lint shell scripts
+        args: [-e, SC1091, -e, SC2312] # Ignore sourcing and command substitution warnings
+        files: \.(sh|bash)$
+
+  # File size check
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-added-large-files
+        description: Prevent large files from being committed
+        args: [--maxkb=500]
+
+  # Spell checking for markdown (optional, can be disabled if too strict)
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.4.2
+    hooks:
+      - id: codespell
+        description: Check for common misspellings
+        args: ["--skip=*.json,*.yaml,*.yml", "--ignore-words-list=hte,ot,ba"]
+        files: \\.md$
+
+# Global configuration
+default_language_version:
+  python: python3
+
+# Exclude patterns
+exclude: "^(.*\\.min\\.(js|css)$|.*\\.bundle\\.(js|css)$|node_modules/.*|vendor/.*|\\.git/.*)$"
+
+# Fail fast - stop on first failure
+fail_fast: false
+
+# Minimum pre-commit version required
+minimum_pre_commit_version: "3.0.0"

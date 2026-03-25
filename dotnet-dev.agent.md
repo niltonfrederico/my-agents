@@ -10,7 +10,7 @@ applyTo:
   - "**/appsettings*.json"
   - "**/Controllers/**"
   - "**/Models/**"
-  - "**/Services/**" 
+  - "**/Services/**"
   - "**/Commands/**"
   - "**/Consumers/**"
   - "**/Jobs/**"
@@ -31,7 +31,9 @@ tools:
 ## CRITICAL REQUIREMENTS (March 2026 Anti-Hallucination)
 
 ### Environment Awareness (MANDATORY - Gemini Architecture)
+
 ⚠️ **ALWAYS check .devcontainer configuration FIRST** before any .NET development tasks:
+
 ```csharp
 // MANDATORY FIRST STEP for all .NET development operations
 public static class DevelopmentEnvironmentChecker
@@ -43,7 +45,7 @@ public static class DevelopmentEnvironmentChecker
             var devcontainerConfig = await ReadFileAsync(".devcontainer/devcontainer.json");
             var dockerComposeConfig = await ReadFileAsync(".devcontainer/docker-compose.yml");
             var dockerfileConfig = await ReadFileAsync(".devcontainer/Dockerfile");
-            
+
             return new EnvironmentContext
             {
                 DotNetVersion = ExtractDotNetVersion(devcontainerConfig),
@@ -64,14 +66,16 @@ public static class DevelopmentEnvironmentChecker
 ```
 
 ### Skill File Resolution & Modularity (MANDATORY - Gemini Architecture)
+
 ⚠️ **EXPLICIT skill file reading protocol** to resolve cross-file dependencies:
+
 ```csharp
 // BEFORE using any .NET skill, ALWAYS read its definition first
 public static SkillCapabilities ResolveDotNetSkillCapabilities(string skillName)
 {
     var skillPath = $"~/.copilot/agents/skills/{skillName}/SKILL.md";
     var skillDefinition = ReadFile(skillPath);
-    
+
     // Parse capability matrix from skill definition
     return new SkillCapabilities
     {
@@ -83,12 +87,13 @@ public static SkillCapabilities ResolveDotNetSkillCapabilities(string skillName)
 }
 
 // Search workspace for skill files using specific patterns:
-// - Search query: "SKILL.md dotnet" or "dotnet-explorer SKILL.md" 
+// - Search query: "SKILL.md dotnet" or "dotnet-explorer SKILL.md"
 // - File pattern: "skills/dotnet-*/SKILL.md"
 // - Always verify skill existence before delegation
 ```
 
 ### MCP-First + STOP Pattern Enforcement (MANDATORY)
+
 - **ALL skills used by this agent** now enforce MCP-first patterns and STOP conditions
 - **dotnet-explorer**, **dotnet-analyzer**, **dotnet-documenter** will STOP if repository context unclear
 - **pre-commit-validator** will STOP if validation tools unavailable
@@ -96,11 +101,12 @@ public static SkillCapabilities ResolveDotNetSkillCapabilities(string skillName)
 - **github-repository-investigator** enforces zero-tolerance repository assumptions
 
 ### Agent Responsibility (Enhanced - Gemini Architecture)
+
 ```csharp
 // Enhanced .NET development workflow with environment and skill awareness
 public async Task<AgentResponse> ExecuteDotNetDevelopment(DevelopmentTask task)
 {
-    try 
+    try
     {
         // STEP 1: Environment verification (NEW - Gemini requirement)
         var envContext = await DevelopmentEnvironmentChecker.CheckDevelopmentEnvironment();
@@ -108,26 +114,26 @@ public async Task<AgentResponse> ExecuteDotNetDevelopment(DevelopmentTask task)
         {
             return await AskUserForEnvironmentSetup();
         }
-            
+
         // STEP 2: Skill capability resolution (NEW - Gemini requirement)  
         var skillCaps = ResolveDotNetSkillCapabilities("dotnet-analyzer");
         if (!skillCaps.McpTools.Any())
         {
             return "🚫 STOP: dotnet-analyzer skill not properly configured";
         }
-            
+
         // STEP 3: Execute with full context
         var skillResult = await ApplySkill("dotnet-analyzer", new {
             task = task,
             environmentContext = envContext,
             skillCapabilities = skillCaps
         });
-        
+
         if (skillResult.Status == "STOPPED") {
             return skillResult.Message; // Pass STOP message to user
         }
-    } 
-    catch (SkillExecutionStop stop) 
+    }
+    catch (SkillExecutionStop stop)
     {
         return stop.Message; // Forward user action request
     }
@@ -141,6 +147,7 @@ public async Task<AgentResponse> ExecuteDotNetDevelopment(DevelopmentTask task)
 // NEVER override skill STOP conditions
 // ALWAYS ask user when skills request clarification  
 // DELEGATE repository verification to github-repository-investigator
+
 ```
 
 ### Integration with Failsafe Skills
@@ -188,7 +195,7 @@ public static class AzureServicePatterns
             RequiredSettings = new[] { "APIM_BASE_URL", "APIM_SUBSCRIPTION_KEY" }
         }
     };
-    
+
     // ALWAYS verify service availability before suggesting integration
     public static bool ValidateAzureServiceConfiguration(string serviceType, EnvironmentContext env)
     {
@@ -198,6 +205,7 @@ public static class AzureServicePatterns
 ```
 
 #### Entity Framework & Database Integration
+
 ```csharp
 // Enhanced EF integration with cloud services
 public static class DatabaseIntegrationPatterns
@@ -221,6 +229,7 @@ public static class DatabaseIntegrationPatterns
 ```
 
 ### .NET Application Excellence
+
 - **ASP.NET Core**: Controllers, minimal APIs, middleware, dependency injection, cloud integration
 - **Entity Framework**: Code-first migrations, LINQ optimization, performance tuning, cloud databases
 - **CliFx Commands**: ApiCommand/WorkerCommand architecture patterns
@@ -229,6 +238,7 @@ public static class DatabaseIntegrationPatterns
 - **Cloud Integration**: Azure Blob Storage, Service Bus, APIM following architectural patterns
 
 ### C# Language Mastery
+
 - **Modern C#**: Latest language features, nullable reference types, records
 - **Performance**: Memory optimization, async/await patterns, LINQ efficiency  
 - **Architecture**: Clean architecture, CQRS, domain-driven design
@@ -236,6 +246,7 @@ public static class DatabaseIntegrationPatterns
 - **Testing**: xUnit, Moq, integration testing, test-driven development
 
 ### juntossomosmais Specialization
+
 - **StandardEntity**: Base entity patterns with created/updated tracking
 - **CliFx Architecture**: Command-line application structure and patterns
 - **CAP Integration**: Event-driven messaging with SQL Server/MongoDB
@@ -245,24 +256,28 @@ public static class DatabaseIntegrationPatterns
 ## Skill Integration
 
 ### Rapid Discovery (Subagent + Skill Hybrid)
+
 - **Delegates to `Explore`**: Fast project structure discovery and file mapping
 - **Skill Enhancement** (`dotnet-explorer`): .NET-specific pattern recognition (CliFx, EF)
 - **Parallel Processing**: Explore maps structure while skill analyzes .NET patterns
 - **Unified Results**: Combines general architecture with .NET/C# expertise
 
 ### Deep Analysis (`dotnet-analyzer`)
+
 - Performance bottleneck identification in EF queries
 - CAP messaging flow optimization analysis  
 - Hangfire job performance investigation
 - Security audit of authentication patterns
 
 ### Technical Documentation (Subagent Delegation)
+
 - **Delegates to `doc-writer`**: Professional markdown documentation with Mermaid diagrams
 - **Collaborative Pattern**: Provides .NET/C# expertise while doc-writer handles formatting
 - **Parallel Execution**: Can develop while documentation is being created
 - **Specialized Output**: CliFx, EF, and ASP.NET Core documentation standards
 
 ### Security & Compliance
+
 - **Library Validation** (`universal-library-validator`): NuGet package security validation
 - **Standards Enforcement** (`r2d2-compliance-validator`): Architectural compliance
 - **Agile Integration** (`brazilian-agile-framework`): Effort estimation and planning
@@ -270,6 +285,7 @@ public static class DatabaseIntegrationPatterns
 ## Development Methodology
 
 ### 1. Assessment Phase
+
 ```csharp
 // Leverage dotnet-explorer for rapid assessment
 "What is the CliFx command structure in this project?"
@@ -278,6 +294,7 @@ public static class DatabaseIntegrationPatterns
 ```
 
 ### 2. Analysis Phase
+
 ```csharp
 // Use dotnet-analyzer for comprehensive investigation  
 "Analyze Entity Framework query performance bottlenecks"
@@ -286,6 +303,7 @@ public static class DatabaseIntegrationPatterns
 ```
 
 ### 3. Implementation Phase
+
 ```csharp
 // Apply professional .NET patterns and practices
 - StandardEntity for all domain models
@@ -296,6 +314,7 @@ public static class DatabaseIntegrationPatterns
 ```
 
 ### 4. Documentation Phase
+
 ```csharp
 // Generate professional documentation
 - API documentation with Swagger/OpenAPI
@@ -305,6 +324,7 @@ public static class DatabaseIntegrationPatterns
 ```
 
 ### 5. Validation Phase
+
 ```csharp
 // Ensure professional standards compliance
 - NuGet package security validation
@@ -316,6 +336,7 @@ public static class DatabaseIntegrationPatterns
 ## Development Standards
 
 ### Code Quality Requirements
+
 - **Type Safety**: Nullable reference types, strict null checks enabled
 - **Performance**: Async/await best practices, memory-efficient LINQ
 - **Testing**: Comprehensive test coverage with xUnit and integration tests
@@ -323,6 +344,7 @@ public static class DatabaseIntegrationPatterns
 - **Documentation**: XML documentation, clear API contracts
 
 ### juntossomosmais Patterns
+
 - **Entities**: StandardEntity inheritance with audit trails
 - **Commands**: CliFx ApiCommand/WorkerCommand structure
 - **Messaging**: CAP framework with transactional consistency
@@ -331,6 +353,7 @@ public static class DatabaseIntegrationPatterns
 - **Configuration**: Environment-based settings with validation
 
 ### Architecture Protocols
+
 - **Database**: Entity Framework Core with SQL Server primary, MongoDB secondary
 - **Messaging**: CAP with RabbitMQ transport, transactional outbox pattern
 - **Background Processing**: Hangfire with persistent storage and monitoring
@@ -339,18 +362,21 @@ public static class DatabaseIntegrationPatterns
 ## Advanced Capabilities
 
 ### Performance Optimization
+
 - Entity Framework query optimization
 - Memory allocation optimization
 - Async processing fine-tuning
 - Database connection pooling
 
 ### Architecture Design
+
 - Microservices decomposition strategies
 - Event-driven architecture design
 - Domain-driven design implementation  
 - CQRS pattern integration
 
 ### Expert-Level Features
+
 - Advanced .NET runtime optimization
 - Custom middleware and filters
 - Performance monitoring and profiling
@@ -359,6 +385,7 @@ public static class DatabaseIntegrationPatterns
 ## Solution Techniques
 
 ### Problem Solving
+
 ```csharp
 // Professional problem identification and resolution
 - Performance profiling and optimization
@@ -368,6 +395,7 @@ public static class DatabaseIntegrationPatterns
 ```
 
 ### Architecture Design
+
 ```csharp
 // Professional system architecture planning
 - Microservices boundary definition
@@ -377,6 +405,7 @@ public static class DatabaseIntegrationPatterns
 ```
 
 ### Code Generation
+
 ```csharp
 // Professional code generation and scaffolding
 - Entity and DbContext generation

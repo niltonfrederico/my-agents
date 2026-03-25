@@ -7,7 +7,7 @@ applyTo:
   - "**/apps/**/*"
   - "**/tests/**/*"
   - "**/support/**/*"
-  - "**/api/**/*" 
+  - "**/api/**/*"
   - "**/pubsub/**/*"
   - "**/management/**/*"
 invokes:
@@ -33,6 +33,7 @@ This skill provides in-depth analysis of Django/Python applications, going beyon
 ## CRITICAL REQUIREMENTS (March 2026 Anti-Hallucination)
 
 ### STOP Conditions (MANDATORY)
+
 ```python
 # When repository context is unclear, STOP and use github-repository-investigator
 if not clear_repository_context():
@@ -68,6 +69,7 @@ if analysis_scope_unclear():
 ```
 
 ### MCP-First Pattern (MANDATORY)
+
 - **ALWAYS use mcp_io_github_git_get_file_contents** for repository file access
 - **DELEGATE to github-repository-investigator** for repository structure verification
 - **NO assumptions** about Django app structure without MCP verification
@@ -75,6 +77,7 @@ if analysis_scope_unclear():
 ## Core Capabilities
 
 ### Architectural Analysis
+
 - **Complex Pattern Investigation**: Deep dive into messaging, authentication, and data flow patterns
 - **Integration Flow Mapping**: Comprehensive analysis of external service integrations
 - **Performance Bottleneck Identification**: Database query analysis, N+1 problem detection, caching patterns
@@ -82,6 +85,7 @@ if analysis_scope_unclear():
 - **Code Quality Assessment**: Design pattern compliance, technical debt identification, maintainability analysis
 
 ### Business Logic Deep Dive
+
 - **Transaction Analysis**: Complex database transaction patterns and atomicity
 - **Messaging Flow Investigation**: STOMP publisher/consumer relationships and message flow
 - **API Endpoint Analysis**: Complex serializer logic, validation chains, and business rules
@@ -89,6 +93,7 @@ if analysis_scope_unclear():
 - **Error Handling Analysis**: Exception propagation, logging patterns, and recovery mechanisms
 
 ### Data & Relationship Analysis
+
 - **Model Relationship Mapping**: Complex foreign key relationships, through tables, and inheritance
 - **Query Optimization Analysis**: Database query patterns, indexing strategies, and performance issues
 - **Migration Analysis**: Database schema evolution and migration dependencies
@@ -100,6 +105,7 @@ if analysis_scope_unclear():
 ### STOMP Messaging Pattern Analysis
 
 #### Legacy django-stomp Pattern Investigation
+
 ```python
 # Publisher analysis
 from django_stomp.builder import build_publisher
@@ -117,6 +123,7 @@ def analyze_publisher_pattern():
 ```
 
 #### Modern django-outbox-pattern Investigation  
+
 ```python
 # Outbox pattern analysis
 from django_outbox_pattern.models import Published
@@ -134,6 +141,7 @@ def analyze_outbox_pattern():
 ### Authentication Flow Deep Analysis
 
 #### JWT Token Flow Investigation
+
 ```python
 # Complex authentication analysis
 class AuthenticationFlowAnalyzer:
@@ -145,7 +153,7 @@ class AuthenticationFlowAnalyzer:
         - Cross-service authentication propagation
         - Security boundary enforcement
         """
-        
+
     def analyze_seller_vs_customer_auth(self):
         """
         Investigates differences between:
@@ -158,6 +166,7 @@ class AuthenticationFlowAnalyzer:
 ### Database Routing Strategy Analysis
 
 #### Complex Query Routing Investigation
+
 ```python
 # Database router analysis
 class DatabaseAnalyzer:
@@ -169,7 +178,7 @@ class DatabaseAnalyzer:
         - Connection pooling and performance
         - Migration and schema synchronization
         """
-        
+
     def analyze_connection_patterns(self):
         """
         Deep dive into:
@@ -183,6 +192,7 @@ class DatabaseAnalyzer:
 ### Health Check System Analysis
 
 #### Complex Health Check Investigation
+
 ```python
 def analyze_health_check_architecture():
     """
@@ -198,6 +208,7 @@ def analyze_health_check_architecture():
 ### API Pattern Deep Analysis
 
 #### Complex DRF Pattern Investigation
+
 ```python
 class APIPatternAnalyzer:
     def analyze_serializer_complexity(self):
@@ -208,7 +219,7 @@ class APIPatternAnalyzer:
         - Write vs read serializer patterns
         - Transaction handling in serializers
         """
-        
+
     def analyze_permission_boundaries(self):
         """
         Deep analysis of:
@@ -222,18 +233,21 @@ class APIPatternAnalyzer:
 ## Advanced Analysis Techniques  
 
 ### Performance Analysis
+
 - **Query Analysis**: Identifies N+1 queries, missing indexes, and slow queries
 - **Memory Usage**: Analyzes object lifecycle and potential memory leaks
 - **Caching Patterns**: Evaluates caching effectiveness and invalidation strategies
 - **Background Job Performance**: Analyzes job queue patterns and bottlenecks
 
 ### Security Analysis
+
 - **Authentication Vulnerabilities**: JWT token validation, session management issues
 - **Authorization Boundaries**: Permission bypass possibilities, privilege escalation
 - **Data Exposure**: Serializer information leakage, logging sensitive data
 - **Input Validation**: SQL injection, XSS, and other injection vulnerabilities
 
 ### Integration Analysis
+
 - **External Service Patterns**: HTTP client usage, timeout handling, circuit breakers
 - **Message Queue Integration**: STOMP connection management, message reliability
 - **Database Integration**: Connection pooling, transaction management, deadlock analysis
@@ -242,6 +256,7 @@ class APIPatternAnalyzer:
 ## Complex Investigation Workflows
 
 ### Business Logic Investigation
+
 ```
 1. Map the complete request/response flow
 2. Analyze all validation layers and business rules
@@ -251,6 +266,7 @@ class APIPatternAnalyzer:
 ```
 
 ### Integration Flow Analysis
+
 ```
 1. Trace message flow from producer to consumer
 2. Analyze transformation logic and data mapping
@@ -260,6 +276,7 @@ class APIPatternAnalyzer:
 ```
 
 ### Security Deep Dive
+
 ```
 1. Map authentication and authorization flow
 2. Analyze permission boundaries and potential bypasses
@@ -269,6 +286,7 @@ class APIPatternAnalyzer:
 ```
 
 ### Performance Investigation
+
 ```
 1. Analyze database query patterns and optimization
 2. Review caching strategies and effectiveness
@@ -280,6 +298,7 @@ class APIPatternAnalyzer:
 ## Analysis Output Formats
 
 ### Comprehensive Reports
+
 - **Architecture Summary**: High-level patterns and design decisions
 - **Security Findings**: Vulnerability assessment and recommendations
 - **Performance Analysis**: Bottlenecks, optimization opportunities
@@ -287,6 +306,7 @@ class APIPatternAnalyzer:
 - **Integration Assessment**: External dependencies and reliability
 
 ### Detailed Investigations
+
 - **Code Flow Diagrams**: Step-by-step execution paths
 - **Relationship Maps**: Complex entity and service relationships  
 - **Performance Profiles**: Query analysis and optimization recommendations
@@ -294,6 +314,7 @@ class APIPatternAnalyzer:
 - **Test Coverage Analysis**: Gap identification and quality assessment
 
 ### Actionable Recommendations
+
 - **Refactoring Opportunities**: Code improvement suggestions
 - **Performance Optimizations**: Specific improvement recommendations
 - **Security Enhancements**: Vulnerability fixes and security improvements
@@ -303,12 +324,14 @@ class APIPatternAnalyzer:
 ## Integration with Other Skills
 
 ### Workflow Integration
+
 1. **django-explorer** - Provides initial discovery and context
 2. **django-analyzer** - Performs deep investigation and analysis (this skill)
 3. **django-documenter** - Creates comprehensive documentation from analysis
 4. **library-checker** - Validates dependencies and compliance
 
 ### Collaborative Analysis
+
 - **Performance Focus**: Works with infrastructure analysis for deployment optimization
 - **Security Focus**: Integrates with security audit processes and compliance requirements
 - **Documentation Focus**: Provides detailed findings for comprehensive documentation

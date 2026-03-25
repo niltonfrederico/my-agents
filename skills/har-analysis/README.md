@@ -76,7 +76,7 @@ har-analysis/
 ### Mermaid Generation
 
 ```
-"Create a sequence diagram of the user authentication flow" 
+"Create a sequence diagram of the user authentication flow"
 "Generate a flowchart showing error handling patterns"
 "Make a mindmap organizing all performance bottlenecks"
 "Show the API call sequence as a diagram"

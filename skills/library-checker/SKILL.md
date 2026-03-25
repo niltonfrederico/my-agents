@@ -4,7 +4,7 @@ name: "library-checker"
 description: "**JUNTOSSOMOSMAIS LIBRARY VALIDATOR** — Specialized skill for validating Python dependencies against juntossomosmais/allowed-libraries repository and company security policies. USE FOR: dependency validation; security compliance checking; library approval verification; vulnerability assessment; license compliance; version compatibility checking; dependency upgrade planning; security policy enforcement. PROVIDES: approval status verification; security vulnerability reports; license compliance analysis; version compatibility matrix; dependency recommendations; upgrade pathways. JUNTOSSOMOSMAIS FOCUS: Integration with juntossomosmais/allowed-libraries repository, company security policies, approved Django/Python package validation, STOMP messaging library compliance, and DRF ecosystem compatibility."
 applyTo:
   - "**/requirements*.txt"
-  - "**/pyproject.toml" 
+  - "**/pyproject.toml"
   - "**/Pipfile"
   - "**/setup.py"
   - "**/setup.cfg"
@@ -31,6 +31,7 @@ This skill validates Python dependencies against juntossomosmais security polici
 ## Core Capabilities
 
 ### Dependency Validation
+
 - **Approval Status**: Check against juntossomosmais/allowed-libraries repository
 - **Security Compliance**: Vulnerability scanning and security policy validation
 - **License Compliance**: License compatibility with company policies
@@ -39,6 +40,7 @@ This skill validates Python dependencies against juntossomosmais security polici
 - **Upgrade Planning**: Safe upgrade paths and breaking change analysis
 
 ### Security Analysis
+
 - **Vulnerability Assessment**: Known security issues in dependencies
 - **Policy Compliance**: Company security policy adherence checking
 - **Risk Assessment**: Security risk scoring and prioritization
@@ -47,6 +49,7 @@ This skill validates Python dependencies against juntossomosmais security polici
 - **Security Updates**: Monitoring for security patches and updates
 
 ### Integration Validation
+
 - **Django Ecosystem**: Django/DRF package compatibility validation
 - **STOMP Messaging**: django-stomp and outbox pattern library validation
 - **Database Libraries**: PostgreSQL, Redis, and caching library validation  
@@ -57,6 +60,7 @@ This skill validates Python dependencies against juntossomosmais security polici
 ## juntossomosmais Library Categories
 
 ### Core Django/DRF Stack
+
 ```yaml
 # Core framework dependencies
 django: ">=4.2,<5.1"
@@ -75,6 +79,7 @@ cryptography: ">=40.0,<42.0"
 ```
 
 ### Messaging and Integration
+
 ```yaml
 # STOMP messaging (legacy)
 django-stomp: ">=2.0,<3.0"
@@ -90,6 +95,7 @@ celery: ">=5.2,<6.0"
 ```
 
 ### Monitoring and Observability
+
 ```yaml
 # Health checks and monitoring
 django-health-check: ">=3.17,<4.0"
@@ -103,6 +109,7 @@ django-debug-toolbar: ">=4.1,<5.0"
 ```
 
 ### Development and Testing
+
 ```yaml
 # Testing frameworks
 pytest: ">=7.4,<8.0"
@@ -120,11 +127,12 @@ mypy: ">=1.5,<2.0"
 ## Validation Workflows
 
 ### Dependency File Analysis
+
 ```python
 def analyze_requirements_file(file_path: str) -> dict:
     """
     Comprehensive analysis of dependency files.
-    
+
     Returns:
     - Approval status for each dependency
     - Security vulnerability assessment
@@ -132,7 +140,7 @@ def analyze_requirements_file(file_path: str) -> dict:
     - Version compatibility matrix
     - Upgrade recommendations
     """
-    
+
     analysis = {
         "approved": [],
         "unapproved": [],
@@ -141,43 +149,44 @@ def analyze_requirements_file(file_path: str) -> dict:
         "license_issues": [],
         "recommendations": []
     }
-    
+
     # Parse dependency file
     dependencies = parse_dependency_file(file_path)
-    
+
     for dep in dependencies:
         # Check approval status
         approval_status = check_juntossomosmais_approval(dep)
-        
+
         # Security vulnerability check
         vulnerabilities = check_vulnerabilities(dep)
-        
+
         # License compliance
         license_status = check_license_compliance(dep)
-        
+
         # Version compatibility
         version_status = check_version_compatibility(dep)
-        
+
         # Compile results
-        compile_analysis_results(analysis, dep, approval_status, 
+        compile_analysis_results(analysis, dep, approval_status,
                                vulnerabilities, license_status, version_status)
-    
+
     return analysis
 ```
 
 ### Security Policy Validation
+
 ```python
 def validate_security_policies(dependencies: list) -> dict:
     """
     Validate dependencies against juntossomosmais security policies.
-    
+
     Checks:
     - Known vulnerability databases
     - Company security exceptions
     - Risk assessment and scoring
     - Compliance with security standards
     """
-    
+
     security_report = {
         "high_risk": [],
         "medium_risk": [],
@@ -185,36 +194,37 @@ def validate_security_policies(dependencies: list) -> dict:
         "compliance_issues": [],
         "policy_violations": []
     }
-    
+
     for dep in dependencies:
         # CVE database check
         cve_results = check_cve_database(dep)
-        
+
         # Company policy check
         policy_compliance = check_company_policies(dep)
-        
+
         # Risk scoring
         risk_score = calculate_risk_score(dep, cve_results, policy_compliance)
-        
+
         # Categorize by risk level
         categorize_security_risk(security_report, dep, risk_score)
-    
+
     return security_report
 ```
 
 ### License Compliance Analysis
+
 ```python
 def analyze_license_compliance(dependencies: list) -> dict:
     """
     Comprehensive license compliance analysis.
-    
+
     Checks:
     - License compatibility with company policies
     - GPL/copyleft license restrictions
     - Commercial use restrictions
     - Attribution requirements
     """
-    
+
     license_report = {
         "compatible": [],
         "incompatible": [],
@@ -222,27 +232,28 @@ def analyze_license_compliance(dependencies: list) -> dict:
         "attribution_required": [],
         "commercial_restrictions": []
     }
-    
+
     for dep in dependencies:
         # License detection
         detected_licenses = detect_licenses(dep)
-        
+
         # Compatibility analysis
         compatibility = analyze_license_compatibility(detected_licenses)
-        
+
         # Company policy compliance
         policy_compliance = check_license_policies(detected_licenses)
-        
+
         # Compile license analysis
-        compile_license_results(license_report, dep, detected_licenses, 
+        compile_license_results(license_report, dep, detected_licenses,
                               compatibility, policy_compliance)
-    
+
     return license_report
 ```
 
 ## Validation Reports
 
 ### Dependency Approval Report
+
 ````markdown
 # Dependency Validation Report
 
@@ -296,6 +307,7 @@ def analyze_license_compliance(dependencies: list) -> dict:
 ````
 
 ### Security Assessment Report
+
 ````markdown
 # Security Assessment Report
 
@@ -349,6 +361,7 @@ def analyze_license_compliance(dependencies: list) -> dict:
 ````
 
 ### Upgrade Planning Report
+
 ````markdown
 # Dependency Upgrade Planning Report
 
@@ -378,7 +391,7 @@ pip install mypy>=1.5.0
 ## Breaking Change Analysis
 
 ### Django 4.1 → 4.2 Upgrade
-- **Breaking Changes**: 
+- **Breaking Changes**:
   - Removed support for PostgreSQL 11
   - Changed default `auto_created` field behavior
 - **Migration Required**: Database migration for auto fields
@@ -424,6 +437,7 @@ pip install mypy>=1.5.0
 ## Integration with juntossomosmais Infrastructure
 
 ### Automated Validation Pipeline
+
 ```yaml
 # GitHub Actions workflow integration
 name: Dependency Validation
@@ -442,6 +456,7 @@ jobs:
 ```
 
 ### Development Workflow Integration
+
 - **Pre-commit Hooks**: Validate new dependencies before commit
 - **Pull Request Checks**: Automated dependency analysis in PR reviews  
 - **CI/CD Pipeline**: Block deployments with unapproved dependencies
@@ -449,6 +464,7 @@ jobs:
 - **Approval Workflow**: Integration with juntossomosmais approval process
 
 ### Company Policy Integration
+
 - **Security Policies**: Automated enforcement of company security standards
 - **License Compliance**: Automatic license compatibility checking
 - **Approval Process**: Integration with juntossomosmais/allowed-libraries workflow

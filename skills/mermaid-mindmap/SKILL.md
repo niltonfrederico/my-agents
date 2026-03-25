@@ -5,7 +5,7 @@ description: "**MERMAID MINDMAP EXPERT** — Specialized skill for creating tech
 applyTo:
   - "**/*.md"
   - "**/*.mmd"
-  - "**/README.md" 
+  - "**/README.md"
   - "**/docs/**/*"
   - "**/planning/**/*"
 invokes:
@@ -26,6 +26,7 @@ This skill specializes in creating Mermaid mindmaps that organize complex techni
 ## Core Capabilities
 
 ### Mindmap Types Supported
+
 - **Technology Stack Planning**: Framework selection, tool evaluation
 - **System Architecture**: Component hierarchies, service dependencies
 - **Feature Breakdown**: Epic → Story → Task decomposition  
@@ -38,6 +39,7 @@ This skill specializes in creating Mermaid mindmaps that organize complex techni
 ### Mermaid Mindmap Syntax Mastery
 
 #### Basic Structure
+
 ```mermaid
 mindmap
   root((Technology Stack))
@@ -68,6 +70,7 @@ mindmap
 ```
 
 #### Shape Variations
+
 ```mermaid
 mindmap
   root((Central Concept))
@@ -81,6 +84,7 @@ mindmap
 ```
 
 #### Advanced Features with Icons & Styling
+
 ```mermaid
 mindmap
   root((DevOps Workflow))
@@ -112,6 +116,7 @@ mindmap
 ### Tech-Specific Patterns
 
 #### Full-Stack Application Architecture
+
 ```mermaid
 mindmap
   root((E-commerce Platform))
@@ -172,6 +177,7 @@ mindmap
 ```
 
 #### Learning Path: Becoming a DevOps Engineer
+
 ```mermaid
 mindmap
   root((DevOps Engineer Path))
@@ -240,6 +246,7 @@ mindmap
 ```
 
 #### Technology Decision Framework
+
 ```mermaid
 mindmap
   root{{Database Selection}}
@@ -305,6 +312,7 @@ mindmap
 ```
 
 #### Troubleshooting Guide: Application Performance
+
 ```mermaid
 mindmap
   root))Performance Issues((
@@ -369,6 +377,7 @@ mindmap
 ```
 
 #### Project Planning: Microservices Migration
+
 ```mermaid
 mindmap
   root((Microservices Migration))
@@ -428,6 +437,7 @@ mindmap
 ```
 
 #### Cloud Migration Planning
+
 ```mermaid
 mindmap
   root{{Cloud Migration Strategy}}
@@ -490,24 +500,28 @@ mindmap
 ## Best Practices
 
 ### Structure & Organization
+
 - Start with a clear central concept
 - Use logical hierarchical grouping
 - Maintain consistent indentation
 - Balance depth vs breadth for readability
 
 ### Visual Design
+
 - Choose appropriate shapes for different concepts
 - Use icons to enhance understanding (FontAwesome)
 - Apply consistent styling within domains
 - Consider color coding for categories
 
 ### Technical Accuracy
+
 - Reflect real-world relationships accurately
 - Include relevant technical details
 - Show both horizontal and vertical dependencies
 - Consider operational aspects like monitoring and security
 
 ### Content Strategy
+
 - Focus on actionable information
 - Include decision criteria where relevant
 - Show alternative paths and options
@@ -516,18 +530,21 @@ mindmap
 ## Integration Guidelines
 
 ### Documentation
+
 - Use in technical specifications
 - Include in architecture decision records
 - Add to onboarding materials
 - Create visual table of contents
 
 ### Planning & Strategy
+
 - Include in project kickoff meetings
 - Use for technology selection processes
 - Add to quarterly planning sessions
 - Create visual roadmaps
 
 ### Knowledge Management
+
 - Build technical competency maps
 - Create troubleshooting decision trees
 - Organize learning resources

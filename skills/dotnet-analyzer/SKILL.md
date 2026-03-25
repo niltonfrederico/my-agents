@@ -35,6 +35,7 @@ This skill provides in-depth analysis of .NET/C# applications, going beyond surf
 ## Core Capabilities
 
 ### Architectural Analysis
+
 - **Complex Pattern Investigation**: Deep dive into CliFx commands, CAP messaging, and background job patterns
 - **Integration Flow Mapping**: Comprehensive analysis of external service integrations and API flows
 - **Performance Bottleneck Identification**: Entity Framework query analysis, memory usage, async patterns
@@ -42,6 +43,7 @@ This skill provides in-depth analysis of .NET/C# applications, going beyond surf
 - **Code Quality Assessment**: Design pattern compliance, technical debt identification, maintainability analysis
 
 ### Business Logic Deep Dive
+
 - **Transaction Analysis**: Complex database transaction patterns and Entity Framework contexts
 - **Messaging Flow Investigation**: CAP publisher/consumer relationships, transactional outbox patterns
 - **API Endpoint Analysis**: Controller logic, validation chains, and business rules
@@ -49,6 +51,7 @@ This skill provides in-depth analysis of .NET/C# applications, going beyond surf
 - **Error Handling Analysis**: Exception propagation, logging patterns, and recovery mechanisms
 
 ### Data & Relationship Analysis
+
 - **Entity Framework Optimization**: Query performance analysis, N+1 problem detection, bulk operations
 - **Model Relationship Mapping**: Complex entity relationships, navigation properties, and inheritance
 - **Migration Analysis**: Database schema evolution, migration dependencies, and data integrity
@@ -60,6 +63,7 @@ This skill provides in-depth analysis of .NET/C# applications, going beyond surf
 ### CliFx Command Architecture Investigation
 
 #### ApiCommand Deep Analysis
+
 ```csharp
 public class ApiCommand : ICommand
 {
@@ -76,10 +80,10 @@ public class ApiCommand : ICommand
             - ASP.NET Core pipeline customization and middleware order
             */
             services.ConfigureSharedServices(_configuration);
-            
+
             // Hangfire analysis: job storage, recurring jobs, dashboard security
             services.AddHangfire(config => /* complex configuration analysis */);
-            
+
             // Validation pipeline analysis: automatic discovery, error handling
             services.AddControllers(options =>
             {
@@ -102,6 +106,7 @@ public class ApiCommand : ICommand
 ```
 
 #### WorkerCommand Consumer Analysis
+
 ```csharp
 public class WorkerCommand : ICommand
 {
@@ -119,6 +124,7 @@ public class WorkerCommand : ICommand
 ### CAP Messaging Deep Analysis
 
 #### Transactional Outbox Pattern Investigation
+
 ```csharp
 public class ComplexBusinessOperationAnalysis
 {
@@ -132,21 +138,22 @@ public class ComplexBusinessOperationAnalysis
         - Idempotency implementation via UseEntityFrameworkIdempotency
         - Message ordering and processing sequence analysis
         */
-        
+
         using var transaction = await _context.Database.BeginTransactionAsync();
-        
+
         // Analyze complex multi-step business operations
         var result = await ProcessComplexBusinessLogic();
-        
+
         // Investigate CAP publishing within transaction boundaries
         await _capBus.PublishAsync("topic.name", messagePayload);
-        
+
         await transaction.CommitAsync();
     }
 }
 ```
 
 #### Consumer Pattern Deep Analysis
+
 ```csharp
 public class OrderCreatedConsumer : ICapSubscribe
 {
@@ -158,7 +165,7 @@ public class OrderCreatedConsumer : ICapSubscribe
     - Error handling and dead letter queue configuration
     - Message processing idempotency and duplicate handling
     */
-    
+
     public class Handler : IConsumerService<OrderCreatedMessage>
     {
         /*
@@ -176,6 +183,7 @@ public class OrderCreatedConsumer : ICapSubscribe
 ### Entity Framework Deep Analysis
 
 #### Complex Query Performance Investigation
+
 ```csharp
 public class DatabaseAnalyzer
 {
@@ -189,7 +197,7 @@ public class DatabaseAnalyzer
         - Bulk operation performance vs individual operations
         - Index utilization and query optimization opportunities
         */
-        
+
         // Analyze complex query patterns
         var result = await _context.Orders
             .Include(o => o.Items)
@@ -199,7 +207,7 @@ public class DatabaseAnalyzer
             .AsNoTracking()
             .ToListAsync();
     }
-    
+
     public async Task AnalyzeBulkOperations()
     {
         /*
@@ -214,6 +222,7 @@ public class DatabaseAnalyzer
 ```
 
 #### StandardEntity Pattern Analysis
+
 ```csharp
 public class StandardEntityAnalyzer
 {
@@ -225,11 +234,11 @@ public class StandardEntityAnalyzer
     - Audit trail completeness and consistency
     - Soft delete pattern implementation and query filtering
     */
-    
+
     private void AutomaticallyAddCreatedAndUpdatedAt()
     {
         var entitiesOnDbContext = ChangeTracker.Entries<StandardEntity>();
-        
+
         // Deep analysis of change tracking performance
         foreach (var item in entitiesOnDbContext.Where(t => t.State == EntityState.Added))
         {
@@ -244,6 +253,7 @@ public class StandardEntityAnalyzer
 ### Hangfire Background Job Analysis
 
 #### Job Processing Deep Investigation
+
 ```csharp
 public class BackgroundJobAnalyzer
 {
@@ -255,7 +265,7 @@ public class BackgroundJobAnalyzer
     - Job scheduling patterns and recurring job configuration
     - Dead job analysis and failure recovery strategies
     */
-    
+
     public async Task AnalyzeJobPattern(TodoItemCompletionJob job)
     {
         /*
@@ -271,6 +281,7 @@ public class BackgroundJobAnalyzer
 ```
 
 #### Job Dashboard Security Analysis
+
 ```csharp
 public class HangfireDashboardAnalysis
 {
@@ -287,6 +298,7 @@ public class HangfireDashboardAnalysis
 ### FluentValidation Deep Analysis
 
 #### Complex Validation Chain Investigation
+
 ```csharp
 public class ValidationAnalyzer
 {
@@ -298,7 +310,7 @@ public class ValidationAnalyzer
     - Error message localization and user experience
     - Validation rule composition and reusability patterns
     */
-    
+
     public class CreateOrderValidation : AbstractValidator<CreateOrderDto>
     {
         /*
@@ -315,6 +327,7 @@ public class ValidationAnalyzer
 ### Health Check System Analysis
 
 #### Custom Health Check Investigation
+
 ```csharp
 public class HealthCheckAnalyzer
 {
@@ -326,7 +339,7 @@ public class HealthCheckAnalyzer
     - Integration with monitoring systems and alerting
     - Graceful degradation patterns and circuit breaker integration
     */
-    
+
     public async Task AnalyzeRabbitMQHealthCheck()
     {
         /*
@@ -343,18 +356,21 @@ public class HealthCheckAnalyzer
 ## Advanced Analysis Techniques
 
 ### Performance Analysis
+
 - **Query Analysis**: EF Core query plan examination, index usage analysis, performance profiling
 - **Memory Usage**: Object lifecycle analysis, garbage collection impact, memory leak detection
 - **Async Patterns**: Task utilization, deadlock prevention, async/await optimization
 - **Background Processing**: Hangfire job queue analysis, resource contention, processing throughput
 
 ### Security Analysis
+
 - **Authentication Vulnerabilities**: JWT token validation, claim-based security, session management
 - **Authorization Boundaries**: Permission enforcement, role-based access, resource protection
 - **Data Exposure**: Serialization security, logging sensitive data, API response filtering
 - **Input Validation**: FluentValidation bypass scenarios, injection vulnerabilities, business rule enforcement
 
 ### Integration Analysis
+
 - **External Service Patterns**: HTTP client usage, timeout handling, circuit breaker implementation
 - **Message Queue Integration**: CAP transactional guarantees, message ordering, failure recovery
 - **Database Integration**: Connection pooling, transaction isolation, deadlock analysis
@@ -363,6 +379,7 @@ public class HealthCheckAnalyzer
 ## Complex Investigation Workflows
 
 ### Business Logic Investigation
+
 ```
 1. Map the complete request/response flow through CliFx commands
 2. Analyze all validation layers and business rule enforcement
@@ -372,6 +389,7 @@ public class HealthCheckAnalyzer
 ```
 
 ### Integration Flow Analysis
+
 ```
 1. Trace CAP message flow from publisher to consumer
 2. Analyze Entity Framework query patterns and optimizations
@@ -381,6 +399,7 @@ public class HealthCheckAnalyzer
 ```
 
 ### Security Deep Dive
+
 ```
 1. Map authentication and authorization flow across controllers
 2. Analyze permission boundaries and potential bypass scenarios
@@ -390,6 +409,7 @@ public class HealthCheckAnalyzer
 ```
 
 ### Performance Investigation
+
 ```
 1. Analyze Entity Framework query patterns and optimization opportunities
 2. Review Hangfire job processing efficiency and resource usage
@@ -401,6 +421,7 @@ public class HealthCheckAnalyzer
 ## Analysis Output Formats
 
 ### Comprehensive Reports
+
 - **Architecture Summary**: CliFx command relationships, service dependencies
 - **Security Findings**: Authentication/authorization vulnerabilities, data exposure risks
 - **Performance Analysis**: Query optimization opportunities, background job efficiency
@@ -408,6 +429,7 @@ public class HealthCheckAnalyzer
 - **Integration Assessment**: External dependencies, messaging reliability, health check effectiveness
 
 ### Detailed Investigations
+
 - **Code Flow Diagrams**: Request processing through controllers and commands
 - **Entity Relationship Maps**: Complex database relationships and query patterns
 - **Performance Profiles**: EF Core query analysis, Hangfire job processing metrics
@@ -415,6 +437,7 @@ public class HealthCheckAnalyzer
 - **Test Coverage Analysis**: Integration test gaps, unit test quality assessment
 
 ### Actionable Recommendations
+
 - **Refactoring Opportunities**: Code improvement suggestions, pattern modernization
 - **Performance Optimizations**: Query improvements, async pattern enhancements
 - **Security Enhancements**: Authentication hardening, authorization improvements
@@ -424,12 +447,14 @@ public class HealthCheckAnalyzer
 ## Integration with Other Skills
 
 ### Workflow Integration
+
 1. **dotnet-explorer** - Provides initial discovery and context
 2. **dotnet-analyzer** - Performs deep investigation and analysis (this skill)
 3. **dotnet-documenter** - Creates comprehensive documentation from analysis
 4. **library-checker** - Validates .NET dependencies and compliance
 
 ### Collaborative Analysis
+
 - **Performance Focus**: Works with infrastructure analysis for deployment optimization
 - **Security Focus**: Integrates with security audit processes and compliance requirements
 - **Documentation Focus**: Provides detailed findings for comprehensive documentation

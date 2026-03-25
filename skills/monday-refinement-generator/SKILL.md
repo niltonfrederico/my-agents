@@ -4,7 +4,7 @@ name: "monday-refinement-generator"
 description: "**MONDAY REFINEMENT GENERATOR** — Synthesizes validated Monday.com analysis into comprehensive implementation plans with Planning Poker estimation. USE FOR: implementation planning; effort estimation; task breakdown; acceptance criteria creation; testing strategy. CREATES: detailed refinement documents; Planning Poker estimates; file change analysis; testing plans. JUNTOSSOMOSMAIS FOCUS: Brazilian Agile methodology; Django/Python and .NET/C# patterns; r2-d2 compliance preparation."
 applyTo:
   - "**/*refinement*/**"
-  - "**/*planning*/**" 
+  - "**/*planning*/**"
   - "**/*implementation*/**"
   - "**/*analysis*/**"
 invokes:
@@ -36,7 +36,7 @@ interface RefinementPrerequisites {
 function verify_refinement_prerequisites(prerequisites: RefinementPrerequisites): boolean {
   const analysis_exists = check_memory_file(prerequisites.analysis_results);
   const analysis_complete = prerequisites.analysis_complete;
-  
+
   return analysis_exists && analysis_complete;
 }
 ```
@@ -49,28 +49,28 @@ function verify_refinement_prerequisites(prerequisites: RefinementPrerequisites)
 def load_validated_analysis_context() -> RefinementContext:
     """
     Loads complete validated context from monday-task-analyzer skill.
-    
+
     CRITICAL REQUIREMENTS (March 2026 Fixes):
-    - MUST verify analysis was completed successfully 
+    - MUST verify analysis was completed successfully
     - MUST STOP if required context is missing
     - MUST use MCP tools for any additional data requests
     - MUST ask user when planning details are unclear
-    
+
     Returns:
         RefinementContext: All validated inputs ready for refinement generation
     """
-    
+
     # Load analysis results from session memory
     analysis_results = read_memory("/memories/session/monday_task_analysis_results.md")
-    
+
     if not analysis_results.ready_for_refinement:
         raise AnalysisIncomplete("Analysis must be completed by monday-task-analyzer before refinement")
-    
+
     # Load repository investigation if available
     repository_investigation = None
     if analysis_results.repository_investigation_path:
         repository_investigation = read_memory(analysis_results.repository_investigation_path)
-    
+
     return RefinementContext(
         task_data=analysis_results.task_data,
         repository_name=analysis_results.repository_name,  # Explicitly confirmed
@@ -91,10 +91,10 @@ def analyze_implementation_impact(
 ) -> ImplementationImpact:
     """
     Analyzes codebase to understand implementation scope and complexity.
-    
+
     Uses Explore subagent for deep codebase understanding when needed.
     """
-    
+
     # Basic impact analysis from architecture memory
     if context.architecture:
         affected_files = estimate_files_from_architecture(context.architecture)
@@ -102,7 +102,7 @@ def analyze_implementation_impact(
     else:
         affected_files = []
         integration_points = []
-    
+
     # Enhanced analysis via Explore subagent when gaps exist
     if needs_deeper_exploration(context, affected_files):
         exploration_results = runSubagent(
@@ -110,24 +110,24 @@ def analyze_implementation_impact(
             description="Codebase exploration for refinement",
             prompt=f"""
             Explore {context.repository_name} to understand:
-            
+
             1. **Implementation Patterns**: How similar features are implemented
             2. **File Organization**: Where business logic, models, APIs are structured
             3. **Testing Patterns**: Test organization and coverage approach
             4. **Integration Points**: How this task might affect existing functionality
-            
+
             Business context: {task_business_terms}
             Framework: {context.framework}
-            
-            Focus on: entry points, existing implementations of similar features, 
+
+            Focus on: entry points, existing implementations of similar features,
             test utilities, and any patterns relevant to this business domain.
-            
+
             Provide concrete file paths and implementation patterns found.
             """
         )
-        
+
         affected_files = integrate_exploration_results(affected_files, exploration_results)
-    
+
     return ImplementationImpact(
         files_affected=affected_files,
         complexity_indicators=extract_complexity_indicators(context),
@@ -137,14 +137,14 @@ def analyze_implementation_impact(
 
 def needs_deeper_exploration(context: RefinementContext, affected_files: list) -> bool:
     """Determines if deeper codebase exploration is needed."""
-    
+
     needs_exploration = [
         len(affected_files) == 0,  # No files identified
         context.architecture is None,  # No architecture context
         is_complex_business_domain(context.task_data),  # Complex business logic
         requires_integration_analysis(context.task_data)  # Integration complexity
     ]
-    
+
     return any(needs_exploration)
 ```
 
@@ -157,18 +157,18 @@ def calculate_planning_poker_estimate(
 ) -> PlanningPokerResult:
     """
     Uses brazilian-agile-framework skill for proven Planning Poker estimation.
-    
+
     Returns:
         PlanningPokerResult: Size, effort, and detailed justification
     """
-    
+
     # Prepare context for Brazilian Agile Framework
     task_context = TaskContext(
         requirements_unclear=assess_requirements_clarity(context.task_data),
         stakeholder_alignment_pending=needs_stakeholder_validation(context.task_data),
         business_rules_complex=has_complex_business_rules(context.task_data, impact)
     )
-    
+
     technical_analysis = TechnicalAnalysis(
         files_affected=len(impact.files_affected),
         requires_database_changes=requires_db_changes(impact),
@@ -181,7 +181,7 @@ def calculate_planning_poker_estimate(
         integration_points_untested=has_untested_integrations(impact),
         performance_requirements_unclear=needs_performance_analysis(context.task_data)
     )
-    
+
     # Delegate to Brazilian Agile Framework skill
     estimation_result = invoke_skill(
         "brazilian-agile-framework",
@@ -189,7 +189,7 @@ def calculate_planning_poker_estimate(
         task_context=task_context,
         technical_analysis=technical_analysis
     )
-    
+
     return estimation_result
 ```
 
@@ -199,12 +199,12 @@ def calculate_planning_poker_estimate(
 
 ```markdown
 def generate_django_refinement(
-    context: RefinementContext, 
+    context: RefinementContext,
     estimate: PlanningPokerEstimate,
     impact: ImplementationImpact
 ) -> str:
     """Generates Django-specific refinement following juntossomosmais patterns."""
-    
+
     template = f"""
 # REFINEMENT - {context.task_data.name}
 
@@ -268,11 +268,11 @@ def generate_django_refinement(
 ```markdown
 def generate_dotnet_refinement(
     context: RefinementContext,
-    estimate: PlanningPokerEstimate, 
+    estimate: PlanningPokerEstimate,
     impact: ImplementationImpact
 ) -> str:
     """Generates .NET-specific refinement following juntossomosmais patterns."""
-    
+
     template = f"""
 # REFINEMENT - {context.task_data.name}
 
@@ -331,21 +331,21 @@ def generate_dotnet_refinement(
 
 ```python
 def save_refinement_output(
-    refinement_content: str, 
+    refinement_content: str,
     context: RefinementContext,
     estimation: PlanningPokerResult
 ) -> str:
     """
     Saves refinement to temp.md and updates session memory.
-    
+
     Returns:
         str: Path to saved refinement file
     """
-    
+
     # Save to temp.md for compliance validation
-    output_path = "/Users/niltonfrat/.copilot/agents/temp.md" 
+    output_path = "/Users/niltonfrat/.copilot/agents/temp.md"
     write_file(output_path, refinement_content)
-    
+
     # Update session memory with generation results
     generation_results = {
         'refinement_path': output_path,
@@ -358,9 +358,9 @@ def save_refinement_output(
         'generation_timestamp': datetime.now().isoformat(),
         'ready_for_compliance': True
     }
-    
+
     update_memory("/memories/session/refinement_generation_results.md", generation_results)
-    
+
     return output_path
 ```
 
@@ -371,7 +371,7 @@ def save_refinement_output(
 ```yaml
 ✅ QUALITY GATES:
 - [ ] Analysis results loaded from monday-task-analyzer
-- [ ] Repository explicitly confirmed (never assumed) 
+- [ ] Repository explicitly confirmed (never assumed)
 - [ ] Brazilian playbook compliance verified
 - [ ] Architecture discovery completed (if available)
 - [ ] Single-stack constraint validated
@@ -401,7 +401,7 @@ def save_refinement_output(
 • Planning Poker: {size} ({days} dias)
 • Metodologia: {estimation_methodology}
 • Arquivos Impactados: {file_count}
-• Framework: {framework} 
+• Framework: {framework}
 • Testing: {test_strategy}
 
 📄 Refinement salvo: temp.md

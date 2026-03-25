@@ -1,0 +1,56 @@
+# Markdownlint configuration for GitHub Copilot Agents & Skills repository
+# See https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md
+
+# Use default rules as baseline
+default: true
+
+# Rule customizations
+MD003: # Heading style
+  style: "atx" # Use # style headings
+
+MD004: # Unordered list style
+  style: "dash" # Use - for bullet points
+
+MD007: # Unordered list indentation
+  indent: 2 # 2 spaces per level
+
+MD012: # Multiple consecutive blank lines
+  maximum: 3 # Allow up to 3 blank lines
+
+MD013: false # Disable line length checking - too restrictive for existing content
+
+MD024: # Multiple headings with the same content
+  siblings_only: true # Only check siblings, not all headings
+
+MD025: false # Allow multiple top-level headings for agent documentation
+
+MD026: # Trailing punctuation in heading
+  punctuation: ".,;:!?" # Don't allow these at end of headings
+
+MD033: false # Allow inline HTML for enhanced formatting
+
+MD034: false # Allow bare URLs in documentation
+
+MD036: false # Allow emphasis instead of headings for flexibility
+
+MD040: false # Allow fenced code blocks without language for flexibility
+
+MD041: # First line in file should be a top level heading
+  front_matter_title: "" # Ignore YAML front matter
+  level: 1
+
+MD046: false # Allow flexible code block styles (fenced and indented)
+
+MD048: # Code fence style
+  style: "backtick" # Use ``` not ~~~
+
+MD049: # Emphasis style
+  style: "asterisk" # Use *emphasis*
+
+MD050: # Strong style
+  style: "asterisk" # Use **strong**
+
+MD060: false # Allow flexible table formatting
+
+# Disable rules that are too restrictive for documentation
+MD001: false # Heading levels - allow flexible heading structure for TOCs

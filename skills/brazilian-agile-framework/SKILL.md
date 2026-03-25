@@ -5,7 +5,7 @@ description: "**BRAZILIAN AGILE FRAMEWORK** — Specialized utility for Brazilia
 applyTo:
   - "**/*planning*/**"
   - "**/*estimation*/**"
-  - "**/*agile*/**" 
+  - "**/*agile*/**"
   - "**/*refinement*/**"
 invokes:
   - "vscode_askQuestions"
@@ -26,25 +26,25 @@ invokes:
 def validate_brazilian_playbook_compliance(task_data: MondayTaskData) -> PlaybookValidation:
     """
     Validates task against Brazilian Agile methodology requirements.
-    
+
     Args:
         task_data: Complete Monday.com task information
-        
+
     Returns:
         PlaybookValidation: Detailed compliance check with mandatory/optional results
     """
-    
+
     mandatory_validations = {
         'tema_epico': validate_tema_epico_field(task_data.tema_epico),
         'contexto': validate_contexto_field(task_data.contexto)
     }
-    
+
     optional_enhancements = {
         'description_quality': assess_description_quality(task_data.description),
         'business_value': assess_business_value(task_data.valor),
         'acceptance_criteria': assess_acceptance_criteria(task_data.criterios_aceite)
     }
-    
+
     return PlaybookValidation(
         mandatory_results=mandatory_validations,
         enhancement_opportunities=optional_enhancements,
@@ -53,29 +53,29 @@ def validate_brazilian_playbook_compliance(task_data: MondayTaskData) -> Playboo
 
 def validate_tema_epico_field(tema_epico: str) -> FieldValidation:
     """Validates Tema/Épico field against Brazilian standards."""
-    
+
     if not tema_epico or tema_epico.strip() == "":
         return FieldValidation(
             status="FAIL",
             message="Campo Tema/Épico é obrigatório",
             is_blocking=True
         )
-    
+
     # Check length constraints  
     if len(tema_epico.strip()) < 3:
         return FieldValidation(
-            status="FAIL", 
+            status="FAIL",
             message="Tema/Épico deve ter pelo menos 3 caracteres",
             is_blocking=True
         )
-    
+
     if len(tema_epico.strip()) > 100:
         return FieldValidation(
             status="FAIL",
-            message="Tema/Épico deve ter no máximo 100 caracteres", 
+            message="Tema/Épico deve ter no máximo 100 caracteres",
             is_blocking=True
         )
-    
+
     # Check for placeholder values
     placeholder_values = ["tbd", "n/a", "pendente", "a definir", "todo"]
     if tema_epico.lower().strip() in placeholder_values:
@@ -85,7 +85,7 @@ def validate_tema_epico_field(tema_epico: str) -> FieldValidation:
             is_blocking=True,
             suggestion="Defina um tema específico que represente o valor de negócio"
         )
-    
+
     return FieldValidation(
         status="PASS",
         message="Tema/Épico válido",
@@ -94,14 +94,14 @@ def validate_tema_epico_field(tema_epico: str) -> FieldValidation:
 
 def validate_contexto_field(contexto: str) -> FieldValidation:
     """Validates Contexto field for business justification."""
-    
+
     if not contexto or contexto.strip() == "":
         return FieldValidation(
             status="FAIL",
             message="Campo Contexto é obrigatório",
             is_blocking=True
         )
-    
+
     # Minimum meaningful content requirement
     if len(contexto.strip()) < 30:
         return FieldValidation(
@@ -110,13 +110,13 @@ def validate_contexto_field(contexto: str) -> FieldValidation:
             is_blocking=True,
             suggestion="Adicione contexto sobre: problema atual, impacto no negócio, stakeholders afetados"
         )
-    
+
     # Check for boilerplate content
     boilerplate_indicators = [
         "lorem ipsum", "texto padrão", "preencher depois",
         "contexto genérico", "adicionar contexto"
     ]
-    
+
     if any(indicator in contexto.lower() for indicator in boilerplate_indicators):
         return FieldValidation(
             status="FAIL",
@@ -124,9 +124,9 @@ def validate_contexto_field(contexto: str) -> FieldValidation:
             is_blocking=True,
             suggestion="Descreva o contexto real de negócio para esta tarefa"
         )
-    
+
     return FieldValidation(
-        status="PASS", 
+        status="PASS",
         message="Contexto válido com justificativa de negócio",
         is_blocking=False
     )
@@ -143,18 +143,18 @@ def calculate_planning_poker_estimate(
 ) -> PlanningPokerResult:
     """
     Uses proven 'Incertezas vs Complexidade' model for accurate estimation.
-    
+
     Args:
         task_context: Business context and requirements
         technical_analysis: Architecture and implementation complexity
-        
+
     Returns:
         PlanningPokerResult: Size estimate with detailed justification
     """
-    
+
     uncertainty_assessment = assess_uncertainty_level(task_context, technical_analysis)
     complexity_assessment = assess_complexity_level(task_context, technical_analysis)
-    
+
     # March 2026 proven estimation matrix
     size_matrix = {
         ('low', 'low'): EstimateSize.XS,      # 1-2 dias
@@ -165,12 +165,12 @@ def calculate_planning_poker_estimate(
         ('high', 'medium'): EstimateSize.L,   # 5-8 dias
         ('high', 'high'): EstimateSize.XL     # 8+ dias
     }
-    
+
     estimated_size = size_matrix.get(
-        (uncertainty_assessment.level, complexity_assessment.level), 
+        (uncertainty_assessment.level, complexity_assessment.level),
         EstimateSize.M  # Default fallback
     )
-    
+
     return PlanningPokerResult(
         size=estimated_size,
         days_estimate=get_days_for_size(estimated_size),
@@ -181,46 +181,46 @@ def calculate_planning_poker_estimate(
     )
 
 def assess_uncertainty_level(
-    task_context: TaskContext, 
+    task_context: TaskContext,
     technical_analysis: TechnicalAnalysis
 ) -> UncertaintyAssessment:
     """Assesses uncertainty factors that affect estimation accuracy."""
-    
+
     uncertainty_factors = []
-    
+
     # Business uncertainty indicators
     if task_context.requirements_unclear:
         uncertainty_factors.append("Requisitos de negócio não completamente definidos")
-    
+
     if task_context.stakeholder_alignment_pending:
         uncertainty_factors.append("Alinhamento com stakeholders ainda necessário")
-    
+
     if task_context.business_rules_complex:
         uncertainty_factors.append("Regras de negócio complexas requerem validação")
-    
+
     # Technical uncertainty indicators  
     if technical_analysis.new_technologies_required:
         uncertainty_factors.append("Tecnologias ou padrões novos para a equipe")
-    
+
     if technical_analysis.external_dependencies_unknown:
         uncertainty_factors.append("Dependências externas com comportamento incerto")
-        
+
     if technical_analysis.integration_points_untested:
         uncertainty_factors.append("Pontos de integração não testados anteriormente")
-    
+
     if technical_analysis.performance_requirements_unclear:
         uncertainty_factors.append("Requisitos de performance não quantificados")
-    
+
     # Calculate uncertainty level
     uncertainty_score = len(uncertainty_factors)
-    
+
     if uncertainty_score >= 4:
         level = "high"
     elif uncertainty_score >= 2:
         level = "medium"
     else:
         level = "low"
-    
+
     return UncertaintyAssessment(
         level=level,
         score=uncertainty_score,
@@ -233,44 +233,44 @@ def assess_complexity_level(
     technical_analysis: TechnicalAnalysis  
 ) -> ComplexityAssessment:
     """Assesses technical complexity factors that affect implementation effort."""
-    
+
     complexity_factors = []
-    
+
     # Implementation complexity indicators
     if technical_analysis.files_affected > 5:
         complexity_factors.append(f"Múltiplos arquivos impactados ({technical_analysis.files_affected})")
-    
+
     if technical_analysis.requires_database_changes:
         complexity_factors.append("Mudanças no modelo de dados e migrações")
-    
+
     if technical_analysis.affects_api_contracts:
         complexity_factors.append("Alterações em contratos de API (breaking changes)")
-    
+
     if technical_analysis.complex_business_logic_required:
         complexity_factors.append("Lógica de negócio complexa com múltiplas regras")
-    
+
     if technical_analysis.requires_extensive_testing:
         complexity_factors.append("Estratégia de testes abrangente necessária")
-    
+
     if technical_analysis.affects_multiple_services:
         complexity_factors.append("Impacto em múltiplos serviços ou aplicações")
-    
+
     if technical_analysis.requires_performance_optimization:
         complexity_factors.append("Otimizações de performance requeridas")
-    
+
     # Calculate complexity level
     complexity_score = len(complexity_factors)
-    
+
     if complexity_score >= 5:
         level = "high"
     elif complexity_score >= 2:
-        level = "medium" 
+        level = "medium"
     else:
         level = "low"
-    
+
     return ComplexityAssessment(
         level=level,
-        score=complexity_score, 
+        score=complexity_score,
         factors=complexity_factors,
         assessment_date=datetime.now()
     )
@@ -281,7 +281,7 @@ def assess_complexity_level(
 ```python
 def generate_estimation_justification(result: PlanningPokerResult) -> EstimationJustification:
     """Generates detailed justification for Planning Poker estimate."""
-    
+
     justification_template = f"""
 ### 📊 Planning Poker: **{result.size}** ({result.days_estimate} dias úteis)
 
@@ -302,7 +302,7 @@ def generate_estimation_justification(result: PlanningPokerResult) -> Estimation
 #### Marcos de Validação:
 {generate_validation_milestones(result)}
     """
-    
+
     return EstimationJustification(
         content=justification_template,
         confidence_level=result.estimation_confidence,
@@ -314,26 +314,26 @@ def format_factor_list(factors: list[str]) -> str:
     """Formats factor list for markdown output."""
     if not factors:
         return "- Nenhum fator significativo identificado"
-    
+
     return "\n".join([f"- {factor}" for factor in factors])
 
 def generate_validation_milestones(result: PlanningPokerResult) -> list[str]:
     """Generates validation milestones based on estimate size."""
-    
+
     milestones = [
         f"Dia {result.days_estimate * 0.2:.0f}: Análise completa e abordagem validada",
         f"Dia {result.days_estimate * 0.6:.0f}: Implementação core finalizada",
-        f"Dia {result.days_estimate * 0.8:.0f}: Testes implementados e passando", 
+        f"Dia {result.days_estimate * 0.8:.0f}: Testes implementados e passando",
         f"Dia {result.days_estimate:.0f}: Validação final e deploy pronto"
     ]
-    
+
     # Add size-specific milestones
     if result.size in [EstimateSize.L, EstimateSize.XL]:
         milestones.insert(1, f"Dia {result.days_estimate * 0.3:.0f}: Spike/POC concluído (se necessário)")
-    
+
     if result.size == EstimateSize.XL:
         milestones.insert(-1, f"Dia {result.days_estimate * 0.9:.0f}: Review arquitetural e performance")
-    
+
     return milestones
 ```
 
@@ -354,7 +354,7 @@ SIZE_DEFINITIONS = {
         'examples': ['Ajustes de configuração', 'Correções de texto', 'Pequenos bugfixes']
     },
     EstimateSize.S: {
-        'days': (2, 3), 
+        'days': (2, 3),
         'description': 'Funcionalidade pequena, padrões estabelecidos',
         'examples': ['Nova API endpoint simples', 'Validação de campo', 'Pequena regra de negócio']
     },

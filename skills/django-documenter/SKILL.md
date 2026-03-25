@@ -11,7 +11,7 @@ applyTo:
   - "**/api/**/*"
 invokes:
   - "create_file"
-  - "replace_string_in_file" 
+  - "replace_string_in_file"
   - "vscode_askQuestions"
   - "mcp_io_github_git_get_file_contents"
   - "django-explorer"
@@ -33,6 +33,7 @@ This skill creates comprehensive, professional documentation for Django/Python a
 ## Core Capabilities
 
 ### Documentation Types
+
 - **Architectural Documentation**: System overview, component relationships, design patterns
 - **API Documentation**: Endpoint specifications, authentication flows, request/response examples  
 - **Business Logic Documentation**: Complex workflows, business rules, validation patterns
@@ -41,6 +42,7 @@ This skill creates comprehensive, professional documentation for Django/Python a
 - **Troubleshooting Guides**: Common issues, debugging procedures, error resolution
 
 ### Visual Integration  
+
 - **Architecture Diagrams**: System components, service interactions, data flow
 - **Sequence Diagrams**: API interactions, authentication flows, complex workflows
 - **Flowcharts**: Business logic, decision trees, error handling
@@ -48,6 +50,7 @@ This skill creates comprehensive, professional documentation for Django/Python a
 - **Technical Diagrams**: Database schemas, message flows, deployment architecture
 
 ### Content Generation
+
 - **Code Examples**: Practical usage patterns, implementation samples, best practices
 - **Configuration Guides**: Environment setup, service configuration, deployment options
 - **API Specifications**: Complete endpoint documentation with examples and schemas
@@ -59,6 +62,7 @@ This skill creates comprehensive, professional documentation for Django/Python a
 ### STOMP Messaging Documentation
 
 #### Legacy django-stomp Documentation
+
 ````markdown
 # STOMP Messaging - Legacy Pattern
 
@@ -78,7 +82,7 @@ def send_order_update(order_id: int, status: str):
         "status": status,
         "timestamp": timezone.now().isoformat()
     }
-    
+
     publisher.send(
         queue="/queue/order.updates",
         body=json.dumps(message_body),
@@ -96,7 +100,7 @@ flowchart TD
     E --> F[Consumer Service]
     F --> G[Process Message]
     G --> H[Update Database]
-    
+
     style A fill:#e1f5fe
     style E fill:#f3e5f5
     style F fill:#e8f5e8
@@ -104,6 +108,7 @@ flowchart TD
 ````
 
 #### Modern django-outbox-pattern Documentation
+
 ````markdown
 # STOMP Messaging - Modern Outbox Pattern
 
@@ -117,7 +122,7 @@ from django.db import transaction
 def create_order_with_event(order_data: dict):
     # Create order in database
     order = Order.objects.create(**order_data)
-    
+
     # Create outbox event (will be published asynchronously)
     Published.objects.create(
         message_id=str(uuid.uuid4()),
@@ -129,7 +134,7 @@ def create_order_with_event(order_data: dict):
         }),
         headers={"event_type": "order.created"}
     )
-    
+
     return order
 ```
 
@@ -141,12 +146,12 @@ sequenceDiagram
     participant Outbox as Outbox Table
     participant Publisher as Outbox Publisher
     participant Queue as RabbitMQ
-    
+
     API->>DB: Create Order (Transaction)
     API->>Outbox: Create Published Event (Same Transaction)
     DB-->>API: Order Created
     Outbox-->>API: Event Stored
-    
+
     Note over Publisher: Async Process
     Publisher->>Outbox: Poll for Unpublished
     Publisher->>Queue: Publish Message
@@ -157,6 +162,7 @@ sequenceDiagram
 ### Authentication Architecture Documentation
 
 #### DRF Authentication Flow Documentation
+
 ````markdown
 # Authentication Architecture
 
@@ -169,22 +175,22 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 class LvJWTAuthentication(JWTAuthentication):
     """
     Custom JWT authentication for customer requests.
-    
+
     Features:
     - JWT token validation with custom claims
     - User context injection for permissions
     - Integration with customer service
     """
-    
+
     def authenticate(self, request):
         header = self.get_header(request)
         if header is None:
             return None
-            
+
         raw_token = self.get_raw_token(header)
         validated_token = self.get_validated_token(raw_token)
         user = self.get_user(validated_token)
-        
+
         return (user, validated_token)
 ```
 
@@ -195,14 +201,14 @@ sequenceDiagram
     participant API as Django API
     participant JWT as JWT Service
     participant DB as User Database
-    
+
     Client->>API: Request with JWT Token
     API->>JWT: Validate Token
     JWT-->>API: Token Valid + Claims
     API->>DB: Fetch User Context
     DB-->>API: User Object
     API-->>Client: Authenticated Response
-    
+
     Note over API: LvJWTAuthentication
     Note over JWT: Custom Claims Validation
 ```
@@ -211,6 +217,7 @@ sequenceDiagram
 ### Health Check Documentation
 
 #### Health Check Architecture Documentation  
+
 ````markdown
 # Health Check System
 
@@ -224,19 +231,19 @@ class CustomDatabaseHealthCheck(BaseHealthCheckBackend):
     """
     Enhanced database health check with connection testing.
     """
-    
+
     def check_status(self):
         try:
             from django.db import connections
-            
+
             # Test read connection
             with connections['replica'].cursor() as cursor:
                 cursor.execute("SELECT 1")
-                
+
             # Test write connection  
             with connections['default'].cursor() as cursor:
                 cursor.execute("SELECT 1")
-                
+
         except Exception as e:
             self.add_error(f"Database connection failed: {e}")
 ```
@@ -246,21 +253,21 @@ class CustomDatabaseHealthCheck(BaseHealthCheckBackend):
 flowchart TD
     A[Load Balancer] --> B[Health Check Endpoint]
     B --> C[Database Check]
-    B --> D[RabbitMQ Check] 
+    B --> D[RabbitMQ Check]
     B --> E[Redis Check]
     B --> F[External Service Check]
-    
+
     C --> G[Read Replica Test]
     C --> H[Write Database Test]
-    
+
     D --> I[STOMP Connection]
     D --> J[Queue Availability]
-    
+
     E --> K[Cache Connection]
-    
+
     F --> L[Partner API Ping]
     F --> M[Payment Gateway]
-    
+
     style B fill:#e1f5fe
     style C fill:#e8f5e8
     style D fill:#fff3e0
@@ -272,6 +279,7 @@ flowchart TD
 ## Documentation Templates
 
 ### Application Architecture Template
+
 ````markdown
 # [Application Name] - Architecture Documentation
 
@@ -286,20 +294,20 @@ flowchart TD
         Client[Mobile App]
         Partner[Partner APIs]
     end
-    
+
     subgraph "Django Application"  
         API[Django REST API]
         Auth[Authentication Layer]
         Business[Business Logic]
         DB[Database Layer]
     end
-    
+
     subgraph "Infrastructure"
         PostgreSQL[(PostgreSQL)]
         Redis[(Redis Cache)]
         RabbitMQ[RabbitMQ]
     end
-    
+
     Client --> API
     Partner --> API
     API --> Auth
@@ -368,6 +376,7 @@ flowchart TD
 ````
 
 ### API Endpoint Template
+
 ````markdown
 # [Endpoint Name] API Documentation
 
@@ -414,7 +423,7 @@ Content-Type: application/json
 #### 400 Bad Request
 ```json
 {
-  "status": "error", 
+  "status": "error",
   "message": "Validation failed",
   "errors": {
     "[field]": ["Error message"]
@@ -431,7 +440,7 @@ sequenceDiagram
     participant Auth as Authentication
     participant Business as Business Logic
     participant DB as Database
-    
+
     Client->>API: [HTTP_METHOD] Request
     API->>Auth: Validate Token
     Auth-->>API: User Context
@@ -449,7 +458,7 @@ sequenceDiagram
 class [ViewName](APIView):
     authentication_classes = [LvJWTAuthentication]
     permission_classes = [IsAuthenticated]
-    
+
     def [method](self, request):
         # Implementation logic
         pass
@@ -491,18 +500,21 @@ curl -X [METHOD] '[URL]' \
 ## Advanced Documentation Features
 
 ### Interactive Diagrams
+
 - **System Architecture**: Complete system overview with component relationships
 - **Data Flow**: Request/response flows with transformation points
 - **Integration Patterns**: External service integration patterns
 - **Error Handling**: Exception flow and recovery mechanisms
 
 ### Code Documentation
+
 - **Pattern Examples**: juntossomosmais-specific implementation patterns
 - **Best Practices**: Coding standards and conventions
 - **Performance Notes**: Optimization tips and considerations
 - **Security Guidelines**: Security implementation and considerations
 
 ### Operational Documentation
+
 - **Deployment Procedures**: Step-by-step deployment instructions
 - **Configuration Management**: Environment-specific configuration
 - **Monitoring Setup**: Observability and alerting configuration
@@ -511,6 +523,7 @@ curl -X [METHOD] '[URL]' \
 ## Documentation Standards
 
 ### Structure Guidelines
+
 - Clear hierarchical organization with consistent navigation
 - Executive summary for high-level understanding
 - Technical details with practical examples
@@ -518,6 +531,7 @@ curl -X [METHOD] '[URL]' \
 - Actionable troubleshooting steps
 
 ### Content Quality
+
 - Accurate and up-to-date information
 - Practical examples and use cases
 - Clear explanations of business logic
@@ -525,6 +539,7 @@ curl -X [METHOD] '[URL]' \
 - Visual flow diagrams for complex processes
 
 ### Maintenance Process
+
 - Regular review and updates
 - Version control integration
 - Automated diagram generation where possible

@@ -71,7 +71,7 @@ detect_copilot_location() {
         # macOS/Linux
         COPILOT_DIR="$HOME/.copilot"
     fi
-    
+
     print_status "Detected .copilot location: $COPILOT_DIR"
 }
 
@@ -86,42 +86,42 @@ create_directories() {
 # Update repository
 update_repository() {
     print_status "Updating repository..."
-    
+
     # Check if we're in a git repository
     if ! git rev-parse --git-dir > /dev/null 2>&1; then
         print_error "Not in a git repository. Please run this script from the agents repository."
         exit 1
     fi
-    
+
     # Stash any local changes
     if ! git diff-index --quiet HEAD --; then
         print_warning "Local changes detected. Stashing..."
         git stash push -m "Auto-stash before update $(date)"
     fi
-    
+
     # Pull latest changes
     git pull origin main 2>/dev/null || git pull origin master 2>/dev/null || {
         print_error "Failed to pull changes. Please check your git configuration."
         exit 1
     }
-    
+
     print_success "Repository updated"
 }
 
 # Copy agents
 copy_agents() {
     print_status "Copying agents..."
-    
+
     # Count agent files
     agent_count=$(find . -maxdepth 1 -name "*.agent.md" | wc -l)
-    
+
     if [ "$agent_count" -eq 0 ]; then
         print_warning "No agent files (*.agent.md) found in current directory"
     else
         # Copy agent files
         find . -maxdepth 1 -name "*.agent.md" -exec cp {} "$COPILOT_DIR/agents/" \;
         print_success "Copied $agent_count agent(s) to $COPILOT_DIR/agents/"
-        
+
         # List copied agents
         find . -maxdepth 1 -name "*.agent.md" -exec basename {} \; | while read -r agent; do
             print_status "  → $agent"
@@ -132,15 +132,15 @@ copy_agents() {
 # Copy skills
 copy_skills() {
     print_status "Copying skills..."
-    
+
     if [ ! -d "skills" ]; then
         print_warning "Skills directory not found"
         return
     fi
-    
+
     # Count skill directories
     skill_count=$(find skills -maxdepth 1 -type d | tail -n +2 | wc -l)
-    
+
     if [ "$skill_count" -eq 0 ]; then
         print_warning "No skill directories found in skills/"
     else
@@ -150,7 +150,7 @@ copy_skills() {
             print_status "  → Copying skill: $skill_name"
             cp -r "$skill_dir" "$COPILOT_DIR/skills/"
         done
-        
+
         print_success "Copied $skill_count skill(s) to $COPILOT_DIR/skills/"
     fi
 }
@@ -170,28 +170,28 @@ copy_notes() {
 # Verify installation
 verify_installation() {
     print_status "Verifying installation..."
-    
+
     echo
     print_status "Summary:"
-    
+
     # Count agents
     if [ -d "$COPILOT_DIR/agents" ]; then
         agent_count=$(find "$COPILOT_DIR/agents" -name "*.agent.md" | wc -l)
         print_status "  Agents: $agent_count files in $COPILOT_DIR/agents/"
     fi
-    
+
     # Count skills
     if [ -d "$COPILOT_DIR/skills" ]; then
         skill_count=$(find "$COPILOT_DIR/skills" -maxdepth 1 -type d | tail -n +2 | wc -l)
         print_status "  Skills: $skill_count directories in $COPILOT_DIR/skills/"
     fi
-    
+
     # Check notes
     if [ -d "$COPILOT_DIR/notes" ]; then
         note_count=$(find "$COPILOT_DIR/notes" -name "*.md" | wc -l)
         print_status "  Notes: $note_count files in $COPILOT_DIR/notes/"
     fi
-    
+
     echo
     print_success "Installation complete!"
     print_status "You may need to restart VS Code for changes to take effect."
@@ -204,14 +204,14 @@ main() {
         echo "=================================="
         echo
     fi
-    
+
     detect_copilot_location
     create_directories
     update_repository
     copy_agents
     copy_skills
     copy_notes
-    
+
     if [ "$QUICK_MODE" = true ]; then
         print_always "✅ Copilot agents and skills updated!"
     else

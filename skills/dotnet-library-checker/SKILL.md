@@ -31,6 +31,7 @@ This skill validates .NET dependencies against juntossomosmais security policies
 ## Core Capabilities
 
 ### Dependency Validation
+
 - **Approval Status**: Check against juntossomosmais/allowed-libraries repository
 - **Security Compliance**: NuGet vulnerability scanning and security policy validation
 - **License Compliance**: License compatibility with company policies
@@ -39,6 +40,7 @@ This skill validates .NET dependencies against juntossomosmais security policies
 - **Upgrade Planning**: Safe upgrade paths and breaking change analysis
 
 ### Security Analysis
+
 - **Vulnerability Assessment**: Known security issues in NuGet packages
 - **Policy Compliance**: Company security policy adherence checking
 - **Risk Assessment**: Security risk scoring and prioritization
@@ -47,6 +49,7 @@ This skill validates .NET dependencies against juntossomosmais security policies
 - **Security Updates**: Monitoring for security patches and updates
 
 ### .NET Ecosystem Validation
+
 - **Framework Compatibility**: .NET 8, ASP.NET Core, Entity Framework Core validation
 - **CliFx Ecosystem**: CliFx and related command-line tool validation
 - **CAP Messaging**: DotNetCore.CAP and RabbitMQ library validation
@@ -57,6 +60,7 @@ This skill validates .NET dependencies against juntossomosmais security policies
 ## juntossomosmais .NET Library Categories
 
 ### Core .NET Framework Stack
+
 ```xml
 <!-- Core framework dependencies -->
 <PackageReference Include="Microsoft.AspNetCore.App" />
@@ -71,6 +75,7 @@ This skill validates .NET dependencies against juntossomosmais security policies
 ```
 
 ### CliFx Command Framework
+
 ```xml
 <!-- Command-line interface -->
 <PackageReference Include="CliFx" Version="2.3.5" />
@@ -81,6 +86,7 @@ This skill validates .NET dependencies against juntossomosmais security policies
 ```
 
 ### CAP Messaging and Integration
+
 ```xml
 <!-- CAP framework for transactional messaging -->
 <PackageReference Include="DotNetCore.CAP" Version="7.2.0" />
@@ -97,6 +103,7 @@ This skill validates .NET dependencies against juntossomosmais security policies
 ```
 
 ### Background Processing and Jobs
+
 ```xml
 <!-- Hangfire background jobs -->
 <PackageReference include="Hangfire.Core" Version="1.8.6" />
@@ -105,6 +112,7 @@ This skill validates .NET dependencies against juntossomosmais security policies
 ```
 
 ### Validation and API Framework
+
 ```xml
 <!-- FluentValidation -->
 <PackageReference Include="FluentValidation" Version="11.8.0" />
@@ -116,6 +124,7 @@ This skill validates .NET dependencies against juntossomosmais security policies
 ```
 
 ### Observability and Monitoring
+
 ```xml
 <!-- OpenTelemetry -->
 <PackageReference Include="OpenTelemetry" Version="1.6.0" />
@@ -131,6 +140,7 @@ This skill validates .NET dependencies against juntossomosmais security policies
 ```
 
 ### Testing Framework
+
 ```xml
 <!-- xUnit testing framework -->
 <PackageReference Include="xunit" Version="2.4.2" />
@@ -149,6 +159,7 @@ This skill validates .NET dependencies against juntossomosmais security policies
 ## Validation Workflows
 
 ### Project File Analysis
+
 ```csharp
 public class DotNetProjectAnalyzer
 {
@@ -162,34 +173,35 @@ public class DotNetProjectAnalyzer
         - Transitive dependency analysis and conflict detection
         - License compliance verification
         */
-        
+
         var project = await ParseProjectFile(projectPath);
         var validation = new ValidationResult();
-        
+
         foreach (var package in project.PackageReferences)
         {
             // Check approval status
             var approvalStatus = await CheckJuntossomosmaisApproval(package);
-            
+
             // Security vulnerability check
             var vulnerabilities = await CheckNuGetVulnerabilities(package);
-            
+
             // License compliance
             var licenseStatus = await CheckLicenseCompliance(package);
-            
+
             // Framework compatibility
             var compatibilityStatus = CheckFrameworkCompatibility(package, project.TargetFramework);
-            
-            validation.Results.Add(CompileValidationResult(package, approvalStatus, 
+
+            validation.Results.Add(CompileValidationResult(package, approvalStatus,
                 vulnerabilities, licenseStatus, compatibilityStatus));
         }
-        
+
         return validation;
     }
 }
 ```
 
 ### Package Lock File Analysis
+
 ```csharp
 public class PackageLockAnalyzer
 {
@@ -203,30 +215,31 @@ public class PackageLockAnalyzer
         - Version consistency across target frameworks
         - Dependency graph analysis for security impact
         */
-        
+
         var lockFile = await ParsePackagesLockFile(lockFilePath);
         var securityReport = new SecurityReport();
-        
+
         foreach (var dependency in lockFile.Dependencies)
         {
             // CVE database lookup
             var cveResults = await CheckCVEDatabase(dependency);
-            
+
             // Company security policy validation
             var policyCompliance = await CheckSecurityPolicies(dependency);
-            
+
             // Risk assessment
             var riskScore = CalculateRiskScore(dependency, cveResults, policyCompliance);
-            
+
             securityReport.AddFinding(dependency, cveResults, riskScore);
         }
-        
+
         return securityReport;
     }
 }
 ```
 
 ### NuGet Configuration Validation
+
 ```csharp
 public class NuGetConfigValidator
 {
@@ -240,21 +253,21 @@ public class NuGetConfigValidator
         - Corporate proxy and feed configuration
         - Security policy enforcement settings
         */
-        
+
         var config = await ParseNuGetConfig(configPath);
         var report = new ConfigurationReport();
-        
+
         // Validate package sources
         foreach (var source in config.PackageSources)
         {
             var sourceValidation = ValidatePackageSource(source);
             report.AddSourceValidation(sourceValidation);
         }
-        
+
         // Check trusted signers
         var signerValidation = ValidateTrustedSigners(config.TrustedSigners);
         report.AddSignerValidation(signerValidation);
-        
+
         return report;
     }
 }
@@ -263,6 +276,7 @@ public class NuGetConfigValidator
 ## Validation Reports
 
 ### .NET Dependency Approval Report
+
 ````markdown
 # .NET Dependency Validation Report
 
@@ -326,6 +340,7 @@ public class NuGetConfigValidator
 ````
 
 ### .NET Security Assessment Report
+
 ````markdown
 # .NET Security Assessment Report
 
@@ -398,6 +413,7 @@ public class NuGetConfigValidator
 ````
 
 ### .NET Framework Upgrade Planning Report
+
 ````markdown
 # .NET Framework Upgrade Planning Report
 
@@ -526,6 +542,7 @@ dotnet test --filter "Category=Smoke"
 ## Integration with juntossomosmais Infrastructure
 
 ### Automated Validation Pipeline
+
 ```yaml
 # GitHub Actions workflow for dependency validation
 name: .NET Dependency Validation
@@ -536,29 +553,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x'
-          
+
       - name: Restore dependencies
         run: dotnet restore
-        
+
       - name: Validate Dependencies
         run: |
           # Run dotnet-library-checker skill
           # Generate validation report
           # Fail build if critical issues found
-          
+
       - name: Security Scan
         run: dotnet list package --vulnerable --include-transitive
-        
+
       - name: License Check
         run: dotnet-project-licenses --input . --output-format json
 ```
 
 ### Development Workflow Integration
+
 - **Pre-commit Hooks**: Validate new package additions before commit
 - **Pull Request Checks**: Automated dependency analysis in PR reviews
 - **CI/CD Pipeline**: Block deployments with unapproved or vulnerable packages
@@ -566,6 +584,7 @@ jobs:
 - **Approval Workflow**: Integration with juntossomosmais/allowed-libraries process
 
 ### Company Policy Integration
+
 - **Security Policies**: Automated enforcement of company security standards
 - **License Compliance**: Automatic license compatibility checking
 - **Approval Process**: Integration with juntossomosmais package approval workflow

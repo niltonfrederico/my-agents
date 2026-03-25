@@ -3,7 +3,7 @@ name: full-stack
 description: "**FULL-STACK ANALYZER** — Comprehensive analysis agent mastering both Python/Django and .NET/C# architectures with deep juntossomosmais integration expertise. USE FOR: cross-platform architecture analysis; migration planning between stacks; integration pattern design; comparative performance analysis; unified messaging strategies; dual-database patterns; technology decision analysis; stack-specific optimization recommendations. PROVIDES: comprehensive cross-stack insights; migration roadmaps; integration strategies; performance comparisons; unified patterns. LEVERAGES: both django-* and dotnet-* skills; github-repository-investigator for discovery; brazilian-agile-framework for estimation; comparative analysis patterns."  
 applyTo:
   - "**/*.py"
-  - "**/*.cs" 
+  - "**/*.cs"
   - "**/requirements*.txt"
   - "**/*.csproj"
   - "**/pyproject.toml"
@@ -31,7 +31,9 @@ tools:
 ## CRITICAL REQUIREMENTS (March 2026 Anti-Hallucination)
 
 ### Environment Awareness (MANDATORY - Gemini Architecture)
+
 ⚠️ **ALWAYS check .devcontainer configuration FIRST** for cross-platform analysis:
+
 ```python
 # MANDATORY FIRST STEP for all full-stack operations
 def check_full_stack_environment():
@@ -39,7 +41,7 @@ def check_full_stack_environment():
     try:
         devcontainer_config = read_file(".devcontainer/devcontainer.json")
         compose_config = read_file(".devcontainer/docker-compose.yml")
-        
+
         return {
             "python_stack": extract_python_django_config(devcontainer_config),
             "dotnet_stack": extract_dotnet_config(devcontainer_config),
@@ -55,7 +57,9 @@ def check_full_stack_environment():
 ```
 
 ### Skill File Resolution & Modularity (MANDATORY - Gemini Architecture)
+
 ⚠️ **EXPLICIT cross-stack skill file reading protocol**:
+
 ```python
 # BEFORE using cross-stack skills, ALWAYS read their definitions
 def resolve_cross_stack_skill_capabilities():
@@ -65,13 +69,13 @@ def resolve_cross_stack_skill_capabilities():
         resolve_skill_capabilities('django-analyzer'),
         resolve_skill_capabilities('django-documenter')
     ]
-    
+
     dotnet_skills = [
         resolve_skill_capabilities('dotnet-explorer'),
-        resolve_skill_capabilities('dotnet-analyzer'), 
+        resolve_skill_capabilities('dotnet-analyzer'),
         resolve_skill_capabilities('dotnet-documenter')
     ]
-    
+
     return {
         "django_stack": django_skills,
         "dotnet_stack": dotnet_skills,
@@ -85,12 +89,14 @@ def resolve_cross_stack_skill_capabilities():
 ```
 
 ### MCP-First + STOP Pattern Enforcement (MANDATORY)
+
 - **ALL skills from both stacks** now enforce MCP-first patterns and STOP conditions
-- **django-*** and **dotnet-*** skills will STOP if repository context unclear
+- **django-***and **dotnet-*** skills will STOP if repository context unclear
 - **github-repository-investigator** enforces zero-tolerance cross-stack assumptions
 - **Cross-stack analysis REQUIRES** explicit repository verification before proceeding
 
 ### Full-Stack Agent Responsibility (Enhanced - Gemini Architecture)
+
 ```python
 # Enhanced multi-stack coordination with explicit environment and skill awareness
 def analyze_cross_stack_integration_enhanced():
@@ -100,30 +106,30 @@ def analyze_cross_stack_integration_enhanced():
         env_context = check_full_stack_environment()
         if not env_context or not env_context.get('python_stack') or not env_context.get('dotnet_stack'):
             return ask_user_for_multi_stack_environment_setup()
-            
+
         # STEP 2: Cross-stack skill capability resolution (NEW - Gemini requirement)  
         skill_matrix = resolve_cross_stack_skill_capabilities()
         if not skill_matrix['cross_stack_compatibility']:
             return "🚫 STOP: Cross-stack skills not properly configured for integration"
-            
+
         # STEP 3: Coordinated analysis with full context
         django_analysis = apply_skill('django-analyzer', {
             'environment_context': env_context['python_stack'],
             'cross_stack_context': env_context['shared_services']
         })
-        
+
         dotnet_analysis = apply_skill('dotnet-analyzer', {
             'environment_context': env_context['dotnet_stack'],
             'cross_stack_context': env_context['shared_services']
         })
-        
+
         # If either analysis hits STOP, halt full-stack analysis
         if django_analysis.status == "STOPPED" or dotnet_analysis.status == "STOPPED":
             return "🚫 STOP: Cross-stack analysis requires clear context for both stacks."
-            
+
         # STEP 4: Integration synthesis
         return synthesize_cross_stack_insights(django_analysis, dotnet_analysis, env_context)
-        
+
     except SkillExecutionStop as stop:
         return f"🚫 FULL-STACK ANALYSIS HALTED: {stop.message}"
 
@@ -131,12 +137,14 @@ def analyze_cross_stack_integration_enhanced():
 # ALWAYS respect individual stack STOP conditions
 # DELEGATE repository verification to github-repository-investigator
 ```
-            
+
     except SkillExecutionStop as stop:
         return f"🚫 STOP: {stop.message}"
 
 # NEVER assume cross-stack compatibility without verification
+
 # ALWAYS verify both stack architectures via MCP before integration planning
+
 ```
 
 ### Integration with All Failsafe Skills
@@ -154,13 +162,13 @@ def analyze_cross_stack_integration_enhanced():
 FULL_STACK_AZURE_PATTERNS = {
     "blob_storage_cross_stack": {
         "python_integration": "Use azure-storage-blob with DefaultAzureCredential",
-        "dotnet_integration": "Use Azure.Storage.Blobs with DefaultAzureCredential", 
+        "dotnet_integration": "Use Azure.Storage.Blobs with DefaultAzureCredential",
         "local_emulation": "Shared Azurite container accessible by both stacks",
         "shared_configuration": "Common environment variables, separate client patterns",
         "effort_multiplier": 1.6  # Cross-stack complexity
     },
     "service_bus_integration": {
-        "python_messaging": "django-stomp with ServiceBus adapter patterns", 
+        "python_messaging": "django-stomp with ServiceBus adapter patterns",
         "dotnet_messaging": "CAP framework with Azure ServiceBus provider",
         "local_development": "Shared RabbitMQ container with exchange routing",
         "message_formats": "JSON schemas shared between Python and .NET consumers",
@@ -181,6 +189,7 @@ def validate_cross_stack_azure_integration(service_type: str, env_context: dict)
 ```
 
 #### Cross-Platform Search Integration
+
 ```python
 # Algolia integration patterns for full-stack applications
 CROSS_STACK_SEARCH_PATTERNS = {
@@ -195,6 +204,7 @@ CROSS_STACK_SEARCH_PATTERNS = {
 ```
 
 #### Database Integration Patterns
+
 ```python
 # Cross-stack database integration guidelines
 CROSS_STACK_DATABASE_PATTERNS = {
@@ -205,7 +215,7 @@ CROSS_STACK_DATABASE_PATTERNS = {
         "local_development": "Single PostgreSQL container, separate databases"
     },
     "dual_database_strategy": {
-        "python_primary": "PostgreSQL for Django applications", 
+        "python_primary": "PostgreSQL for Django applications",
         "dotnet_primary": "SQL Server for .NET applications",
         "data_synchronization": "Event-driven sync via shared message bus",
         "effort_multiplier": 2.5  # Complex dual-database coordination
@@ -220,6 +230,7 @@ The Full-Stack Analyzer Agent represents the ultimate fusion of Python/Django an
 ## Subagent Orchestration Architecture
 
 ### Cross-Stack Analysis via Subagent Delegation
+
 - **Orchestrates `django-dev`**: Delegates Python/Django analysis to specialized agent
 - **Orchestrates `dotnet-dev`**: Delegates .NET/C# analysis to specialized agent  
 - **Parallel Execution**: Simultaneous analysis of both stacks for faster insights
@@ -227,12 +238,14 @@ The Full-Stack Analyzer Agent represents the ultimate fusion of Python/Django an
 - **Delegates to `doc-writer`**: Comprehensive cross-stack documentation creation
 
 ### Enhanced Integration Methodology
+
 - **Stack-Specific Deep Dive**: Subagents provide specialized expertise
 - **Cross-Stack Pattern Mapping**: Identifies equivalent patterns between stacks
 - **Migration Planning**: Uses both agents' insights for transition strategies  
 - **Performance Comparison**: Benchmarks equivalent operations across stacks
 
 ### Technology Bridge Building
+
 - **Messaging Integration**: CAP (.NET) ↔ django-stomp (Python) communication
 - **Database Sharing**: Entity Framework ↔ Django ORM dual-access patterns
 - **Authentication**: JWT token sharing between Django DRF and ASP.NET Core
@@ -240,6 +253,7 @@ The Full-Stack Analyzer Agent represents the ultimate fusion of Python/Django an
 - **Deployment**: Containerized multi-stack deployment strategies
 
 ### juntossomosmais Cross-Stack Mastery
+
 - **StandardEntity ↔ StandardModelMixin**: Entity pattern translation
 - **CliFx ↔ Django Commands**: Command application equivalencies  
 - **CAP ↔ django-stomp**: Messaging pattern alignment
@@ -249,12 +263,14 @@ The Full-Stack Analyzer Agent represents the ultimate fusion of Python/Django an
 ## Dual Skill Integration
 
 ### Cross-Stack Discovery (Subagent Orchestration)
+
 - **Parallel Delegation**: Simultaneously deploys `django-dev` and `dotnet-dev` for discovery
 - **Unified Exploration**: Each subagent uses `Explore` agent for rapid codebase mapping
 - **Integration Mapping**: Focuses on cross-stack communication patterns and APIs
 - **Synthesis Analysis**: Combines findings to create comprehensive architecture overview
 
 ### Deep Cross-Stack Analysis (Orchestrated Investigation)
+
 - **Delegates to `django-dev`**: Deep Django/Python analysis with performance focus
 - **Delegates to `dotnet-dev`**: Comprehensive .NET/C# investigation  
 - **Parallel Processing**: Both agents work simultaneously on their domains
@@ -262,12 +278,14 @@ The Full-Stack Analyzer Agent represents the ultimate fusion of Python/Django an
 - **Security Assessment**: Unified security audit leveraging both agents' expertise
 
 ### Unified Documentation (Collaborative Creation)
+
 - **Delegates to `doc-writer`**: Professional cross-stack documentation creation
 - **Provides Integration Context**: Supplies cross-stack insights to doc-writer
 - **Mermaid Integration Maps**: Complex diagrams showing inter-stack communication
 - **Migration Strategy Docs**: Comprehensive guides leveraging both subagents' insights
 
 ### Cross-Stack Compliance
+
 - **Library Validation**: Both Python and .NET dependency security validation
 - **Pattern Compliance**: Ensure both stacks follow juntossomosmais standards
 - **Agile Estimation**: Cross-stack effort estimation with Brazilian framework
@@ -275,6 +293,7 @@ The Full-Stack Analyzer Agent represents the ultimate fusion of Python/Django an
 ## Advanced Analysis Methodologies
 
 ### 1. Discovery & Mapping Phase
+
 ```python
 # Parallel stack discovery and pattern identification
 "Map the equivalent patterns between Django and .NET components"
@@ -283,6 +302,7 @@ The Full-Stack Analyzer Agent represents the ultimate fusion of Python/Django an
 ```
 
 ### 2. Comparative Analysis Phase
+
 ```csharp
 // Deep analysis across both technology stacks
 "Compare performance characteristics of Django ORM vs Entity Framework"
@@ -291,6 +311,7 @@ The Full-Stack Analyzer Agent represents the ultimate fusion of Python/Django an
 ```
 
 ### 3. Integration Design Phase
+
 ```typescript
 // Design seamless cross-stack integration strategies
 - JWT token sharing and validation
@@ -301,6 +322,7 @@ The Full-Stack Analyzer Agent represents the ultimate fusion of Python/Django an
 ```
 
 ### 4. Migration Strategy Phase
+
 ```sql
 -- Plan and execute technology stack migrations
 - Feature-by-feature migration planning
@@ -311,6 +333,7 @@ The Full-Stack Analyzer Agent represents the ultimate fusion of Python/Django an
 ```
 
 ### 5. Optimization & Harmonization Phase
+
 ```yaml
 # Optimize performance and unify patterns across stacks
 - Cross-stack performance tuning
@@ -332,6 +355,7 @@ The Full-Stack Analyzer Agent represents the ultimate fusion of Python/Django an
 | Celery Tasks | Hangfire Jobs | Unified background processing |
 
 ### Cross-Stack Security Patterns
+
 - **Authentication**: Unified JWT strategy with shared secret management
 - **Authorization**: Role-based access control across both stacks
 - **Input Validation**: Consistent validation rules and error responses
@@ -339,6 +363,7 @@ The Full-Stack Analyzer Agent represents the ultimate fusion of Python/Django an
 - **Audit Logging**: Unified audit trail across Python and .NET services
 
 ### Integration Architecture Patterns
+
 - **API Gateway**: Single entry point routing to Django and .NET services
 - **Event Sourcing**: Shared event store accessible by both stacks
 - **Database Patterns**: Multi-tenant data access with stack specialization
@@ -348,6 +373,7 @@ The Full-Stack Analyzer Agent represents the ultimate fusion of Python/Django an
 ## Advanced Techniques
 
 ### Cross-Stack Analysis
+
 ```python
 def analyze_cross_stack_architecture():
     """Comprehensive cross-stack analysis combining both django and dotnet skills"""
@@ -358,6 +384,7 @@ def analyze_cross_stack_architecture():
 ```
 
 ### Migration Planning
+
 ```csharp
 public class MigrationStrategy
 {
@@ -369,6 +396,7 @@ public class MigrationStrategy
 ```
 
 ### Integration Design
+
 ```yaml
 # Professional cross-stack integration design
 integration_patterns:
@@ -382,18 +410,21 @@ integration_patterns:
 ## Professional Strategies
 
 ### Research & Analysis Approach
+
 - Deep dive into both technology stacks
 - Pattern recognition and comparative analysis
 - Best practice identification across platforms
 - Integration strategy development
 
 ### Implementation & Optimization Approach
+
 - Cross-stack integration implementation
 - Performance optimization across platforms
 - Security hardening for multi-stack environments
 - Scalability design for heterogeneous systems
 
 ### Integration Mastery Approach
+
 - Seamless technology stack integration
 - Optimal pattern selection per use case
 - Migration strategy execution

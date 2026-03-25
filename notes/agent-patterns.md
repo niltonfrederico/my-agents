@@ -144,7 +144,7 @@ name: full-stack-analyzer
 description: "**FULL-STACK ANALYZER** — Dual-stack analysis agent mastering both [Stack A] and [Stack B] with integration expertise. USE FOR: cross-platform architecture analysis; migration planning; integration design; comparative analysis; unified patterns. LEVERAGES: both [stackA]-* and [stackB]-* skills; github-repository-investigator; brazilian-agile-framework."
 applyTo:
   - "**/*.[stackA-extension]"
-  - "**/*.[stackB-extension]" 
+  - "**/*.[stackB-extension]"
   - "**/[shared-config-files]"
 tools:
   - file_operations
@@ -163,7 +163,7 @@ name: task-planner
 description: "**TASK PLANNING SPECIALIST** — Strategic task analysis and refinement agent with Brazilian Agile methodology expertise. USE FOR: task validation; refinement generation; Planning Poker estimation; implementation planning. LEVERAGES: task-analyzer; refinement-generator; brazilian-agile-framework; github-repository-investigator; r2d2-compliance-validator."
 applyTo:
   - "**/[task-related]*.md"
-  - "**/[planning-files]" 
+  - "**/[planning-files]"
 tools:
   - [task_management_api]
   - github_api

@@ -30,6 +30,7 @@ This skill specializes in analyzing HTTP Archive (HAR) files exported from brows
 ## CRITICAL REQUIREMENTS (March 2026 Anti-Hallucination)
 
 ### STOP Conditions (MANDATORY)
+
 ```python
 # When HAR file is invalid or corrupted, STOP and ask user
 if not valid_har_file(har_file_path):
@@ -43,7 +44,7 @@ if not valid_har_file(har_file_path):
 if analysis_scope_unclear():
     questions = [{
         "header": "analysis_focus",
-        "question": "🔍 Foco da análise HAR não está claro. Qual área investigar?", 
+        "question": "🔍 Foco da análise HAR não está claro. Qual área investigar?",
         "options": [
             {"label": "Performance e bottlenecks", "value": "performance"},
             {"label": "Erros de API e debugging", "value": "debugging"},
@@ -68,12 +69,14 @@ if har_file_too_large():
 ### HAR File Structure Understanding
 
 #### Main Sections
+
 - **Log**: Root container with version and creator info
 - **Pages**: Page load events and timing information  
 - **Entries**: Individual HTTP requests/responses with full details
 - **Creator/Browser**: Tool and version information
 
 #### Entry Details Analyzed
+
 - **Request**: URL, method, headers, cookies, POST data, query parameters
 - **Response**: Status code, headers, content, redirectURL
 - **Cache**: beforeRequest, afterRequest cache states
@@ -83,6 +86,7 @@ if har_file_too_large():
 ### Analysis Types Supported
 
 #### Performance Analysis
+
 - **Load Time Breakdown**: DNS, connection, request, response timing analysis
 - **Resource Waterfall**: Sequential loading patterns and dependencies
 - **Critical Path Analysis**: Blocking resources and render-critical requests
@@ -91,6 +95,7 @@ if har_file_too_large():
 - **Bundle Analysis**: JavaScript/CSS file sizes and loading patterns
 
 #### API Debugging
+
 - **Request Patterns**: API call sequences and dependencies
 - **Error Analysis**: 4xx/5xx responses with context and frequency
 - **Authentication Flows**: OAuth, JWT, session management patterns
@@ -99,6 +104,7 @@ if har_file_too_large():
 - **CORS Issues**: Cross-origin request problems and headers
 
 #### Security Assessment  
+
 - **Header Security**: HTTPS, HSTS, CSP, X-Frame-Options analysis
 - **Cookie Security**: HttpOnly, Secure, SameSite attribute review
 - **Mixed Content**: HTTP resources loaded on HTTPS pages
@@ -109,13 +115,14 @@ if har_file_too_large():
 ### Mermaid Diagram Generation
 
 #### Sequence Diagrams for Request Flows
+
 ```mermaid
 sequenceDiagram  
     participant Browser
     participant CDN
     participant API
     participant Database
-    
+
     Browser->>CDN: GET /app.js
     CDN-->>Browser: 200 OK (cached)
     Browser->>API: POST /api/login
@@ -127,6 +134,7 @@ sequenceDiagram
 ```
 
 #### Flowchart for Error Handling
+
 ```mermaid
 flowchart TD
     Request[HTTP Request] --> Status{Status Code}
@@ -134,17 +142,18 @@ flowchart TD
     Status -->|3xx| Redirect[Follow Redirect]
     Status -->|4xx| ClientError[Client Error]
     Status -->|5xx| ServerError[Server Error]
-    
+
     ClientError --> Auth{401/403?}
     Auth -->|Yes| LoginFlow[Redirect to Login]
     Auth -->|No| Validation[Validation Error]
-    
+
     ServerError --> Retry{Retryable?}
     Retry -->|Yes| Backoff[Exponential Backoff]
     Retry -->|No| FallBack[Fallback Response]
 ```
 
 #### Mindmap for Performance Insights  
+
 ```mermaid
 mindmap
   root((HAR Analysis))
@@ -185,6 +194,7 @@ mindmap
 ### Performance Metrics Calculation
 
 #### Core Web Vitals Detection
+
 - **Largest Contentful Paint (LCP)**: Identify main content rendering
 - **First Input Delay (FID)**: Calculate interaction responsiveness  
 - **Cumulative Layout Shift (CLS)**: Measure visual stability
@@ -192,6 +202,7 @@ mindmap
 - **Time to Interactive (TTI)**: Determine page readiness
 
 #### Resource Loading Analysis
+
 ```javascript
 // Example analysis output
 {
@@ -205,7 +216,7 @@ mindmap
   ],
   "thirdPartyImpact": {
     "googleAnalytics": "180ms",
-    "facebookPixel": "240ms", 
+    "facebookPixel": "240ms",
     "adNetworks": "890ms"
   }
 }
@@ -214,6 +225,7 @@ mindmap
 ### Request Pattern Analysis
 
 #### API Call Sequences
+
 - **Authentication Flows**: Login → Token refresh → Protected resource access
 - **Data Dependencies**: User info → Permissions → Dashboard data
 - **Pagination Patterns**: List requests with offset/limit parameters
@@ -221,6 +233,7 @@ mindmap
 - **File Upload Flows**: Multipart form data and progress tracking
 
 #### Error Pattern Recognition
+
 - **Failed Authentication**: 401 → Login prompt → Retry sequence
 - **Rate Limiting**: 429 → Backoff → Retry with exponential delay
 - **Service Unavailable**: 503 → Circuit breaker → Fallback response
@@ -230,6 +243,7 @@ mindmap
 ### Security Analysis Framework
 
 #### Header Security Assessment
+
 ```mermaid
 flowchart TB
     Headers[Response Headers] --> HTTPS{HTTPS Only?}
@@ -239,7 +253,7 @@ flowchart TB
     HSTS -->|Yes| CSP{CSP Header?}
     CSP -->|No| CSPMissing[CSP Missing]
     CSP -->|Yes| CSPAnalysis[Analyze CSP Policy]
-    
+
     Headers --> Cookies{Cookie Security}
     Cookies --> Secure{Secure Flag?}
     Cookies --> HttpOnly{HttpOnly Flag?}
@@ -247,6 +261,7 @@ flowchart TB
 ```
 
 #### Data Flow Security
+
 - **Sensitive Data Exposure**: Credit cards, SSNs, passwords in URLs/responses  
 - **Token Management**: JWT expiration, refresh patterns, secure storage
 - **Session Security**: Session fixation, CSRF protection, timeout handling
@@ -256,6 +271,7 @@ flowchart TB
 ## Common Use Cases & Examples
 
 ### 1. Performance Debugging
+
 ```
 Scenario: "Why is my page loading slowly?"
 
@@ -273,6 +289,7 @@ Mermaid Waterfall Sequence Generated:
 ```
 
 ### 2. API Debugging  
+
 ```
 Scenario: "API calls are failing intermittently"
 
@@ -290,6 +307,7 @@ Mermaid Flow Diagram Generated:
 ```
 
 ### 3. Security Audit
+
 ```
 Scenario: "Security review of network traffic"
 
@@ -307,6 +325,7 @@ Mermaid Security Mindmap Generated:
 ```
 
 ### 4. Third-Party Service Analysis
+
 ```
 Scenario: "Which third-party services are impacting performance?"
 
@@ -326,6 +345,7 @@ Mermaid Service Comparison Chart Generated:
 ## Integration & Workflow
 
 ### HAR File Import Process
+
 1. **File Validation**: Verify HAR format and structure integrity
 2. **Data Parsing**: Extract entries, timing, and metadata
 3. **Initial Analysis**: Calculate basic metrics and identify patterns
@@ -334,6 +354,7 @@ Mermaid Service Comparison Chart Generated:
 6. **Reporting**: Summarize findings with actionable recommendations
 
 ### Analysis Query Examples
+
 - "Show me all requests that took longer than 2 seconds"
 - "What's causing the 404 errors in this HAR file?"
 - "Generate a sequence diagram of the login flow"
@@ -342,6 +363,7 @@ Mermaid Service Comparison Chart Generated:
 - "Create a mindmap of performance bottlenecks"
 
 ### Mermaid Integration Workflow
+
 1. **Analyze HAR data** for relevant patterns
 2. **Choose appropriate diagram type** (sequence/flowchart/mindmap)
 3. **Extract key information** for visualization
@@ -352,6 +374,7 @@ Mermaid Service Comparison Chart Generated:
 ## Best Practices
 
 ### Analysis Accuracy
+
 - Validate HAR file integrity before processing
 - Consider browser differences in timing measurements
 - Account for network conditions during capture
@@ -359,6 +382,7 @@ Mermaid Service Comparison Chart Generated:
 - Cross-reference with server logs when available
 
 ### Visualization Guidelines  
+
 - Use sequence diagrams for request/response flows
 - Use flowcharts for decision trees and error handling
 - Use mindmaps for organizing complex findings
@@ -366,6 +390,7 @@ Mermaid Service Comparison Chart Generated:
 - Highlight critical path and bottlenecks clearly
 
 ### Security Considerations
+
 - Never expose sensitive data in analysis outputs
 - Sanitize URLs and headers before sharing diagrams
 - Flag potential data leakage in findings
@@ -375,12 +400,14 @@ Mermaid Service Comparison Chart Generated:
 ## Tools Integration
 
 ### File Processing
+
 - JSON parsing and validation
 - Large file handling (>100MB HAR files)
 - Batch processing of multiple HAR files
 - Export capabilities for analysis results
 
 ### Mermaid Integration
+
 - Automatic diagram type selection based on analysis goals
 - Custom styling for performance/security themes
 - Interactive elements for detailed drill-down

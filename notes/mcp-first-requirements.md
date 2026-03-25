@@ -35,7 +35,7 @@ try:
         )
 except Exception as e:
     raise SkillExecutionStop(
-        reason="MCP_CALL_FAILED", 
+        reason="MCP_CALL_FAILED",
         message=f"🚫 STOP: Falha ao acessar [resource].\n\nErro: {str(e)}\n\n❓ [User action needed]",
         user_action_required=True
     )

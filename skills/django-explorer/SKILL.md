@@ -14,7 +14,7 @@ applyTo:
   - "**/docker-compose.yml"
 invokes:
   - "semantic_search"
-  - "file_search" 
+  - "file_search"
   - "grep_search"
   - "read_file"
   - "vscode_askQuestions"
@@ -33,13 +33,15 @@ This skill provides rapid exploration and quick answers about Django/Python appl
 ## Core Capabilities
 
 ### Fast Project Discovery
+
 - **App Structure Analysis**: Identifies all Django apps and their purposes
 - **Component Location**: Quickly finds models, views, serializers, consumers, and tests
 - **URL Pattern Discovery**: Maps out API endpoints and routing
 - **Dependency Identification**: Analyzes installed packages and requirements
 - **Configuration Overview**: Understands settings, environment variables, and deployment setup
 
-### Architecture Understanding 
+### Architecture Understanding
+
 - **Messaging Patterns**: Identifies STOMP/RabbitMQ usage (django-stomp vs django-outbox-pattern)
 - **Authentication Setup**: Maps out DRF authentication classes and permissions
 - **Database Configuration**: Understands replica/default routing and connection setup
@@ -47,6 +49,7 @@ This skill provides rapid exploration and quick answers about Django/Python appl
 - **Background Tasks**: Locates Django-Q workers and job definitions
 
 ### Quick Code Analysis
+
 - **Model Relationships**: Maps entity relationships and StandardModelMixin usage
 - **API Endpoint Overview**: Summarizes available endpoints and their purposes  
 - **Business Logic Flow**: Traces request/response paths through the application
@@ -56,6 +59,7 @@ This skill provides rapid exploration and quick answers about Django/Python appl
 ## juntossomosmais-Specific Knowledge
 
 ### Project Structure Patterns
+
 ```
 django_project/
 ├── django_project/
@@ -81,6 +85,7 @@ django_project/
 ### Key Architecture Patterns
 
 #### StandardModelMixin Usage
+
 ```python
 # All models inherit from StandardModelMixin
 class AuditAction(StandardModelMixin):
@@ -91,6 +96,7 @@ class AuditAction(StandardModelMixin):
 ```
 
 #### STOMP Messaging Patterns  
+
 ```python
 # Legacy: django-stomp
 from django_stomp.builder import build_publisher
@@ -100,6 +106,7 @@ from django_outbox_pattern.models import Published
 ```
 
 #### DRF Authentication Classes
+
 ```python  
 # Customer authentication
 authentication_classes = (LvJWTAuthentication,)
@@ -112,6 +119,7 @@ authentication_classes = (TokenAuthentication,)
 ```
 
 #### Health Check Integration
+
 ```python
 # Custom health checks for STOMP and database
 from django_template.support.healthcheck.checkers import (
@@ -124,6 +132,7 @@ from django_template.support.healthcheck.checkers import (
 ### Configuration Patterns
 
 #### Environment Variable Handling
+
 ```python
 # Required environment variables
 USER_API_HOST = getenv_or_raise_exception("USER_API_HOST")
@@ -136,6 +145,7 @@ USE_DEBUG_APPS = eval_env_as_boolean("USE_DEBUG_APPS", False)
 ```
 
 #### Database Configuration
+
 ```python
 # Primary and replica database setup
 DATABASES = {
@@ -148,6 +158,7 @@ DATABASE_ROUTERS = ["django_template.support.db_router.DatabaseRouter"]
 ## Fast Exploration Commands
 
 ### Project Overview
+
 - "What Django apps are in this project?"
 - "Show me the main API endpoints"
 - "What messaging patterns does this use?"
@@ -155,6 +166,7 @@ DATABASE_ROUTERS = ["django_template.support.db_router.DatabaseRouter"]
 - "What external services does this integrate with?"
 
 ### Component Discovery
+
 - "Where are the models defined?"
 - "Show me all the DRF serializers"  
 - "Find the STOMP consumers"
@@ -162,6 +174,7 @@ DATABASE_ROUTERS = ["django_template.support.db_router.DatabaseRouter"]
 - "What background tasks are configured?"
 
 ### Configuration Analysis
+
 - "What environment variables are required?"
 - "How is the database configured?"
 - "What's the logging setup?"
@@ -169,6 +182,7 @@ DATABASE_ROUTERS = ["django_template.support.db_router.DatabaseRouter"]
 - "What debug tools are available?"
 
 ### Architecture Questions
+
 - "How does the request flow work?"
 - "What's the database routing strategy?"
 - "How are permissions handled?"
@@ -178,6 +192,7 @@ DATABASE_ROUTERS = ["django_template.support.db_router.DatabaseRouter"]
 ## Integration with Other Skills
 
 This skill works as the **entry point** for Django application analysis:
+
 1. **Fast Exploration** - Use this skill for initial discovery and quick questions
 2. **Deep Analysis** - Reference `django-analyzer` skill when detailed investigation is needed  
 3. **Documentation** - Reference `django-documenter` skill when comprehensive documentation is required
@@ -186,6 +201,7 @@ This skill works as the **entry point** for Django application analysis:
 ## Common Use Cases
 
 ### New Developer Onboarding
+
 ```
 "I'm new to this codebase. Can you give me an overview?"
 → Analyzes app structure, main components, and key patterns
@@ -194,6 +210,7 @@ This skill works as the **entry point** for Django application analysis:
 ```
 
 ### Bug Investigation Quick Start  
+
 ```
 "Where would I find the code that handles user authentication?"
 → Locates authentication views, middleware, and configuration
@@ -202,6 +219,7 @@ This skill works as the **entry point** for Django application analysis:
 ```
 
 ### Feature Planning
+
 ```
 "What patterns should I follow to add a new API endpoint?"
 → Shows existing endpoint patterns and DRF usage
@@ -210,6 +228,7 @@ This skill works as the **entry point** for Django application analysis:
 ```
 
 ### Deployment Understanding
+
 ```
 "How is this application deployed and configured?"
 → Analyzes Dockerfile, docker-compose, and scripts
@@ -220,18 +239,21 @@ This skill works as the **entry point** for Django application analysis:
 ## Performance & Efficiency
 
 ### Search Strategy
+
 - **Semantic Search**: For conceptual queries and pattern identification
 - **File Search**: For specific component location (models, views, etc.)
 - **Grep Search**: For configuration values and specific code patterns
 - **Targeted Reading**: Only reads relevant files based on query context
 
 ### Response Format
+
 - **Quick Summaries**: Concise overviews perfect for orientation
 - **File Locations**: Precise paths to relevant code
 - **Key Insights**: Important patterns and conventions identified
 - **Next Steps**: Guidance for deeper investigation when needed
 
 ### Integration Efficiency
+
 - **Smart Routing**: Determines when to escalate to deeper analysis skills
 - **Context Preservation**: Maintains exploration context for follow-up questions
 - **Pattern Recognition**: Leverages juntossomosmais-specific knowledge for faster analysis
