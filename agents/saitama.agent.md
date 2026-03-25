@@ -45,7 +45,6 @@ required_patterns:
 ### Awesome-Copilot Compliance (MANDATORY)
 
 - **Agent YAML Format**: Use awesome-copilot compatible frontmatter (name, description, model, target, tools, handoffs)
-- **Skill YAML Format**: Use skill: true with proper applyTo and invokes patterns
 - **Instruction Files**: Create .instructions.md files for file-pattern-based guidance
 - **Folder Structure**: Maintain /agents/, /skills/, /instructions/ organization
 

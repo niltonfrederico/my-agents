@@ -1,27 +1,7 @@
 ---
-skill: true
+
 name: "dotnet-documenter"
 description: "**DOTNET TECHNICAL DOCUMENTER** — Specialized skill for creating comprehensive markdown documentation of juntossomosmais .NET/C# applications with integrated Mermaid diagrams. USE FOR: architectural documentation; API documentation with workflow diagrams; CliFx command documentation; Entity Framework model documentation; CAP messaging flow documentation; Hangfire job documentation; integration documentation; onboarding guides; technical specifications; deployment documentation; troubleshooting guides. PROVIDES: professional markdown documentation; integrated Mermaid diagrams (flowcharts, sequence, architecture); code examples and patterns; architectural decision records; comprehensive API documentation; deployment guides. JUNTOSSOMOSMAIS FOCUS: Documents StandardEntity patterns, CliFx command architecture, CAP messaging flows, Entity Framework Core configurations, Hangfire background processing, FluentValidation patterns, and ASP.NET Core security following company documentation standards."
-applyTo:
-  - "**/*.md"
-  - "**/docs/**/*"
-  - "**/README.md"
-  - "**/*.cs"
-  - "**/Controllers/**/*"
-  - "**/Commands/**/*"
-  - "**/Consumers/**/*"
-  - "**/Jobs/**/*"
-invokes:
-  - "create_file"
-  - "replace_string_in_file"
-  - "vscode_askQuestions"
-  - "mcp_io_github_git_get_file_contents"
-  - "dotnet-explorer"
-  - "dotnet-analyzer"
-  - "github-repository-investigator"
-  - "mermaid-flowchart"
-  - "mermaid-sequence"
-  - "mermaid-mindmap"
 ---
 
 # .NET Technical Documenter Skill

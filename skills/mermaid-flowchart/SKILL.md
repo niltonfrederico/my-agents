@@ -1,17 +1,8 @@
 ---
-skill: true
+
 name: "mermaid-flowchart"
 description: "**MERMAID FLOWCHART EXPERT** — Specialized skill for creating tech-focused Mermaid flowcharts and process diagrams. USE FOR: system architecture diagrams; code flow visualization; decision trees; deployment workflows; CI/CD pipelines; user journey mapping; algorithm visualization; microservices interactions; error handling flows; database relationships. CREATES: syntactically correct Mermaid flowchart code with proper validation; interactive diagrams with clickable elements; styled diagrams with colors and themes; complex multi-directional flows; subgraphs for modular design. TECH FOCUS: Always considers technical contexts like APIs, databases, services, error states, authentication flows, and system dependencies."
-applyTo:
-  - "**/*.md"
-  - "**/*.mmd"
-  - "**/README.md"
-  - "**/docs/**/*"
-invokes:
-  - "mermaid-diagram-validator"
-  - "mermaid-diagram-preview"
-  - "vscode_askQuestions"
-  - "get-syntax-docs-mermaid"
+
 ---
 
 # Mermaid Flowchart Skill

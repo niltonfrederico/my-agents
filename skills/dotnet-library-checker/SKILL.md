@@ -1,23 +1,7 @@
 ---
-skill: true
+
 name: "dotnet-library-checker"
 description: "**JUNTOSSOMOSMAIS .NET LIBRARY VALIDATOR** — Specialized skill for validating .NET dependencies against juntossomosmais/allowed-libraries repository and company security policies. USE FOR: NuGet package validation; security compliance checking; library approval verification; vulnerability assessment; license compliance; version compatibility checking; dependency upgrade planning; security policy enforcement. PROVIDES: approval status verification; security vulnerability reports; license compliance analysis; version compatibility matrix; dependency recommendations; upgrade pathways. JUNTOSSOMOSMAIS FOCUS: Integration with juntossomosmais/allowed-libraries repository, company security policies, approved .NET/C# package validation, Entity Framework Core ecosystem compatibility, ASP.NET Core framework compliance, CAP messaging library validation, and Hangfire ecosystem compatibility."
-applyTo:
-  - "**/*.csproj"
-  - "**/packages.config"
-  - "**/Directory.Build.props"
-  - "**/Directory.Packages.props"
-  - "**/global.json"
-  - "**/nuget.config"
-  - "**/packages.lock.json"
-invokes:
-  - "read_file"
-  - "grep_search"
-  - "semantic_search"
-  - "mcp_io_github_git_get_file_contents"
-  - "mcp_io_github_git_search_issues"
-  - "fetch_webpage"
-  - "vscode_askQuestions"
 ---
 
 # juntossomosmais .NET Library Validator Skill

@@ -1,22 +1,8 @@
 ---
-skill: true
+
 name: "monday-task-analyzer"
 description: "**MONDAY TASK ANALYZER** — Consolidated skill for complete Monday.com task analysis from URL validation to technical architecture discovery. USE FOR: Monday.com workflow initialization; repository confirmation; Brazilian playbook validation; GitHub architecture discovery; single-stack validation. BLOCKS: invalid tasks from proceeding to refinement. JUNTOSSOMOSMAIS FOCUS: Zero-tolerance repository assumptions; real GitHub API investigation; Brazilian methodology compliance; March 2026 error prevention."
-applyTo:
-  - "monday.com/*"
-  - "**/*planning*/**"
-  - "**/*tasks*/**"
-  - "**/*refinement*/**"
-  - "**/*analysis*/**"
-invokes:
-  - "mcp_com_monday_mo_get_board_info"
-  - "mcp_com_monday_mo_get_updates"
-  - "mcp_com_monday_mo_board_insights"
-  - "mcp_io_github_git_get_file_contents"
-  - "vscode_askQuestions"
-  - "github-repository-investigator"
-  - "brazilian-agile-framework"
-  - "memory"
+
 ---
 
 # Monday Task Analyzer Skill

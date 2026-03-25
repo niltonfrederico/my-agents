@@ -4,8 +4,19 @@ description: "**DOTNET FAST EXPLORER** — Rapid .NET project exploration and Q&
 model: Claude Sonnet 4 (copilot)
 target: vscode
 tools:
-  - edit
+  - read
+  - search
   - execute
+  - io.github.upstash/context7/*
+  - microsoftdocs/mcp/*
+  - github/*
+  - todo
+  - ms-python.python/getPythonEnvironmentInfo
+  - ms-python.python/getPythonExecutableCommand
+  - com.monday/monday.com/*
+  - agent
+  - vscode.mermaid-chat-features/renderMermaidDiagram
+  - vscode
 handoffs:
   - label: "Deep Analysis"
     prompt: "Perform deep analysis of the .NET components found"

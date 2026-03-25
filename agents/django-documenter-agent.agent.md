@@ -5,6 +5,21 @@ model: Claude Sonnet 4 (copilot)
 target: vscode
 tools:
   - edit
+  - search
+  - execute
+  - io.github.upstash/context7/*
+  - microsoftdocs/mcp/*
+  - github/*
+  - todo
+  - ms-python.python/getPythonEnvironmentInfo
+  - ms-python.python/getPythonExecutableCommand
+  - com.monday/monday.com/*
+  - agent
+  - mermaidchart.vscode-mermaid-chart/get_syntax_docs
+  - mermaidchart.vscode-mermaid-chart/mermaid-diagram-preview
+  - mermaidchart.vscode-mermaid-chart/mermaid-diagram-validator
+  - vscode.mermaid-chat-features/renderMermaidDiagram
+  - vscode
 handoffs:
   - label: "Implementation"
     prompt: "Implement the documented Django components"

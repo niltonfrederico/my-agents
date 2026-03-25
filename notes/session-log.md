@@ -342,7 +342,7 @@ Successfully analyzed monday_agent folder and created 4 improved, self-contained
 ### YAML Frontmatter Pattern Used
 
 ```yaml
-skill: true
+
 name: "skill-name"
 description: "**SKILL TYPE** — Specialized description with USE FOR, CREATES, TECH FOCUS sections"
 applyTo: ["file patterns"]  
@@ -385,7 +385,7 @@ invokes: ["relevant tools"]
 ### Advanced YAML Frontmatter Pattern
 
 ```yaml
-skill: true
+
 name: "domain-analysis"
 description: "**DOMAIN EXPERT** — Multi-capability description with specific use cases and outputs"
 applyTo: ["domain-specific file patterns", "**/*related-dirs/**/*"]

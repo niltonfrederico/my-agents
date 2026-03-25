@@ -1,21 +1,8 @@
 ---
-skill: true
+
 name: "monday-refinement-generator"
 description: "**MONDAY REFINEMENT GENERATOR** — Synthesizes validated Monday.com analysis into comprehensive implementation plans with Planning Poker estimation. USE FOR: implementation planning; effort estimation; task breakdown; acceptance criteria creation; testing strategy. CREATES: detailed refinement documents; Planning Poker estimates; file change analysis; testing plans. JUNTOSSOMOSMAIS FOCUS: Brazilian Agile methodology; Django/Python and .NET/C# patterns; r2-d2 compliance preparation."
-applyTo:
-  - "**/*refinement*/**"
-  - "**/*planning*/**"
-  - "**/*implementation*/**"
-  - "**/*analysis*/**"
-invokes:
-  - "mcp_com_monday_mo_get_board_info"
-  - "mcp_io_github_git_get_file_contents"
-  - "vscode_askQuestions"
-  - "brazilian-agile-framework"
-  - "github-repository-investigator"
-  - "memory"
-  - "file_operations"
-  - "Explore"
+
 ---
 
 # Monday Refinement Generator Skill

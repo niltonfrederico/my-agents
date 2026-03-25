@@ -1,25 +1,7 @@
 ---
-skill: true
+
 name: "django-explorer"
 description: "**DJANGO FAST EXPLORER** — Specialized skill for rapid exploration and quick Q&A about juntossomosmais Django/Python applications. USE FOR: understanding project structure; identifying app components; locating specific files and patterns; answering quick questions about code organization; finding models, views, serializers, and consumers; exploring API endpoints and URL patterns; understanding authentication flows and permissions; identifying STOMP/RabbitMQ messaging patterns. PROVIDES: fast responses about code structure; app component relationships; file locations and purposes; quick summaries of functionality; guidance for deeper analysis. JUNTOSSOMOSMAIS FOCUS: Understands StandardModelMixin patterns, django-stomp/django-outbox-pattern messaging, DRF authentication classes, health check patterns, and project-specific conventions from django-template architecture."
-applyTo:
-  - "**/*.py"
-  - "**/apps/**/*"
-  - "**/manage.py"
-  - "**/settings.py"
-  - "**/urls.py"
-  - "**/requirements.txt"
-  - "**/pyproject.toml"
-  - "**/Dockerfile"
-  - "**/docker-compose.yml"
-invokes:
-  - "semantic_search"
-  - "file_search"
-  - "grep_search"
-  - "read_file"
-  - "vscode_askQuestions"
-  - "mcp_io_github_git_get_file_contents"
-  - "github-repository-investigator"
 ---
 
 # Django Explorer Skill

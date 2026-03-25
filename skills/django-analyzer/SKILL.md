@@ -1,25 +1,6 @@
 ---
-skill: true
 name: "django-analyzer"
 description: "**DJANGO DEEP ANALYZER** — Specialized skill for comprehensive, in-depth analysis of juntossomosmais Django/Python applications. USE FOR: detailed code investigation; complex business logic analysis; performance bottleneck identification; security audit of Django patterns; integration flow analysis; database query optimization; STOMP/messaging pattern deep dive; authentication and permission analysis; error handling investigation; test coverage analysis. PROVIDES: detailed code reviews; architectural insights; performance recommendations; security findings; complex relationship mapping; integration flow documentation. JUNTOSSOMOSMAIS FOCUS: Deep understanding of StandardModelMixin patterns, django-stomp vs django-outbox-pattern implementations, DRF authentication flows, health check systems, database routing strategies, and complex business logic patterns from juntossomosmais architecture."
-applyTo:
-  - "**/*.py"
-  - "**/apps/**/*"
-  - "**/tests/**/*"
-  - "**/support/**/*"
-  - "**/api/**/*"
-  - "**/pubsub/**/*"
-  - "**/management/**/*"
-invokes:
-  - "semantic_search"
-  - "grep_search"
-  - "read_file"
-  - "get_errors"
-  - "vscode_listCodeUsages"
-  - "vscode_askQuestions"
-  - "mcp_io_github_git_get_file_contents"
-  - "django-explorer"
-  - "github-repository-investigator"
 ---
 
 # Django Deep Analyzer Skill

@@ -1,27 +1,7 @@
 ---
-skill: true
+
 name: "dotnet-explorer"
 description: "**DOTNET FAST EXPLORER** — Specialized skill for rapid exploration and quick Q&A about juntossomosmais .NET/C# applications. USE FOR: understanding project structure; identifying CliFx commands and controllers; locating specific files and patterns; answering quick questions about code organization; finding models, controllers, consumers, and jobs; exploring API endpoints and routing patterns; understanding Entity Framework configurations; identifying CAP/RabbitMQ messaging patterns; exploring Hangfire background jobs. PROVIDES: fast responses about code structure; component relationships; file locations and purposes; quick summaries of functionality; guidance for deeper analysis. JUNTOSSOMOSMAIS FOCUS: Understands StandardEntity patterns, CliFx command structure (ApiCommand/WorkerCommand), CAP messaging consumers, Entity Framework Core with SQL Server/MongoDB, FluentValidation patterns, Hangfire job patterns, and project-specific conventions from dotnet-template architecture."
-applyTo:
-  - "**/*.cs"
-  - "**/*.csproj"
-  - "**/appsettings*.json"
-  - "**/Program.cs"
-  - "**/Startup.cs"
-  - "**/Controllers/**/*"
-  - "**/Commands/**/*"
-  - "**/Consumers/**/*"
-  - "**/Jobs/**/*"
-  - "**/Models/**/*"
-  - "**/Migrations/**/*"
-invokes:
-  - "semantic_search"
-  - "file_search"
-  - "grep_search"
-  - "read_file"
-  - "vscode_askQuestions"
-  - "mcp_io_github_git_get_file_contents"
-  - "github-repository-investigator"
 ---
 
 # .NET Fast Explorer Skill

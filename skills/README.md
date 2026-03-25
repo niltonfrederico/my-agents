@@ -88,15 +88,10 @@ All skills use consistent YAML frontmatter:
 
 ```yaml
 ---
-skill: true
+
 name: "skill-name"
 description: "**SKILL TYPE** — Purpose and capabilities description"
-applyTo:
-  - "**/*.py"           # File patterns where skill applies
-  - "**/specific/**"
-invokes:
-  - "mcp_tool_name"     # Explicit MCP tool names
-  - "other_skill_name"  # Other skills this skill uses
+
 ---
 ```
 
@@ -207,14 +202,9 @@ Create new skills following this pattern:
 
 ```yaml
 ---
-skill: true
+
 name: "new-skill-name"
 description: "**SKILL TYPE** — Purpose and detailed capabilities"
-applyTo:
-  - "**/*.ext"
-invokes:
-  - "mcp_specific_tool_name"
-  - "existing_skill_name"
 ---
 
 # Skill Name

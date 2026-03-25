@@ -1,18 +1,8 @@
 ---
-skill: true  
+  
 name: "mermaid-mindmap"
 description: "**MERMAID MINDMAP EXPERT** — Specialized skill for creating tech-focused Mermaid mindmaps for knowledge organization and system planning. USE FOR: technology stack planning; software architecture brainstorming; feature breakdown structures; technical decision trees; system component hierarchies; learning path visualization; troubleshooting guides; project planning; technical concept mapping; knowledge base organization. CREATES: hierarchical mindmaps with proper indentation; styled mindmaps with custom shapes and icons; interactive mindmaps with clickable elements; complex multi-level technical taxonomies; visual knowledge structures. TECH FOCUS: Organizes complex technical information into digestible visual hierarchies, emphasizing relationships between technologies, components, and concepts."
-applyTo:
-  - "**/*.md"
-  - "**/*.mmd"
-  - "**/README.md"
-  - "**/docs/**/*"
-  - "**/planning/**/*"
-invokes:
-  - "mermaid-diagram-validator"
-  - "mermaid-diagram-preview"
-  - "vscode_askQuestions"
-  - "get-syntax-docs-mermaid"
+
 ---
 
 # Mermaid Mindmap Skill

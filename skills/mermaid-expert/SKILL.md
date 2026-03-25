@@ -1,20 +1,8 @@
 ---
-skill: true
+
 name: "mermaid-expert"
 description: "**MERMAID DIAGRAM EXPERT** — Comprehensive Mermaid diagram creation skill supporting flowcharts, sequence diagrams, mindmaps, and advanced diagram types. USE FOR: system architecture visualization; process flow documentation; technical communication; knowledge organization; API interaction mapping; decision tree visualization; project planning diagrams; troubleshooting flowcharts; component relationship mapping. CREATES: syntactically correct Mermaid diagrams with proper validation; interactive diagrams with clickable elements; styled diagrams with themes and colors; complex multi-type diagram combinations; technical documentation integration. TECH FOCUS: Always considers technical contexts like APIs, databases, services, error states, authentication flows, system dependencies, and architectural patterns."
-applyTo:
-  - "**/*.md"
-  - "**/*.mmd"
-  - "**/README.md"
-  - "**/docs/**/*"
-  - "**/api/**/*"
-  - "**/architecture/**/*"
-  - "**/planning/**/*"
-invokes:
-  - "mermaid-diagram-validator"
-  - "mermaid-diagram-preview"
-  - "vscode_askQuestions"
-  - "get-syntax-docs-mermaid"
+
 ---
 
 # Mermaid Diagram Expert Skill

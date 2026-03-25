@@ -1,26 +1,8 @@
 ---
-skill: true
+
 name: "pre-commit-validator"
 description: "**PRE-COMMIT CODE VALIDATOR** — Specialized skill for validating generated code using pre-commit hooks without auto-fixing issues. USE FOR: code quality validation; linting verification; formatting compliance checking; security scan validation; commit readiness assessment; agent-generated code verification; CI/CD pipeline validation; development workflow quality gates. PROVIDES: comprehensive validation reports; detailed issue analysis; compliance status verification; actionable feedback for code improvement; integration with development workflows. JUNTOSSOMOSMAIS FOCUS: Validates Django/Python and .NET/C# code against company standards; integrates with existing pre-commit configurations; supports multiple code quality tools (black, mypy, flake8, eslint, etc.); ensures StandardModelMixin and StandardEntity pattern compliance."
-applyTo:
-  - "**/*.py"
-  - "**/*.cs"
-  - "**/*.js"
-  - "**/*.ts"
-  - "**/*.json"
-  - "**/*.yaml"
-  - "**/*.yml"
-  - "**/.pre-commit-config.yaml"
-  - "**/pyproject.toml"
-  - "**/*.csproj"
-  - "**/package.json"
-invokes:
-  - "run_in_terminal"
-  - "get_changed_files"
-  - "read_file"
-  - "grep_search"
-  - "vscode_askQuestions"
-  - "mcp_io_github_git_get_file_contents"
+
 ---
 
 # Pre-Commit Code Validator Skill

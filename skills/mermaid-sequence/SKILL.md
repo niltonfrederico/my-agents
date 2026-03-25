@@ -1,18 +1,8 @@
 ---
-skill: true
+
 name: "mermaid-sequence"  
 description: "**MERMAID SEQUENCE EXPERT** — Specialized skill for creating tech-focused Mermaid sequence diagrams showing interactions and communications. USE FOR: API call sequences; microservice communications; user authentication flows; database transaction sequences; distributed system interactions; message queue patterns; real-time communication protocols; event-driven architectures; async operation flows; integration patterns. CREATES: syntactically correct sequence diagrams with proper participant definitions; complex interaction patterns with loops, alternatives, and parallel sections; detailed message flows with timing constraints; error scenarios and exception handling. TECH FOCUS: Emphasizes system boundaries, timeouts, retries, failure modes, and scalability considerations."
-applyTo:
-  - "**/*.md"
-  - "**/*.mmd"
-  - "**/README.md"
-  - "**/docs/**/*"
-  - "**/api/**/*"
-invokes:
-  - "mermaid-diagram-validator"
-  - "mermaid-diagram-preview"
-  - "vscode_askQuestions"
-  - "get-syntax-docs-mermaid"
+
 ---
 
 # Mermaid Sequence Diagram Skill

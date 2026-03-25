@@ -1,18 +1,8 @@
 ---
-skill: true
+
 name: "r2d2-compliance-validator"
 description: "**R2-D2 COMPLIANCE VALIDATOR** — Final validation gate ensuring refinements comply with juntossomosmais organizational standards. USE FOR: r2-d2 standards validation; code quality compliance; architectural pattern verification; testing requirement validation; deployment checklist verification. VALIDATES: Python/Django and C#/.NET conventions; prevents technical debt; ensures architectural compliance. JUNTOSSOMOSMAIS FOCUS: Company-specific patterns; r2-d2 repository integration; technical debt prevention."
-applyTo:
-  - "**/*refinement*/**"
-  - "**/*compliance*/**"
-  - "**/*standards*/**"
-  - "**/*validation*/**"
-invokes:
-  - "mcp_io_github_git_get_file_contents"
-  - "mcp_io_github_git_search_issues"
-  - "vscode_askQuestions"
-  - "memory"
-  - "file_operations"
+
 ---
 
 # R2-D2 Compliance Validator Skill

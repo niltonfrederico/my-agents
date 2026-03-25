@@ -1,27 +1,7 @@
 ---
-skill: true
+
 name: "dotnet-analyzer"
 description: "**DOTNET DEEP ANALYZER** — Specialized skill for comprehensive, in-depth analysis of juntossomosmais .NET/C# applications. USE FOR: detailed code investigation; complex business logic analysis; performance bottleneck identification; security audit of .NET patterns; Entity Framework query optimization; CAP messaging flow analysis; Hangfire job analysis; authentication and authorization deep dive; error handling investigation; integration testing analysis. PROVIDES: detailed code reviews; architectural insights; performance recommendations; security findings; complex relationship mapping; integration flow documentation. JUNTOSSOMOSMAIS FOCUS: Deep understanding of StandardEntity patterns, CliFx command architecture, CAP transactional messaging, Entity Framework Core optimizations, Hangfire background processing, FluentValidation complex scenarios, and ASP.NET Core security patterns from juntossomosmais architecture."
-applyTo:
-  - "**/*.cs"
-  - "**/Controllers/**/*"
-  - "**/Commands/**/*"
-  - "**/Consumers/**/*"
-  - "**/Jobs/**/*"
-  - "**/Migrations/**/*"
-  - "**/Infra/**/*"
-  - "**/tests/**/*"
-  - "**/Tests/**/*"
-invokes:
-  - "semantic_search"
-  - "grep_search"
-  - "read_file"
-  - "get_errors"
-  - "vscode_listCodeUsages"
-  - "vscode_askQuestions"
-  - "mcp_io_github_git_get_file_contents"
-  - "dotnet-explorer"
-  - "github-repository-investigator"
 ---
 
 # .NET Deep Analyzer Skill

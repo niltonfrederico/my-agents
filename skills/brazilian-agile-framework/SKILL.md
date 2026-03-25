@@ -1,15 +1,7 @@
 ---
-skill: true
+
 name: "brazilian-agile-framework"
 description: "**BRAZILIAN AGILE FRAMEWORK** — Specialized utility for Brazilian Agile methodology validation and Planning Poker estimation. USE FOR: Planning Poker calculations; Brazilian playbook validation; effort estimation; complexity analysis; uncertainty assessment. PROVIDES: proven estimation algorithms; Brazilian methodology compliance; task complexity analysis; effort justification. JUNTOSSOMOSMAIS FOCUS: March 2026 proven 'Incertezas vs Complexidade' model; Brazilian task validation patterns; company-specific Agile practices."
-applyTo:
-  - "**/*planning*/**"
-  - "**/*estimation*/**"
-  - "**/*agile*/**"
-  - "**/*refinement*/**"
-invokes:
-  - "vscode_askQuestions"
-  - "memory"
 ---
 
 # Brazilian Agile Framework Skill

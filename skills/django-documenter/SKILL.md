@@ -1,25 +1,7 @@
 ---
-skill: true
+
 name: "django-documenter"  
 description: "**DJANGO TECHNICAL DOCUMENTER** — Specialized skill for creating comprehensive markdown documentation of juntossomosmais Django/Python applications with integrated Mermaid diagrams. USE FOR: architectural documentation; API documentation with workflow diagrams; business logic documentation; integration documentation; onboarding guides; technical specifications; deployment documentation; troubleshooting guides. PROVIDES: professional markdown documentation; integrated Mermaid diagrams (flowcharts, sequence, architecture); code examples and patterns; architectural decision records; comprehensive API documentation; deployment guides. JUNTOSSOMOSMAIS FOCUS: Documents StandardModelMixin patterns, STOMP messaging flows, DRF authentication architecture, health check systems, database routing, and complex business logic following company documentation standards."
-applyTo:
-  - "**/*.md"
-  - "**/docs/**/*"
-  - "**/README.md"
-  - "**/*.py"
-  - "**/apps/**/*"
-  - "**/api/**/*"
-invokes:
-  - "create_file"
-  - "replace_string_in_file"
-  - "vscode_askQuestions"
-  - "mcp_io_github_git_get_file_contents"
-  - "django-explorer"
-  - "django-analyzer"
-  - "github-repository-investigator"
-  - "mermaid-flowchart"
-  - "mermaid-sequence"
-  - "mermaid-mindmap"
 ---
 
 # Django Technical Documenter Skill

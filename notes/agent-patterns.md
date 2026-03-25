@@ -30,12 +30,9 @@ tools:
 
 ```yaml
 ---
-skill: true
+
 name: "skill-name"
 description: "Domain expertise description"
-invokes:
-  - "tool1"
-  - "tool2"
 ---
 ```
 
@@ -43,7 +40,7 @@ invokes:
 
 ```yaml
 ---
-skill: true
+
 name: "mermaid-[type]"
 description: "**MERMAID [TYPE] EXPERT** — Specialized skill for creating tech-focused [TYPE] diagrams. USE FOR: [use cases]; CREATES: [outputs]; TECH FOCUS: [emphasis]"
 applyTo:
@@ -60,7 +57,7 @@ invokes:
 
 ```yaml
 ---
-skill: true
+
 name: "domain-analysis"
 description: "**DOMAIN EXPERT** — Comprehensive analysis skill combining multiple capabilities. USE FOR: [specific analysis tasks]; CREATES: [outputs including diagrams]; TECH FOCUS: [domain expertise]"
 applyTo:

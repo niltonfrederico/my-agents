@@ -1,23 +1,8 @@
 ---
-skill: true
+
 name: "library-checker"
 description: "**JUNTOSSOMOSMAIS LIBRARY VALIDATOR** — Specialized skill for validating Python dependencies against juntossomosmais/allowed-libraries repository and company security policies. USE FOR: dependency validation; security compliance checking; library approval verification; vulnerability assessment; license compliance; version compatibility checking; dependency upgrade planning; security policy enforcement. PROVIDES: approval status verification; security vulnerability reports; license compliance analysis; version compatibility matrix; dependency recommendations; upgrade pathways. JUNTOSSOMOSMAIS FOCUS: Integration with juntossomosmais/allowed-libraries repository, company security policies, approved Django/Python package validation, STOMP messaging library compliance, and DRF ecosystem compatibility."
-applyTo:
-  - "**/requirements*.txt"
-  - "**/pyproject.toml"
-  - "**/Pipfile"
-  - "**/setup.py"
-  - "**/setup.cfg"
-  - "**/poetry.lock"
-  - "**/constraints.txt"
-invokes:
-  - "read_file"
-  - "grep_search"
-  - "semantic_search"
-  - "mcp_io_github_git_get_file_contents"
-  - "mcp_io_github_git_search_issues"
-  - "fetch_webpage"
-  - "vscode_askQuestions"
+
 ---
 
 # juntossomosmais Library Validator Skill

@@ -1,22 +1,8 @@
 ---
-skill: true
+
 name: "har-analysis"
 description: "**HAR FILE ANALYST** — Specialized skill for analyzing HTTP Archive (HAR) files exported from browser network consoles. USE FOR: performance bottleneck identification; API debugging and error analysis; security audit of network traffic; load time optimization; third-party service analysis; request/response pattern investigation; network waterfall analysis; cache behavior evaluation. CREATES: detailed performance reports; security findings summaries; request/response analysis; interactive Mermaid diagrams (sequence, flowchart, mindmap) visualizing network flows; timing breakdowns; error categorization. TECH FOCUS: Understands web performance metrics, HTTP protocols, browser networking, API patterns, security headers, caching strategies, and modern web application architectures."
-applyTo:
-  - "**/*.har"
-  - "**/*.json"
-  - "**/network-logs/**/*"
-  - "**/performance/**/*"
-  - "**/debug/**/*"
-invokes:
-  - "file_operations"
-  - "read_file"
-  - "vscode_askQuestions"
-  - "mermaid-diagram-validator"
-  - "mermaid-diagram-preview"
-  - "mermaid-flowchart"
-  - "mermaid-sequence"
-  - "mermaid-mindmap"
+
 ---
 
 # HAR Analysis Skill

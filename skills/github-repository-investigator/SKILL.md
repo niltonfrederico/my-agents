@@ -1,18 +1,8 @@
 ---
-skill: true
+
 name: "github-repository-investigator"
 description: "**GITHUB REPOSITORY INVESTIGATOR** — Shared utility for discovering real application architecture using GitHub API. USE FOR: repository structure discovery; framework detection; file path verification; dependency mapping; architecture validation. PREVENTS: imaginary file paths; invented services; invalid assumptions. PROVIDES: real GitHub investigation patterns; framework detection utilities; architecture discovery functions. JUNTOSSOMOSMAIS FOCUS: Django/Python and .NET/C# specialization; proven investigation patterns from March 2026 lessons."
-applyTo:
-  - "**/*github*/**"
-  - "**/*repository*/**"
-  - "**/*architecture*/**"
-invokes:
-  - "mcp_io_github_git_get_file_contents"
-  - "mcp_io_github_git_list_branches"
-  - "mcp_io_github_git_list_commits"
-  - "mcp_com_monday_mo_get_board_info"
-  - "vscode_askQuestions"
-  - "memory"
+
 ---
 
 # GitHub Repository Investigator Skill

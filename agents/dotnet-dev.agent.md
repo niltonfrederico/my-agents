@@ -5,7 +5,17 @@ model: Claude Sonnet 4 (copilot)
 target: vscode
 tools:
   - edit
+  - search
   - execute
+  - io.github.upstash/context7/*
+  - microsoftdocs/mcp/*
+  - github/*
+  - todo
+  - ms-python.python/getPythonEnvironmentInfo
+  - ms-python.python/getPythonExecutableCommand
+  - com.monday/monday.com/*
+  - agent
+  - vscode
 handoffs:
   - label: "Documentation"
     prompt: "Document the .NET implementation with architectural diagrams and API documentation"
