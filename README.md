@@ -17,6 +17,9 @@ A comprehensive ecosystem of specialized AI agents and reusable skills designed 
     - [📋 task-planner (Task Planning Specialist)](#-task-planner-task-planning-specialist)
     - [📚 doc-writer (Documentation Specialist)](#-doc-writer-documentation-specialist)
     - [🦸 saitama (Meta-Agent)](#-saitama-meta-agent)
+  - [Complete Agent Directory](#complete-agent-directory)
+    - [Core Agents (Primary Workflow)](#core-agents-primary-workflow)
+    - [Specialized Agents (Domain Experts)](#specialized-agents-domain-experts)
   - [Skills Library](#skills-library)
     - [Django/Python Skills](#djangopython-skills)
     - [.NET/C# Skills](#netc-skills)
@@ -78,7 +81,7 @@ A comprehensive ecosystem of specialized AI agents and reusable skills designed 
 **What It Does:**
 
 - 🔄 Updates repository automatically
-- 📂 Copies **6 agents** + **19 skills** to your `.copilot` directory
+- 📂 Copies **12 agents** + **19 skills** + **10 instructions** to your `.copilot` directory
 - 🛡️ Safe: Stashes local changes, handles errors gracefully
 - 🌍 Cross-platform: macOS/Linux/Windows support
 - ✅ Zero configuration needed
@@ -92,10 +95,11 @@ This system provides a collection of specialized agents, each equipped with doma
 ### Key Features
 
 - **Specialized Agents**: Each agent is optimized for specific technology stacks or workflow types
-- **Reusable Skills**: Modular skill system that can be leveraged across multiple agents  
-- **Company Integration**: Built-in compliance with juntossomosmais standards and Brazilian Agile frameworks
+- **Reusable Skills**: Modular skill system with 19+ specialized skills leveraged across agents
+- **Company Integration**: Built-in compliance with juntossomosmais standards and Brazilian Agile frameworks  
 - **Cross-Stack Support**: Seamless integration between Django/Python and .NET/C# environments
 - **Professional Documentation**: Comprehensive technical writing and visualization capabilities
+- **Complete Agent Ecosystem**: 12 specialized agents covering development, analysis, documentation, and planning
 
 ## Available Agents
 
@@ -240,6 +244,34 @@ This system provides a collection of specialized agents, each equipped with doma
 - Meta-analysis and system optimization capabilities
 
 **Tools**: Agent creation templates, ecosystem analysis, meta-programming utilities
+
+---
+
+## Complete Agent Directory
+
+### Core Agents (Primary Workflow)
+
+| Agent | Specialization | Primary Use Case |
+|-------|---------------|------------------|
+| **@django-dev** | Python/Django Development | Backend APIs, Django architecture, Python optimization |
+| **@dotnet-dev** | .NET/C# Development | Enterprise services, Entity Framework, ASP.NET Core |
+| **@full-stack** | Cross-Stack Integration | Multi-platform analysis, migration planning, technology comparison |
+| **@task-planner** | Project Management | Monday.com integration, sprint planning, agile workflows |
+| **@doc-writer** | Technical Documentation | API docs, system documentation, Mermaid diagrams |
+| **@saitama** | Meta-Agent & Complexity | Agent creation, complex problem solving, ecosystem management |
+
+### Specialized Agents (Domain Experts)
+
+| Agent | Specialization | Primary Use Case |
+|-------|---------------|------------------|
+| **@django-analyzer-agent** | Django Deep Analysis | Complex Django codebase investigation and optimization |
+| **@django-explorer-agent** | Django Discovery | Fast Django project exploration and structure analysis |
+| **@django-documenter-agent** | Django Documentation | Specialized Django technical documentation creation |
+| **@dotnet-explorer-agent** | .NET Discovery | Rapid .NET solution exploration and architecture analysis |
+| **@monday-analyzer-agent** | Monday.com Analysis | Advanced Monday.com workflow and project analysis |
+| **@mermaid-specialist-agent** | Diagram Creation | Specialized Mermaid diagram generation and visualization |
+
+**Total**: 12 agents providing comprehensive coverage across development, analysis, documentation, and project management workflows.
 
 ## Skills Library
 

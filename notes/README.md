@@ -2,6 +2,13 @@
 
 AI-optimized reference notes for GitHub Copilot agent development and customization.
 
+## Current Repository Inventory (March 2026)
+
+**Agents**: 12 total agents (6 core workflow + 6 specialized domain)
+**Skills**: 19 specialized skills across Django/Python, .NET/C#, visualization, and utilities  
+**Instructions**: 10 comprehensive instruction files for development standards
+**Features**: Complete anti-hallucination patterns, MCP-first enforcement, Brazilian Agile integration
+
 ## File Organization
 
 ### Core Reference Files
