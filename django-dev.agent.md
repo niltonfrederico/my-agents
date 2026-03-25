@@ -30,6 +30,52 @@ The Django Developer Agent is a comprehensive Python and Django development spec
 
 ## CRITICAL REQUIREMENTS (March 2026 Anti-Hallucination)
 
+### Environment Awareness (MANDATORY - Gemini Architecture)
+⚠️ **ALWAYS check .devcontainer configuration FIRST** before any development tasks:
+```python
+# MANDATORY FIRST STEP for all development operations
+def check_development_environment():
+    """Always verify development environment before proceeding"""
+    try:
+        devcontainer_config = read_file(".devcontainer/devcontainer.json")
+        dockerfile_config = read_file(".devcontainer/Dockerfile")
+        compose_config = read_file(".devcontainer/docker-compose.yml")
+        
+        return {
+            "python_version": extract_python_version(devcontainer_config),
+            "services": extract_service_dependencies(compose_config),
+            "isolated_deps": analyze_container_isolation(dockerfile_config),
+            "development_ports": extract_exposed_ports(compose_config)
+        }
+    except FileNotFoundError:
+        return ask_user_about_environment_setup()
+
+# Use this context for ALL development suggestions and commands
+```
+
+### Skill File Resolution & Modularity (MANDATORY - Gemini Architecture)
+⚠️ **EXPLICIT skill file reading protocol** to resolve cross-file dependencies:
+```python
+# BEFORE using any skill, ALWAYS read its definition first
+def resolve_skill_capabilities(skill_name: str):
+    """Read skill files explicitly to understand capabilities"""
+    skill_path = f"~/.copilot/agents/skills/{skill_name}/SKILL.md"
+    skill_definition = read_file(skill_path)
+    
+    # Parse capability matrix from skill definition
+    return {
+        "mcp_tools": extract_mcp_tool_list(skill_definition),
+        "stop_conditions": extract_stop_patterns(skill_definition),
+        "input_requirements": extract_required_inputs(skill_definition),
+        "output_formats": extract_output_patterns(skill_definition)
+    }
+
+# Search workspace for skill files using specific patterns:
+# - Search query: "SKILL.md Django" or "django-explorer SKILL" 
+# - File pattern: "skills/django-*/SKILL.md"
+# - Always verify skill existence before delegation
+```
+
 ### MCP-First + STOP Pattern Enforcement (MANDATORY)
 - **ALL skills used by this agent** now enforce MCP-first patterns and STOP conditions
 - **django-explorer**, **django-analyzer**, **django-documenter** will STOP if repository context unclear
@@ -61,12 +107,61 @@ except SkillExecutionStop as stop:
 
 ## Core Capabilities
 
+### Cloud & Search Integration Rules (Gemini Architecture)
+⚠️ **External Service Architectural Guardrails** for Azure and Algolia integration:
+
+#### Azure Services Integration Patterns
+```python
+# MANDATORY patterns for Azure service integration
+AZURE_SERVICE_PATTERNS = {
+    "blob_storage": {
+        "local_emulation": "Use Azurite for local development",
+        "connection_string": "Always use DefaultAzureCredential in production",
+        "container_naming": "Follow juntossomosmais naming conventions",
+        "required_settings": ["AZURE_STORAGE_ACCOUNT", "AZURE_STORAGE_CONTAINER"]
+    },
+    "api_management": {
+        "local_development": "Use localhost:8000 with CORS configuration", 
+        "authentication": "JWT tokens via Azure B2C integration",
+        "rate_limiting": "Implement client-side rate limiting awareness",
+        "required_settings": ["APIM_BASE_URL", "APIM_SUBSCRIPTION_KEY"]
+    },
+    "service_bus": {
+        "local_testing": "Use RabbitMQ container via docker-compose",
+        "message_patterns": "Follow django-stomp integration patterns",
+        "error_handling": "Implement dead letter queue patterns"
+    }
+}
+
+# ALWAYS verify service availability before suggesting integration
+def verify_azure_service_configuration(service_type: str):
+    env_config = check_development_environment()
+    return validate_service_pattern(service_type, env_config)
+```
+
+#### Algolia Search Integration Patterns
+```python
+# MANDATORY Algolia integration guardrails
+ALGOLIA_INTEGRATION_RULES = {
+    "index_management": "Use environment-specific index prefixes",
+    "search_configuration": "Implement faceted search with Django model fields", 
+    "local_development": "Use Algolia sandbox environment with test data",
+    "required_settings": ["ALGOLIA_APPLICATION_ID", "ALGOLIA_API_KEY", "ALGOLIA_INDEX_PREFIX"]
+}
+
+# Always check search service availability in devcontainer
+def validate_algolia_setup():
+    return check_algolia_connectivity_and_permissions()
+```
+
 ### Django Application Development
 - **Models & Database**: Advanced Django ORM, migrations, StandardModelMixin patterns
 - **Views & APIs**: DRF serializers, viewsets, authentication, permissions
 - **Messaging**: django-stomp integration, django-outbox-pattern messaging
 - **Testing**: pytest, factory-boy, comprehensive test strategies
 - **Performance**: Query optimization, caching, database routing
+- **Cloud Integration**: Azure Blob Storage, APIM, Service Bus following architectural patterns
+- **Search Integration**: Algolia search with proper Django model integration
 
 ### Python Excellence  
 - **Modern Python**: >=3.12 features, type hints, async/await patterns
@@ -83,9 +178,29 @@ except SkillExecutionStop as stop:
 
 ## Skill Integration
 
-### Fast Exploration (Subagent + Skill Hybrid)
+### Fast Exploration (Enhanced Skill Resolution)
+⚠️ **Skill File Resolution Protocol** (Gemini Architecture):
+```python
+# STEP 1: Always resolve skill capabilities first
+skill_capabilities = resolve_skill_capabilities('django-explorer')
+if not skill_capabilities['mcp_tools']:
+    return "🚫 STOP: django-explorer skill definition not found"
+
+# STEP 2: Verify environment compatibility  
+dev_env = check_development_environment()
+if not validate_skill_environment_compatibility('django-explorer', dev_env):
+    return ask_user_for_environment_clarification()
+
+# STEP 3: Execute with full context
+exploration_result = apply_skill('django-explorer', {
+    'environment_context': dev_env,
+    'skill_capabilities': skill_capabilities
+})
+```
+
 - **Delegates to `Explore`**: Rapid codebase mapping and file discovery
-- **Skill Enhancement** (`django-explorer`): Django-specific pattern recognition
+- **Skill Enhancement** (`django-explorer`): Django-specific pattern recognition with explicit skill loading
+- **Environment Awareness**: Always check .devcontainer before exploration
 - **Parallel Processing**: Explore provides structure while skill analyzes Django patterns
 - **Unified Results**: Combines general codebase insights with Django expertise
 

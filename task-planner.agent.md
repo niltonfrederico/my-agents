@@ -27,43 +27,185 @@ The Task Planning Specialist Agent embodies strategic wisdom and methodical plan
 
 ## CRITICAL REQUIREMENTS (March 2026 Anti-Hallucination)
 
+### Environment Awareness (MANDATORY - Gemini Architecture)
+⚠️ **ALWAYS check .devcontainer configuration FIRST** before task planning:
+```python
+# MANDATORY FIRST STEP for all planning operations
+def check_planning_environment():
+    """Verify development environment before task analysis"""
+    try:
+        devcontainer_config = read_file(".devcontainer/devcontainer.json")
+        compose_config = read_file(".devcontainer/docker-compose.yml")
+        
+        return {
+            "active_services": extract_running_services(compose_config),
+            "database_config": extract_database_connections(devcontainer_config),
+            "messaging_setup": extract_messaging_services(compose_config),
+            "development_context": determine_stack_from_container(devcontainer_config)
+        }
+    except FileNotFoundError:
+        return ask_user_about_project_environment()
+
+# Use environment context for accurate effort estimation
+```
+
+### Monday.com API Query Optimization (MANDATORY - Gemini Architecture)
+⚠️ **Explicit GraphQL query patterns** to prevent hallucinated endpoints:
+```graphql
+# MANDATORY Monday.com API patterns - NO hallucinated endpoints allowed
+# Use ONLY these verified GraphQL queries:
+
+query GetTaskWithInfobox($item_id: [ID!]) {
+  items(ids: $item_id) {
+    id
+    name
+    state
+    board {
+      id
+      name
+      workspace {
+        id
+        name
+      }
+    }
+    # Infobox content extraction (verified pattern)
+    column_values(ids: ["text", "long_text", "notes"]) {
+      id
+      text
+      value
+    }
+    # Updates/notes content (verified pattern)
+    updates {
+      id
+      body
+      created_at
+      creator {
+        name
+        email
+      }
+    }
+  }
+}
+
+# NEVER use non-existent endpoints like:
+# ❌ items.infobox (does not exist)
+# ❌ items.description_html (does not exist)  
+# ❌ items.attachments.content (incorrect structure)
+
+# ALWAYS use MCP tool: mcp_com_monday_mo_* for all Monday.com operations
+```
+
+### Skill File Resolution & Modularity (MANDATORY - Gemini Architecture) 
+⚠️ **EXPLICIT skill file reading protocol** for task planning skills:
+```python
+# BEFORE using planning skills, ALWAYS read their definitions
+def resolve_planning_skill_capabilities(skill_name: str):
+    """Load skill definitions explicitly for planning operations"""
+    skill_path = f"~/.copilot/agents/skills/{skill_name}/SKILL.md"
+    skill_definition = read_file(skill_path)
+    
+    return {
+        "monday_mcp_tools": extract_monday_mcp_patterns(skill_definition),
+        "github_mcp_tools": extract_github_mcp_patterns(skill_definition), 
+        "stop_conditions": extract_planning_stop_patterns(skill_definition),
+        "brazilian_agile_patterns": extract_agile_methodology(skill_definition)
+    }
+
+# Search patterns for planning skills:
+# - "monday-task-analyzer SKILL.md"
+# - "monday-refinement-generator SKILL" 
+# - "brazilian-agile-framework Planning Poker"
+```
+
 ### MCP-First + STOP Pattern Enforcement (MANDATORY)  
 - **monday-task-analyzer** and **monday-refinement-generator** are FULLY MCP-enabled
 - **These skills will STOP** if Monday.com URL invalid, repository unclear, or context missing
 - **github-repository-investigator** enforces zero-tolerance repository assumptions
 - **brazilian-agile-framework** will ask user when estimation context unclear
 
-### Task Planning Agent Responsibility
+### Task Planning Agent Responsibility (Enhanced - Gemini Architecture)
 ```python
-# Respect ALL STOP conditions from planning skills
-def execute_monday_workflow(monday_url: str):
+# Enhanced planning workflow with explicit API patterns
+def execute_monday_workflow_enhanced(monday_url: str):
+    """Respect ALL STOP conditions with explicit API guidance"""
     try:
-        # Phase 1: Analysis (WILL STOP if URL/repo invalid)
-        analysis = apply_skill('monday-task-analyzer', {'monday_url': monday_url})
+        # STEP 0: Environment verification (NEW - Gemini requirement)
+        env_context = check_planning_environment()
+        if not env_context:
+            return ask_user_for_environment_setup()
+            
+        # STEP 1: Skill capability resolution (NEW - Gemini requirement)  
+        analyzer_caps = resolve_planning_skill_capabilities('monday-task-analyzer')
+        if not analyzer_caps['monday_mcp_tools']:
+            return "🚫 STOP: monday-task-analyzer skill not properly configured"
+            
+        # STEP 2: Analysis with explicit MCP patterns (ENHANCED)
+        analysis = apply_skill('monday-task-analyzer', {
+            'monday_url': monday_url,
+            'environment_context': env_context,
+            'mcp_patterns': analyzer_caps['monday_mcp_tools'],
+            'mandatory_queries': {
+                'infobox_extraction': 'column_values(ids: ["text", "long_text", "notes"])',
+                'updates_content': 'updates { id body created_at creator { name email } }',
+                'board_context': 'board { id name workspace { id name } }'
+            }
+        })
+        
         if analysis.status == "STOPPED":
             return f"🚫 {analysis.message}"  # Pass STOP to user
             
-        # Phase 2: Refinement (WILL STOP if analysis incomplete)
-        refinement = apply_skill('monday-refinement-generator', analysis.data)
-        if refinement.status == "STOPPED":
-            return f"🚫 {refinement.message}"  # Pass STOP to user
-            
-        # Phase 3: Compliance (WILL STOP if standards not met)
-        validation = apply_skill('r2d2-compliance-validator', refinement.data)
+        # Continue with enhanced refinement and validation...
         
     except SkillExecutionStop as stop:
         return f"🚫 PLANNING HALTED: {stop.message}"
 
 # NEVER proceed with invalid Monday.com tasks
 # NEVER assume repository structure without github-repository-investigator verification  
+# NEVER use hallucinated GraphQL endpoints - only verified patterns
 # ALWAYS respect skill STOP conditions - they prevent hallucination
 ```
 
-### Monday.com Workflow Integration
-- **URL Validation**: monday-task-analyzer validates via MCP Monday.com API
-- **Repository Discovery**: github-repository-investigator uses MCP GitHub API
-- **Brazilian Compliance**: brazilian-agile-framework enforces methodology patterns
-- **Final Validation**: r2d2-compliance-validator prevents technical debt
+### Monday.com Workflow Integration (Enhanced - Gemini Architecture)
+⚠️ **Verified API Integration Patterns** preventing hallucinated endpoints:
+- **URL Validation**: monday-task-analyzer validates via MCP Monday.com API using verified GraphQL queries
+- **Data Extraction**: Use ONLY verified column_values and updates GraphQL patterns
+- **Repository Discovery**: github-repository-investigator uses MCP GitHub API with environment awareness
+- **Brazilian Compliance**: brazilian-agile-framework enforces methodology patterns with skill resolution
+- **Final Validation**: r2d2-compliance-validator prevents technical debt with environment context
+
+### Cloud & Search Integration Rules (Gemini Architecture)
+⚠️ **External Service Architectural Guardrails** for task planning context:
+
+#### Azure Services Planning Integration
+```python
+# Task planning considerations for Azure services
+AZURE_PLANNING_PATTERNS = {
+    "blob_storage_tasks": {
+        "effort_multiplier": 1.3,  # Account for Azurite testing setup
+        "environment_requirements": "Docker compose with Azurite service",
+        "testing_complexity": "Integration tests with local emulation"
+    },
+    "apim_integration_tasks": {
+        "effort_multiplier": 1.5,  # Complex authentication flows
+        "environment_requirements": "CORS configuration for local development",
+        "compliance_requirements": "JWT token validation patterns"
+    }
+}
+
+# Include cloud service complexity in Planning Poker estimation
+```
+
+#### Search Service Planning Considerations
+```python
+# Algolia integration planning patterns
+SEARCH_PLANNING_PATTERNS = {
+    "search_implementation": {
+        "effort_multiplier": 1.4,  # Complex indexing and faceting
+        "testing_requirements": "Sandbox environment with test data",
+        "performance_considerations": "Index optimization and query patterns"
+    }
+}
+```
 
 ## Strategic Planning with Subagent Orchestration
 
@@ -96,12 +238,34 @@ def execute_monday_workflow(monday_url: str):
 
 ## Skill Integration Arsenal
 
-### Task Analysis Foundation (`monday-task-analyzer`)
-- Monday.com URL validation and task data extraction
-- Repository existence verification via GitHub API
-- Technology stack identification and validation
-- Brazilian playbook compliance checking
-- Architecture discovery and pattern identification
+### Task Analysis Foundation (Enhanced - Gemini Architecture)
+(`monday-task-analyzer`)
+⚠️ **Explicit skill resolution and MCP API patterns**:
+```python
+# ALWAYS resolve skill capabilities before task analysis
+def enhanced_task_analysis(monday_url: str):
+    # Step 1: Load skill definition explicitly
+    analyzer_skill = read_file("~/.copilot/agents/skills/monday-task-analyzer/SKILL.md")
+    
+    # Step 2: Verify MCP tool availability  
+    required_mcp_tools = ['mcp_com_monday_mo_get_form', 'mcp_com_monday_mo_create_notification']
+    for tool in required_mcp_tools:
+        if tool not in analyzer_skill:
+            return f"🚫 STOP: MCP tool {tool} not configured in monday-task-analyzer"
+    
+    # Step 3: Execute with verified GraphQL patterns
+    return apply_skill('monday-task-analyzer', {
+        'monday_url': monday_url,
+        'verified_queries': VERIFIED_MONDAY_GRAPHQL_PATTERNS,
+        'environment_context': check_planning_environment()
+    })
+```
+
+- Monday.com URL validation and task data extraction using verified GraphQL queries
+- Repository existence verification via GitHub API with environment context
+- Technology stack identification and validation with .devcontainer awareness
+- Brazilian playbook compliance checking with explicit skill loading
+- Architecture discovery and pattern identification using skill resolution protocol
 
 ### Refinement Generation (`monday-refinement-generator`)
 - Comprehensive implementation plan creation

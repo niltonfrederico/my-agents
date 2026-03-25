@@ -30,23 +30,107 @@ tools:
 
 ## CRITICAL REQUIREMENTS (March 2026 Anti-Hallucination)
 
+### Environment Awareness (MANDATORY - Gemini Architecture)
+⚠️ **ALWAYS check .devcontainer configuration FIRST** for cross-platform analysis:
+```python
+# MANDATORY FIRST STEP for all full-stack operations
+def check_full_stack_environment():
+    """Verify multi-stack development environment before analysis"""
+    try:
+        devcontainer_config = read_file(".devcontainer/devcontainer.json")
+        compose_config = read_file(".devcontainer/docker-compose.yml")
+        
+        return {
+            "python_stack": extract_python_django_config(devcontainer_config),
+            "dotnet_stack": extract_dotnet_config(devcontainer_config),
+            "shared_services": extract_cross_stack_services(compose_config),
+            "databases": extract_database_configurations(compose_config),
+            "messaging": extract_messaging_services(compose_config),
+            "cross_stack_ports": extract_service_ports(compose_config)
+        }
+    except FileNotFoundError:
+        return ask_user_about_full_stack_environment()
+
+# Use environment context for accurate cross-stack integration analysis
+```
+
+### Skill File Resolution & Modularity (MANDATORY - Gemini Architecture)
+⚠️ **EXPLICIT cross-stack skill file reading protocol**:
+```python
+# BEFORE using cross-stack skills, ALWAYS read their definitions
+def resolve_cross_stack_skill_capabilities():
+    """Load both Django and .NET skill definitions for full-stack analysis"""
+    django_skills = [
+        resolve_skill_capabilities('django-explorer'),
+        resolve_skill_capabilities('django-analyzer'),
+        resolve_skill_capabilities('django-documenter')
+    ]
+    
+    dotnet_skills = [
+        resolve_skill_capabilities('dotnet-explorer'),
+        resolve_skill_capabilities('dotnet-analyzer'), 
+        resolve_skill_capabilities('dotnet-documenter')
+    ]
+    
+    return {
+        "django_stack": django_skills,
+        "dotnet_stack": dotnet_skills,
+        "cross_stack_compatibility": validate_skill_interoperability(django_skills, dotnet_skills)
+    }
+
+# Search patterns for cross-stack skills:
+# - "django-* SKILL.md" AND "dotnet-* SKILL.md"
+# - "github-repository-investigator multi-stack"
+# - Always verify both stack skills before cross-platform analysis
+```
+
 ### MCP-First + STOP Pattern Enforcement (MANDATORY)
 - **ALL skills from both stacks** now enforce MCP-first patterns and STOP conditions
 - **django-*** and **dotnet-*** skills will STOP if repository context unclear
 - **github-repository-investigator** enforces zero-tolerance cross-stack assumptions
 - **Cross-stack analysis REQUIRES** explicit repository verification before proceeding
 
-### Full-Stack Agent Responsibility
+### Full-Stack Agent Responsibility (Enhanced - Gemini Architecture)
 ```python
-# Multi-stack coordination with STOP respect
-def analyze_cross_stack_integration():
+# Enhanced multi-stack coordination with explicit environment and skill awareness
+def analyze_cross_stack_integration_enhanced():
+    """Comprehensive cross-stack analysis with STOP condition respect"""
     try:
-        django_analysis = apply_skill('django-analyzer', django_params)
-        dotnet_analysis = apply_skill('dotnet-analyzer', dotnet_params)
+        # STEP 1: Environment verification (NEW - Gemini requirement)
+        env_context = check_full_stack_environment()
+        if not env_context or not env_context.get('python_stack') or not env_context.get('dotnet_stack'):
+            return ask_user_for_multi_stack_environment_setup()
+            
+        # STEP 2: Cross-stack skill capability resolution (NEW - Gemini requirement)  
+        skill_matrix = resolve_cross_stack_skill_capabilities()
+        if not skill_matrix['cross_stack_compatibility']:
+            return "🚫 STOP: Cross-stack skills not properly configured for integration"
+            
+        # STEP 3: Coordinated analysis with full context
+        django_analysis = apply_skill('django-analyzer', {
+            'environment_context': env_context['python_stack'],
+            'cross_stack_context': env_context['shared_services']
+        })
+        
+        dotnet_analysis = apply_skill('dotnet-analyzer', {
+            'environment_context': env_context['dotnet_stack'],
+            'cross_stack_context': env_context['shared_services']
+        })
         
         # If either analysis hits STOP, halt full-stack analysis
         if django_analysis.status == "STOPPED" or dotnet_analysis.status == "STOPPED":
             return "🚫 STOP: Cross-stack analysis requires clear context for both stacks."
+            
+        # STEP 4: Integration synthesis
+        return synthesize_cross_stack_insights(django_analysis, dotnet_analysis, env_context)
+        
+    except SkillExecutionStop as stop:
+        return f"🚫 FULL-STACK ANALYSIS HALTED: {stop.message}"
+
+# NEVER assume cross-stack compatibility without verification
+# ALWAYS respect individual stack STOP conditions
+# DELEGATE repository verification to github-repository-investigator
+```
             
     except SkillExecutionStop as stop:
         return f"🚫 STOP: {stop.message}"
@@ -60,6 +144,74 @@ def analyze_cross_stack_integration():
 - **Cross-Stack Validation**: Use both library-checker AND dotnet-library-checker
 - **Documentation**: Use both django-documenter AND dotnet-documenter with MCP access
 - **Unified Estimation**: Use brazilian-agile-framework for cross-stack Planning Poker
+
+### Cloud & Search Integration Rules (Gemini Architecture - Cross-Platform Focus)
+⚠️ **Comprehensive External Service Architectural Guardrails** for full-stack integration:
+
+#### Cross-Stack Azure Services Integration
+```python
+# MANDATORY patterns for cross-platform Azure service integration
+FULL_STACK_AZURE_PATTERNS = {
+    "blob_storage_cross_stack": {
+        "python_integration": "Use azure-storage-blob with DefaultAzureCredential",
+        "dotnet_integration": "Use Azure.Storage.Blobs with DefaultAzureCredential", 
+        "local_emulation": "Shared Azurite container accessible by both stacks",
+        "shared_configuration": "Common environment variables, separate client patterns",
+        "effort_multiplier": 1.6  # Cross-stack complexity
+    },
+    "service_bus_integration": {
+        "python_messaging": "django-stomp with ServiceBus adapter patterns", 
+        "dotnet_messaging": "CAP framework with Azure ServiceBus provider",
+        "local_development": "Shared RabbitMQ container with exchange routing",
+        "message_formats": "JSON schemas shared between Python and .NET consumers",
+        "effort_multiplier": 2.0  # Complex cross-platform messaging
+    },
+    "api_management_gateway": {
+        "python_backend": "Django REST API with JWT authentication",
+        "dotnet_backend": "ASP.NET Core API with JWT authentication",
+        "shared_authentication": "Azure B2C tokens validated by both stacks",
+        "local_development": "Shared CORS configuration and routing",
+        "effort_multiplier": 1.8  # Cross-platform API consistency
+    }
+}
+
+# Always verify service compatibility across both technology stacks
+def validate_cross_stack_azure_integration(service_type: str, env_context: dict):
+    return validate_both_stack_patterns(service_type, env_context)
+```
+
+#### Cross-Platform Search Integration
+```python
+# Algolia integration patterns for full-stack applications
+CROSS_STACK_SEARCH_PATTERNS = {
+    "algolia_full_stack": {
+        "python_indexing": "Django management commands with algoliasearch-django",
+        "dotnet_indexing": "Background jobs using Algolia .NET client",
+        "shared_indices": "Environment-specific prefixes with consistent schemas",
+        "local_development": "Algolia sandbox with shared test data",
+        "effort_multiplier": 1.7  # Cross-stack search schema consistency
+    }
+}
+```
+
+#### Database Integration Patterns
+```python
+# Cross-stack database integration guidelines
+CROSS_STACK_DATABASE_PATTERNS = {
+    "shared_postgresql": {
+        "python_orm": "Django ORM with StandardModelMixin patterns",
+        "dotnet_orm": "Entity Framework Core with StandardEntity patterns",
+        "shared_migrations": "Coordinated schema evolution strategy",
+        "local_development": "Single PostgreSQL container, separate databases"
+    },
+    "dual_database_strategy": {
+        "python_primary": "PostgreSQL for Django applications", 
+        "dotnet_primary": "SQL Server for .NET applications",
+        "data_synchronization": "Event-driven sync via shared message bus",
+        "effort_multiplier": 2.5  # Complex dual-database coordination
+    }
+}
+```
 
 ## Agent Purpose
 

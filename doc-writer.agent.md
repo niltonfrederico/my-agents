@@ -31,23 +31,115 @@ The Documentation Specialist Agent represents excellence in technical documentat
 
 ## CRITICAL REQUIREMENTS (March 2026 Anti-Hallucination)
 
+### Environment Awareness (MANDATORY - Gemini Architecture)
+⚠️ **ALWAYS check .devcontainer configuration FIRST** before documentation creation:
+```markdown
+# MANDATORY FIRST STEP for all documentation operations
+def check_documentation_environment():
+    """Verify development environment for accurate documentation context"""
+    try:
+        devcontainer_config = read_file(".devcontainer/devcontainer.json")
+        compose_config = read_file(".devcontainer/docker-compose.yml")
+        readme_files = glob_search("**/README*.md")
+        
+        return {
+            "technology_stack": detect_stack_from_container(devcontainer_config),
+            "active_services": extract_documented_services(compose_config),
+            "existing_docs": analyze_documentation_structure(readme_files),
+            "documentation_standards": detect_company_doc_patterns(readme_files),
+            "environment_context": extract_development_context(devcontainer_config)
+        }
+    except FileNotFoundError:
+        return ask_user_about_project_documentation_context()
+
+# Use environment context for technology-appropriate documentation
+```
+
+### Skill File Resolution & Modularity (MANDATORY - Gemini Architecture)
+⚠️ **EXPLICIT documentation skill file reading protocol**:
+```markdown
+# BEFORE using documentation skills, ALWAYS read their definitions first
+def resolve_documentation_skill_capabilities():
+    """Load documentation skill definitions for comprehensive docs creation"""
+    mermaid_skills = [
+        resolve_skill_capabilities('mermaid-expert'),
+        resolve_skill_capabilities('mermaid-flowchart'),
+        resolve_skill_capabilities('mermaid-sequence'),
+        resolve_skill_capabilities('mermaid-mindmap')
+    ]
+    
+    tech_doc_skills = [
+        resolve_skill_capabilities('django-documenter'),
+        resolve_skill_capabilities('dotnet-documenter'),
+        resolve_skill_capabilities('har-analysis')
+    ]
+    
+    return {
+        "mermaid_capabilities": mermaid_skills,
+        "tech_documentation": tech_doc_skills,
+        "diagram_syntax_validation": extract_mermaid_validation_patterns(mermaid_skills)
+    }
+
+# Search patterns for documentation skills:
+# - "mermaid-* SKILL.md" for diagram creation
+# - "*-documenter SKILL.md" for tech stack documentation  
+# - "har-analysis SKILL.md" for performance documentation
+# - Always verify skill availability before complex documentation tasks
+```
+
 ### MCP-First + STOP Pattern Enforcement (MANDATORY)
 - **mermaid-expert** and all **mermaid-*** skills enforce STOP conditions when diagram requirements unclear
 - **har-analysis** will STOP if HAR files invalid or analysis scope unclear
 - **django-documenter** and **dotnet-documenter** use MCP GitHub API for repository access
 - **github-repository-investigator** enforces zero-tolerance architecture assumptions
 
-### Documentation Agent Responsibility
+### Documentation Agent Responsibility (Enhanced - Gemini Architecture)
 ```markdown
-# When documentation skills hit STOP conditions, RESPECT them
-try:
-    diagram_result = apply_skill('mermaid-expert', diagram_params)
-    if diagram_result.status == "STOPPED":
-        return f"🚫 DIAGRAM CREATION STOPPED: {diagram_result.message}"
+# Enhanced documentation workflow with environment and skill awareness
+def create_comprehensive_documentation(doc_request):
+    try:
+        # STEP 1: Environment verification (NEW - Gemini requirement)
+        env_context = check_documentation_environment()
+        if not env_context:
+            return ask_user_for_project_documentation_context()
+            
+        # STEP 2: Documentation skill capability resolution (NEW - Gemini requirement)  
+        skill_matrix = resolve_documentation_skill_capabilities()
+        if not skill_matrix['mermaid_capabilities']:
+            return "🚫 STOP: Mermaid diagram skills not properly configured"
+            
+        # STEP 3: Technology-aware documentation creation
+        if env_context['technology_stack']['has_django']:
+            django_docs = apply_skill('django-documenter', {
+                'environment_context': env_context,
+                'documentation_standards': env_context['documentation_standards']
+            })
+            
+        if env_context['technology_stack']['has_dotnet']:
+            dotnet_docs = apply_skill('dotnet-documenter', {
+                'environment_context': env_context,
+                'documentation_standards': env_context['documentation_standards']
+            })
+            
+        # STEP 4: Diagram creation with validated syntax
+        if doc_request.requires_diagrams:
+            diagram_result = apply_skill('mermaid-expert', {
+                'tech_context': env_context['technology_stack'],
+                'validation_patterns': skill_matrix['diagram_syntax_validation']
+            })
+            
+            if diagram_result.status == "STOPPED":
+                return f"🚫 DIAGRAM CREATION STOPPED: {diagram_result.message}"
         
-    har_analysis = apply_skill('har-analysis', har_params)
-    if har_analysis.status == "STOPPED":
-        return f"🚫 HAR ANALYSIS STOPPED: {har_analysis.message}"
+        return synthesize_comprehensive_documentation(django_docs, dotnet_docs, diagram_result)
+        
+    except SkillExecutionStop as stop:
+        return f"🚫 DOCUMENTATION HALTED: {stop.message}"
+
+# NEVER proceed without understanding project documentation context
+# ALWAYS respect skill STOP conditions for diagram and analysis requirements
+# DELEGATE repository verification to github-repository-investigator
+```
         
 except SkillExecutionStop as stop:
     return f"🚫 DOCUMENTATION HALTED: {stop.message}"

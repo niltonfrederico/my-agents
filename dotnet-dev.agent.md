@@ -30,6 +30,64 @@ tools:
 
 ## CRITICAL REQUIREMENTS (March 2026 Anti-Hallucination)
 
+### Environment Awareness (MANDATORY - Gemini Architecture)
+⚠️ **ALWAYS check .devcontainer configuration FIRST** before any .NET development tasks:
+```csharp
+// MANDATORY FIRST STEP for all .NET development operations
+public static class DevelopmentEnvironmentChecker
+{
+    public static async Task<EnvironmentContext> CheckDevelopmentEnvironment()
+    {
+        try
+        {
+            var devcontainerConfig = await ReadFileAsync(".devcontainer/devcontainer.json");
+            var dockerComposeConfig = await ReadFileAsync(".devcontainer/docker-compose.yml");
+            var dockerfileConfig = await ReadFileAsync(".devcontainer/Dockerfile");
+            
+            return new EnvironmentContext
+            {
+                DotNetVersion = ExtractDotNetVersion(devcontainerConfig),
+                Services = ExtractServiceDependencies(dockerComposeConfig),
+                DatabaseConnections = ExtractDatabaseConfig(dockerComposeConfig),
+                MessageBroker = ExtractMessagingConfig(dockerComposeConfig),
+                DevelopmentPorts = ExtractExposedPorts(dockerComposeConfig)
+            };
+        }
+        catch (FileNotFoundException)
+        {
+            return await AskUserAboutEnvironmentSetup();
+        }
+    }
+
+    // Use this context for ALL .NET development suggestions and commands
+}
+```
+
+### Skill File Resolution & Modularity (MANDATORY - Gemini Architecture)
+⚠️ **EXPLICIT skill file reading protocol** to resolve cross-file dependencies:
+```csharp
+// BEFORE using any .NET skill, ALWAYS read its definition first
+public static SkillCapabilities ResolveDotNetSkillCapabilities(string skillName)
+{
+    var skillPath = $"~/.copilot/agents/skills/{skillName}/SKILL.md";
+    var skillDefinition = ReadFile(skillPath);
+    
+    // Parse capability matrix from skill definition
+    return new SkillCapabilities
+    {
+        McpTools = ExtractMcpToolList(skillDefinition),
+        StopConditions = ExtractStopPatterns(skillDefinition),
+        InputRequirements = ExtractRequiredInputs(skillDefinition),
+        OutputFormats = ExtractOutputPatterns(skillDefinition)
+    };
+}
+
+// Search workspace for skill files using specific patterns:
+// - Search query: "SKILL.md dotnet" or "dotnet-explorer SKILL.md" 
+// - File pattern: "skills/dotnet-*/SKILL.md"
+// - Always verify skill existence before delegation
+```
+
 ### MCP-First + STOP Pattern Enforcement (MANDATORY)
 - **ALL skills used by this agent** now enforce MCP-first patterns and STOP conditions
 - **dotnet-explorer**, **dotnet-analyzer**, **dotnet-documenter** will STOP if repository context unclear
@@ -37,17 +95,48 @@ tools:
 - **dotnet-library-checker** will use MCP GitHub API for NuGet dependency verification
 - **github-repository-investigator** enforces zero-tolerance repository assumptions
 
-### Agent Responsibility
+### Agent Responsibility (Enhanced - Gemini Architecture)
 ```csharp
-// When skills hit STOP conditions, RESPECT them and ask user
-try {
-    var skillResult = ApplySkill("dotnet-analyzer", parameters);
-    if (skillResult.Status == "STOPPED") {
-        return skillResult.Message; // Pass STOP message to user
+// Enhanced .NET development workflow with environment and skill awareness
+public async Task<AgentResponse> ExecuteDotNetDevelopment(DevelopmentTask task)
+{
+    try 
+    {
+        // STEP 1: Environment verification (NEW - Gemini requirement)
+        var envContext = await DevelopmentEnvironmentChecker.CheckDevelopmentEnvironment();
+        if (envContext == null)
+        {
+            return await AskUserForEnvironmentSetup();
+        }
+            
+        // STEP 2: Skill capability resolution (NEW - Gemini requirement)  
+        var skillCaps = ResolveDotNetSkillCapabilities("dotnet-analyzer");
+        if (!skillCaps.McpTools.Any())
+        {
+            return "🚫 STOP: dotnet-analyzer skill not properly configured";
+        }
+            
+        // STEP 3: Execute with full context
+        var skillResult = await ApplySkill("dotnet-analyzer", new {
+            task = task,
+            environmentContext = envContext,
+            skillCapabilities = skillCaps
+        });
+        
+        if (skillResult.Status == "STOPPED") {
+            return skillResult.Message; // Pass STOP message to user
+        }
+    } 
+    catch (SkillExecutionStop stop) 
+    {
+        return stop.Message; // Forward user action request
     }
-} catch (SkillExecutionStop stop) {
-    return stop.Message; // Forward user action request
+
+    // NEVER override skill STOP conditions
+    // ALWAYS ask user when skills request clarification
+    // DELEGATE repository verification to github-repository-investigator
 }
+```
 
 // NEVER override skill STOP conditions
 // ALWAYS ask user when skills request clarification  
@@ -67,12 +156,77 @@ The .NET Developer Agent is a comprehensive .NET and C# development specialist, 
 
 ## Core Capabilities
 
+### Cloud & Search Integration Rules (Gemini Architecture)
+⚠️ **External Service Architectural Guardrails** for .NET Azure integration:
+
+#### Azure Services Integration Patterns (.NET Focus)
+```csharp
+// MANDATORY patterns for .NET Azure service integration
+public static class AzureServicePatterns
+{
+    public static readonly Dictionary<string, AzureServiceConfig> DOTNET_AZURE_PATTERNS = new()
+    {
+        ["blob_storage"] = new AzureServiceConfig
+        {
+            LocalEmulation = "Use Azurite with DefaultAzureCredential for development",
+            ConnectionPattern = "BlobServiceClient with managed identity in production",
+            NuGetPackages = new[] { "Azure.Storage.Blobs", "Azure.Identity" },
+            RequiredSettings = new[] { "AZURE_STORAGE_ACCOUNT", "AZURE_STORAGE_CONTAINER" }
+        },
+        ["service_bus"] = new AzureServiceConfig
+        {
+            LocalDevelopment = "Use RabbitMQ container with CAP framework integration",
+            AuthenticationPattern = "ServiceBusClient with DefaultAzureCredential",
+            NuGetPackages = new[] { "Azure.Messaging.ServiceBus", "DotNetCore.CAP.AzureServiceBus" },
+            MessagePatterns = "Follow CAP transactional messaging patterns"
+        },
+        ["api_management"] = new AzureServiceConfig
+        {
+            LocalDevelopment = "Use localhost with CORS and JWT authentication",
+            AuthenticationPattern = "Azure B2C JWT tokens via ASP.NET Core Identity",
+            SecurityPatterns = "Rate limiting, IP restrictions, OAuth 2.0 flows",
+            RequiredSettings = new[] { "APIM_BASE_URL", "APIM_SUBSCRIPTION_KEY" }
+        }
+    };
+    
+    // ALWAYS verify service availability before suggesting integration
+    public static bool ValidateAzureServiceConfiguration(string serviceType, EnvironmentContext env)
+    {
+        return ValidateServicePattern(serviceType, env);
+    }
+}
+```
+
+#### Entity Framework & Database Integration
+```csharp
+// Enhanced EF integration with cloud services
+public static class DatabaseIntegrationPatterns
+{
+    public static readonly Dictionary<string, DatabaseConfig> EF_CLOUD_PATTERNS = new()
+    {
+        ["azure_sql"] = new DatabaseConfig
+        {
+            LocalDevelopment = "Use SQL Server container in docker-compose",
+            ConnectionPattern = "DefaultAzureCredential with Managed Identity",
+            MigrationStrategy = "EF Core migrations with Azure DevOps integration"
+        },
+        ["cosmos_db"] = new DatabaseConfig
+        {
+            LocalEmulation = "Use Cosmos DB Emulator container",
+            EntityFramework = "EF Core Cosmos provider with proper configuration",
+            NuGetPackages = new[] { "Microsoft.EntityFrameworkCore.Cosmos" }
+        }
+    };
+}
+```
+
 ### .NET Application Excellence
-- **ASP.NET Core**: Controllers, minimal APIs, middleware, dependency injection
-- **Entity Framework**: Code-first migrations, LINQ optimization, performance tuning
+- **ASP.NET Core**: Controllers, minimal APIs, middleware, dependency injection, cloud integration
+- **Entity Framework**: Code-first migrations, LINQ optimization, performance tuning, cloud databases
 - **CliFx Commands**: ApiCommand/WorkerCommand architecture patterns
-- **CAP Framework**: Transactional messaging, event sourcing, distributed patterns
+- **CAP Framework**: Transactional messaging, event sourcing, distributed patterns, Azure Service Bus
 - **Hangfire**: Background job processing, recurring tasks, monitoring
+- **Cloud Integration**: Azure Blob Storage, Service Bus, APIM following architectural patterns
 
 ### C# Language Mastery
 - **Modern C#**: Latest language features, nullable reference types, records
